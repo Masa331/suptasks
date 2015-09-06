@@ -1,6 +1,6 @@
 require 'capybara'
 require 'capybara/rspec'
-require_relative '../appclub'
+require_relative '../suptasks'
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
@@ -25,4 +25,4 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 end
 
-Capybara.app = Appclub
+Capybara.app = Suptasks

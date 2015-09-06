@@ -6,3 +6,9 @@ gem 'erubis'
 gem 'rspec'
 gem 'capybara'
 gem 'pry'
+
+gem 'sqlite3'
+gem 'sequel'
+
+gem 'rack-protection'
+gem 'rack_csrf'

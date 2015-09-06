@@ -1,0 +1,85 @@
+<div class="row">
+  <div class="col-sm-8">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Info
+      </div>
+
+      <div class="panel-body">
+        <dl>
+          <dt>ID</dt>
+          <dd><%= @task.id %></dd>
+          <dt>Description</dt>
+          <dd><%= @task.description %></dd>
+          <dt>Tags</dt>
+          <dd><%= @task.tags %></dd>
+          <dt>Time cost</dt>
+          <dd><%= @task.time_cost %></dd>
+          <dt>Status</dt>
+          <dd><%= @task.completed %></dd>
+          <dt>Created at</dt>
+          <dd><%= @task.created_at %></dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        All time spent
+      </div>
+      <div class="panel-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Task</th>
+              <th>Duration</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @task.time_records.each do |record| %>
+              <tr>
+                <td><%= record.task_id %></td>
+                <td><%= record.duration %></td>
+
+                <td>
+                  <form action="/time_records/<%= record.id %>" method="post">
+                    <input type="hidden" name="_delete" value="true" />
+                    <button type="submit">Delete</button>
+                  </form>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+
+        <div>
+          <h3>New</h3>
+          <hr />
+          <form action="/time_records" method="post">
+            <div class="row">
+              <div class="col-sm-5">
+                <div class="form-group">
+                  <label for="task_id">Task</label>
+                  <input type="number" name="task_id" value="<%= @task.id %>" disabled />
+                </div>
+              </div>
+
+              <div class="col-sm-7">
+                <div class="form-group">
+                  <label for="tags">Duration</label>
+                  <input class="form-control" type="number" name="duration" required />
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-default">Create</button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
