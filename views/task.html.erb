@@ -59,11 +59,12 @@
           <h3>New</h3>
           <hr />
           <form action="/time_records" method="post">
+
             <div class="row">
               <div class="col-sm-5">
                 <div class="form-group">
                   <label for="task_id">Task</label>
-                  <input type="number" name="task_id" value="<%= @task.id %>" disabled />
+                  <input class="form-control" name="task_id" value="<%= @task.id %>" disabled />
                 </div>
               </div>
 

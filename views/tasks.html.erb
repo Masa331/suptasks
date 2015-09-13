@@ -1,9 +1,85 @@
 <div class="row">
-  <div class="col-sm-8">
-    ahoj
-  </div>
+  <div class="col-sm-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        All Tasks
+      </div>
 
-  <div class="col-sm-4">
-    ahoj
+      <div class="panel-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Description</th>
+              <th>Time cost</th>
+              <th>Tags</th>
+              <th>Completed</th>
+              <th>Total time spent</th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @tasks.each do |task| %>
+              <tr>
+                <td><%= task.id %></td>
+                <td>
+                  <a href="/tasks/<%= task.id %>"><%= task.description %></a>
+                </td>
+                <td><%= task.time_cost %></td>
+                <td><%= task.tags %></td>
+                <td><%= task.completed %></td>
+                <td>Not yet implemented</td>
+                <td>
+                  <form action="/tasks/<%= task.id %>" method="post">
+                    <input type="hidden" name="_delete" value="true" />
+                    <button type="submit">Delete</button>
+                  </form>
+                </td>
+                <td>
+                  <form action="/tasks/<%= task.id %>" method="post">
+                    <input type="hidden" name="_completed" value="true" />
+                    <button type="submit">Completed</button>
+                  </form>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+
+        <div>
+          <h3>New task</h3>
+          <hr />
+          <form action="/tasks" method="post">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label for="description">Description</label>
+                  <input class="form-control" type="text" name="description" required/>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label for="time_cost">Time cost in minutes</label>
+                  <input class="form-control" type="number" name="time_cost"/>
+                </div>
+              </div>
+
+              <div class="col-sm-8">
+                <div class="form-group">
+                  <label for="tags">Tags</label>
+                  <input class="form-control" type="text" name="tags" disabled />
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-default">Create</button>
+          </form>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

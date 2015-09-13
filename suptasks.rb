@@ -82,8 +82,7 @@ class Suptasks < Roda
 
       r.is do
         r.get do
-          @tasks = Task.all
-          @time_records = TimeRecord.all
+          @tasks = Task.order(:completed).all
           view('tasks.html')
         end
 

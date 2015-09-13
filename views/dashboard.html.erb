@@ -2,7 +2,7 @@
   <div class="col-sm-8">
     <div class="panel panel-default">
       <div class="panel-heading">
-        Tasks
+        <a href="/tasks">Tasks</a>
       </div>
 
       <div class="panel-body">
@@ -13,6 +13,7 @@
               <th>Description</th>
               <th>Time cost</th>
               <th>Tags</th>
+              <th></th>
               <th></th>
             </tr>
           </thead>
@@ -27,13 +28,14 @@
                 <td><%= task.tags %></td>
                 <td>
                   <form action="/tasks/<%= task.id %>" method="post">
-                    <input type="hidden" name="_delete" value="true" />
-                    <button type="submit">Delete</button>
-                  </form>
-
-                  <form action="/tasks/<%= task.id %>" method="post">
                     <input type="hidden" name="_completed" value="true" />
                     <button type="submit">Completed</button>
+                  </form>
+                </td>
+                <td>
+                  <form action="/tasks/<%= task.id %>" method="post">
+                    <input type="hidden" name="_delete" value="true" />
+                    <button type="submit">Delete</button>
                   </form>
                 </td>
               </tr>
@@ -117,7 +119,7 @@
                 <div class="form-group">
                   <label for="task_id">Task</label>
                   <select class="form-control" name="task_id">
-                      <option label=" "></option>
+                    <option label=" "></option>
                     <% @uncompleted_tasks.each do |task| %>
                       <option value=<%= task.id %>><%= task.id_with_short_desc %></option>
                     <% end %>
@@ -128,7 +130,7 @@
               <div class="col-sm-7">
                 <div class="form-group">
                   <label for="tags">Duration</label>
-                  <input class="form-control" type="number" name="duration" required />
+                  <input class="form-control" id="timer" type="number" name="duration" value="0" required />
                 </div>
               </div>
             </div>
