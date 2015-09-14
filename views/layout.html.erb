@@ -9,6 +9,8 @@
 
     <link rel="stylesheet" href="/css/bootstrap.css">
     <link rel="stylesheet" href="/css/suptasks.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
     <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"> -->
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -24,13 +26,15 @@
         <div class="container-fluid">
           <div class="navbar-header">
             <a class="navbar-brand" href="/">
-              <img width="30" height="30" alt="Suptasks" src="/images/icon.png">
+              <!-- <img width="30" height="30" alt="Suptasks" src="/images/icon.png"> -->
+              <img alt="Suptasks" src="/images/logo.png">
             </a>
           </div>
 
           <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
               <% if current_user %>
+                <a href="/profile">Profile</a>
                 <form action="/logout" method="post">
                   <button type="submit">Log out</button>
                 </form>

@@ -1,16 +1,15 @@
+$:.unshift File.dirname(__FILE__)
+
 require 'roda'
 require_relative 'database/database'
 
-require_relative 'models/user'
-require_relative 'models/task'
-require_relative 'models/time_record'
+autoload :User,       'models/user'
+autoload :Task,       'models/task'
+autoload :TimeRecord, 'models/time_record'
 
 require 'rack/protection'
 
 class Suptasks < Roda
-
-  # TODO: Handle security later :D
-  #
   use Rack::Session::Cookie, secret: 'secret', key: 'key'
   # use Rack::Protection
   # plugin :csrf
@@ -24,11 +23,7 @@ class Suptasks < Roda
   route do |r|
     r.root do
       if current_user
-        @uncompleted_tasks = Task.uncompleted
-
-        @time_records = TimeRecord.all
-
-        view('dashboard.html')
+        r.redirect '/dashboard'
       else
         view('homepage.html')
       end
@@ -37,12 +32,13 @@ class Suptasks < Roda
     r.post 'login' do
       if true
         session[:user_email] = 'pdonat@seznam.cz'
-        session[:user_name] = 'Premysl Donat'
+        session[:user_name]  = 'Premysl Donat'
         r.redirect '/'
       else
         r.redirect '/login'
       end
     end
+
     r.post 'logout' do
       session.clear
       r.redirect '/'
@@ -58,6 +54,18 @@ class Suptasks < Roda
     #
     #
 
+    begin
+      connect_or_create_database(current_user.database_name)
+    end
+
+    r.is 'dashboard' do
+      @uncompleted_tasks = Task.uncompleted
+
+      @time_records = TimeRecord.all
+
+      view('dashboard.html')
+    end
+
     r.on 'tasks' do
       r.is ':id' do |id|
         r.get do
@@ -65,14 +73,14 @@ class Suptasks < Roda
           view('task.html')
         end
 
-        r.post param: '_delete' do
+        r.post param: '_delete_button' do
           task = Task[id]
           task.destroy
 
           r.redirect('/')
         end
 
-        r.post param: '_completed' do
+        r.post param: '_complete_button' do
           task = Task[id]
           task.update(completed: true)
 
@@ -108,6 +116,14 @@ class Suptasks < Roda
         r.redirect('/')
       end
     end
+
+    r.on 'profile' do
+      r.is do
+        r.get do
+          view('profile.html')
+        end
+      end
+    end
   end
 
   private
@@ -118,5 +134,9 @@ class Suptasks < Roda
     else
       nil
     end
+  end
+
+  def connect_or_create_database(database_name)
+    Database.connect_or_create(database_name)
   end
 end

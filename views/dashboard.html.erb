@@ -9,12 +9,11 @@
         <table class="table">
           <thead>
             <tr>
-              <th>ID</th>
-              <th>Description</th>
-              <th>Time cost</th>
-              <th>Tags</th>
-              <th></th>
-              <th></th>
+              <th class="col-sm-1">#</th>
+              <th class="col-sm-4">Description</th>
+              <th class="col-sm-1">Time</th>
+              <th class="col-sm-4">Tags</th>
+              <th class="col-sm-2"></th>
             </tr>
           </thead>
           <tbody>
@@ -28,14 +27,13 @@
                 <td><%= task.tags %></td>
                 <td>
                   <form action="/tasks/<%= task.id %>" method="post">
-                    <input type="hidden" name="_completed" value="true" />
-                    <button type="submit">Completed</button>
-                  </form>
-                </td>
-                <td>
-                  <form action="/tasks/<%= task.id %>" method="post">
-                    <input type="hidden" name="_delete" value="true" />
-                    <button type="submit">Delete</button>
+                    <button name="_complete_button" type="submit" value="true">
+                      <i class="fa fa-check fa-lg"></i>
+                    </button>
+
+                    <button name="_delete_button" type="submit" value="true">
+                      <i class="fa fa-trash fa-lg"></i>
+                    </button>
                   </form>
                 </td>
               </tr>

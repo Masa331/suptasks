@@ -5,4 +5,12 @@ class User
     self.email = email
     self.name = name
   end
+
+  def login
+    email.split('@').first
+  end
+
+  def database_name
+    "#{login}_default"
+  end
 end
