@@ -6,6 +6,7 @@ require_relative 'database/database'
 autoload :User,       'models/user'
 autoload :Task,       'models/task'
 autoload :TimeRecord, 'models/time_record'
+autoload :Tag,        'models/tag'
 
 require 'rack/protection'
 
@@ -27,6 +28,10 @@ class Suptasks < Roda
       else
         view('homepage.html')
       end
+    end
+
+    r.get 'tos' do
+      view('tos.html')
     end
 
     r.post 'login' do
@@ -68,23 +73,30 @@ class Suptasks < Roda
 
     r.on 'tasks' do
       r.is ':id' do |id|
+
+        @task = Task[id]
+
         r.get do
-          @task = Task[id]
           view('task.html')
         end
 
         r.post param: '_delete_button' do
-          task = Task[id]
-          task.destroy
+          @task.destroy
 
           r.redirect('/')
         end
 
         r.post param: '_complete_button' do
-          task = Task[id]
-          task.update(completed: true)
+          @task.update(completed: true)
 
           r.redirect('/')
+        end
+
+        r.post do
+          @task.update(description: r.params['description'], time_cost: r.params['time_cost'])
+          @task.update_tags(r.params['tags'])
+
+          r.redirect("/tasks/#{@task.id}")
         end
       end
 
@@ -95,7 +107,9 @@ class Suptasks < Roda
         end
 
         r.post do
-          Task.create(r.params)
+          task = Task.create(description: r.params['description'], time_cost: r.params['time_cost'])
+          task.update_tags(r.params['tags'])
+
           r.redirect('/')
         end
       end

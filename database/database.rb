@@ -11,6 +11,7 @@ module Database
 
       db.run tasks_migration
       db.run time_records_migration
+      db.run tags_migration
     end
   end
 
@@ -34,6 +35,15 @@ module Database
                           task_id INTEGER,
                           description VARCHAR,
                           duration INTEGER NOT NULL,
+                          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL);
+    SQL
+  end
+
+  def self.tags_migration
+    <<-SQL
+      CREATE TABLE tags (id INTEGER NOT NULL PRIMARY KEY,
+                          name VARCHAR,
+                          task_id INTEGER NOT NULL,
                           created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL);
     SQL
   end

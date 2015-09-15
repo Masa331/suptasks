@@ -2,17 +2,21 @@
   <div class="col-sm-8">
     <div class="panel panel-default">
       <div class="panel-heading">
-        Info
+        <%= @task.id %> <%= @task.description %>
       </div>
 
       <div class="panel-body">
         <dl>
-          <dt>ID</dt>
-          <dd><%= @task.id %></dd>
-          <dt>Description</dt>
-          <dd><%= @task.description %></dd>
           <dt>Tags</dt>
-          <dd><%= @task.tags %></dd>
+          <dd>
+            <% if @task.tags.empty? %>
+              <i class="gray">No tags</i>
+            <% else %>
+              <% @task.tags.each do |tag| %>
+                <span class="label label-info"><%= tag.name %></span>
+              <% end %>
+            <% end %>
+          </dd>
           <dt>Time cost</dt>
           <dd><%= @task.time_cost %></dd>
           <dt>Status</dt>
@@ -20,6 +24,39 @@
           <dt>Created at</dt>
           <dd><%= @task.created_at %></dd>
         </dl>
+
+        <div>
+          <h3>Update task</h3>
+          <hr />
+          <form action=<%= "/tasks/#{@task.id}" %> method="post">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label for="description">Description</label>
+                  <input class="form-control" type="text" name="description" value=<%= @task.description %> required/>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label for="time_cost">Time cost in minutes</label>
+                  <input class="form-control" type="number" name="time_cost" value=<%= @task.time_cost %> />
+                </div>
+              </div>
+
+              <div class="col-sm-8">
+                <div class="form-group">
+                  <label for="tags">Tags</label>
+                  <input class="form-control" type="text" name="tags" value="<%= @task.tag_names %>" />
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-default">Update</button>
+          </form>
+        </div>
       </div>
     </div>
   </div>

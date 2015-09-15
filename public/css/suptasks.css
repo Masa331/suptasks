@@ -1,11 +1,11 @@
 body {
-  padding-top: 20px;
+  padding-top: 10px;
   padding-bottom: 20px;
 }
 
 footer {
   border-top: 1px solid #EEE;
-  position: absolute;
+  /* position: absolute; */
   width: inherit;
   bottom: 0px;
   height: 60px;
@@ -15,11 +15,13 @@ footer {
   margin: 20px 0px;
 }
 
-.navbar {
+.header {
   min-height: 60px;
-
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #E5E5E5;
 }
 
-/* .navbar-brand img { */
-/*   veritical-align: middle; */
-/* } */
+.gray {
+  color: gray;
+}

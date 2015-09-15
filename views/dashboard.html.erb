@@ -24,16 +24,26 @@
                   <a href="/tasks/<%= task.id %>"><%= task.description %></a>
                 </td>
                 <td><%= task.time_cost %></td>
-                <td><%= task.tags %></td>
+                <td>
+                  <% if task.tags.empty? %>
+                    <i class="gray">No tags</i>
+                  <% else %>
+                    <% task.tags.each do |tag| %>
+                      <span class="label label-info"><%= tag.name %></span>
+                    <% end %>
+                  <% end %>
+                </td>
                 <td>
                   <form action="/tasks/<%= task.id %>" method="post">
-                    <button name="_complete_button" type="submit" value="true">
+                    <div class="pull-right">
+                    <button class="btn btn-default btn-xs" name="_complete_button" type="submit" value="true">
                       <i class="fa fa-check fa-lg"></i>
                     </button>
 
-                    <button name="_delete_button" type="submit" value="true">
+                    <button class="btn btn-default btn-xs" name="_delete_button" type="submit" value="true">
                       <i class="fa fa-trash fa-lg"></i>
                     </button>
+                    </div>
                   </form>
                 </td>
               </tr>
@@ -65,7 +75,7 @@
               <div class="col-sm-8">
                 <div class="form-group">
                   <label for="tags">Tags</label>
-                  <input class="form-control" type="text" name="tags" disabled />
+                  <input class="form-control" type="text" name="tags" />
                 </div>
               </div>
             </div>
