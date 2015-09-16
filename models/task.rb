@@ -13,7 +13,12 @@ class Task < Sequel::Model
   end
 
   def id_with_short_desc
-    "#{id} - #{description[0..25]}..."
+
+    if description.size > 25
+      "#{id} - #{description[0..25]}..."
+    else
+      "#{id} - #{description}"
+    end
   end
 
   def update_tags(new_tags)

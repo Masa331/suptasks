@@ -135,14 +135,6 @@ class Suptasks < Roda
         r.redirect('/')
       end
     end
-
-    r.on 'profile' do
-      r.is do
-        r.get do
-          view('profile.html')
-        end
-      end
-    end
   end
 
   private
