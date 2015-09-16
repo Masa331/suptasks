@@ -7,6 +7,7 @@ autoload :User,       'models/user'
 autoload :Task,       'models/task'
 autoload :TimeRecord, 'models/time_record'
 autoload :Tag,        'models/tag'
+autoload :Configuration, 'models/configuration'
 
 require 'rack/protection'
 
@@ -73,7 +74,6 @@ class Suptasks < Roda
 
     r.on 'tasks' do
       r.is ':id' do |id|
-
         @task = Task[id]
 
         r.get do
@@ -116,10 +116,15 @@ class Suptasks < Roda
     end
 
     r.on 'time_records' do
+      r.get do
+        @time_records = TimeRecord.all
+        view('time_records.html')
+      end
+
       r.is ':id' do |id|
-        r.post param: '_delete' do
-          task = TimeRecord[id]
-          task.destroy
+        r.post param: '_delete_button' do
+          time_record = TimeRecord[id]
+          time_record.destroy
 
           r.redirect('/')
         end

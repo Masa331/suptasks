@@ -1,0 +1,44 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        All time
+      </div>
+
+      <div class="panel-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th class="col-sm-2">#</th>
+              <th class="col-sm-2">Duration</th>
+              <th class="col-sm-3">Created at</th>
+              <th class="col-sm-3">Task</th>
+              <th class="col-sm-2"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @time_records.each do |record| %>
+              <tr>
+                <td><%= record.id %></td>
+                <td><%= record.duration %></td>
+                <td><%= record.created_at %></td>
+                <td>
+                  <%= record.task.id_with_short_desc %>
+                </td>
+                <td>
+                  <form action="/time_records/<%= record.id %>" method="post">
+                    <div class="pull-right">
+                    <button class="btn btn-default btn-xs" name="_delete_button" type="submit" value="true">
+                      <i class="fa fa-trash fa-lg"></i>
+                    </button>
+                    </div>
+                  </form>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -10,9 +10,9 @@
           <thead>
             <tr>
               <th class="col-sm-1">#</th>
-              <th class="col-sm-4">Description</th>
+              <th class="col-sm-6">Description</th>
               <th class="col-sm-1">Time</th>
-              <th class="col-sm-4">Tags</th>
+              <th class="col-sm-2">Tags</th>
               <th class="col-sm-2"></th>
             </tr>
           </thead>
@@ -90,27 +90,30 @@
   <div class="col-sm-4">
     <div class="panel panel-default">
       <div class="panel-heading">
-        Time spent today
+        <a href="/time_records">Time spent today</a>
       </div>
       <div class="panel-body">
         <table class="table">
           <thead>
             <tr>
-              <th>Task</th>
-              <th>Duration</th>
-              <th></th>
+              <th class="col-sm-8">Task</th>
+              <th class="col-sm-2">Duration</th>
+              <th class="col-sm-2"></th>
             </tr>
           </thead>
           <tbody>
             <% @time_records.each do |record| %>
               <tr>
-                <td><%= record.task_id %></td>
+                <td><%= record.task.id_with_short_desc %></td>
                 <td><%= record.duration %></td>
 
                 <td>
                   <form action="/time_records/<%= record.id %>" method="post">
-                    <input type="hidden" name="_delete" value="true" />
-                    <button type="submit">Delete</button>
+                    <div class="pull-right">
+                    <button class="btn btn-default btn-xs" name="_delete_button" type="submit" value="true">
+                      <i class="fa fa-trash fa-lg"></i>
+                    </button>
+                    </div>
                   </form>
                 </td>
               </tr>
@@ -123,11 +126,10 @@
           <hr />
           <form action="/time_records" method="post">
             <div class="row">
-              <div class="col-sm-5">
+              <div class="col-sm-7">
                 <div class="form-group">
                   <label for="task_id">Task</label>
                   <select class="form-control" name="task_id">
-                    <option label=" "></option>
                     <% @uncompleted_tasks.each do |task| %>
                       <option value=<%= task.id %>><%= task.id_with_short_desc %></option>
                     <% end %>
@@ -135,9 +137,9 @@
                 </div>
               </div>
 
-              <div class="col-sm-7">
+              <div class="col-sm-5">
                 <div class="form-group">
-                  <label for="tags">Duration</label>
+                  <label for="duration">Duration</label>
                   <input class="form-control" id="timer" type="number" name="duration" value="0" required />
                 </div>
               </div>

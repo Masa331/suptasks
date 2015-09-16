@@ -13,7 +13,7 @@ class Task < Sequel::Model
   end
 
   def id_with_short_desc
-    "#{id} - #{description[0..10]}..."
+    "#{id} - #{description[0..25]}..."
   end
 
   def update_tags(new_tags)

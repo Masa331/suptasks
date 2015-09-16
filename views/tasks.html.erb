@@ -9,14 +9,13 @@
         <table class="table">
           <thead>
             <tr>
-              <th>ID</th>
-              <th>Description</th>
-              <th>Time cost</th>
-              <th>Tags</th>
-              <th>Completed</th>
-              <th>Total time spent</th>
-              <th></th>
-              <th></th>
+              <th class="col-sm-1">#</th>
+              <th class="col-sm-5">Description</th>
+              <th class="col-sm-1">Time</th>
+              <th class="col-sm-2">Tags</th>
+              <th class="col-sm-1">Total time</th>
+              <th class="col-sm-1">Completed</th>
+              <th class="col-sm-1"></th>
             </tr>
           </thead>
           <tbody>
@@ -27,58 +26,34 @@
                   <a href="/tasks/<%= task.id %>"><%= task.description %></a>
                 </td>
                 <td><%= task.time_cost %></td>
-                <td><%= task.tags %></td>
-                <td><%= task.completed %></td>
-                <td>Not yet implemented</td>
                 <td>
-                  <form action="/tasks/<%= task.id %>" method="post">
-                    <input type="hidden" name="_delete" value="true" />
-                    <button type="submit">Delete</button>
-                  </form>
+                  <% if task.tags.empty? %>
+                    <i class="gray">No tags</i>
+                  <% else %>
+                    <% task.tags.each do |tag| %>
+                      <span class="label label-info"><%= tag.name %></span>
+                    <% end %>
+                  <% end %>
                 </td>
+                <td><i class="gray">0</i></td>
+                <td><%= task.completed %></td>
                 <td>
                   <form action="/tasks/<%= task.id %>" method="post">
-                    <input type="hidden" name="_completed" value="true" />
-                    <button type="submit">Completed</button>
+                    <div class="pull-right">
+                    <button class="btn btn-default btn-xs" name="_complete_button" type="submit" value="true">
+                      <i class="fa fa-check fa-lg"></i>
+                    </button>
+
+                    <button class="btn btn-default btn-xs" name="_delete_button" type="submit" value="true">
+                      <i class="fa fa-trash fa-lg"></i>
+                    </button>
+                    </div>
                   </form>
                 </td>
               </tr>
             <% end %>
           </tbody>
         </table>
-
-        <div>
-          <h3>New task</h3>
-          <hr />
-          <form action="/tasks" method="post">
-            <div class="row">
-              <div class="col-sm-12">
-                <div class="form-group">
-                  <label for="description">Description</label>
-                  <input class="form-control" type="text" name="description" required/>
-                </div>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-sm-4">
-                <div class="form-group">
-                  <label for="time_cost">Time cost in minutes</label>
-                  <input class="form-control" type="number" name="time_cost"/>
-                </div>
-              </div>
-
-              <div class="col-sm-8">
-                <div class="form-group">
-                  <label for="tags">Tags</label>
-                  <input class="form-control" type="text" name="tags" disabled />
-                </div>
-              </div>
-            </div>
-
-            <button type="submit" class="btn btn-default">Create</button>
-          </form>
-        </div>
       </div>
     </div>
   </div>

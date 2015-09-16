@@ -1,8 +1,9 @@
 require 'sequel'
+require 'base64'
 
 module Database
-  def self.connect_or_create(database_name)
-    database_relative_path = "database/databases/#{database_name}.db"
+  def self.connect_or_create(email)
+    database_relative_path = prefix + database_name_from_email(email)
 
     if File.exist?(database_relative_path)
       connect(database_relative_path)
@@ -13,6 +14,15 @@ module Database
       db.run time_records_migration
       db.run tags_migration
     end
+  end
+
+  def self.database_name_from_email(email)
+    name = Base64.urlsafe_encode64(email)
+    name + ".db"
+  end
+
+  def self.prefix
+    "database/databases/"
   end
 
   def self.connect(database_path)

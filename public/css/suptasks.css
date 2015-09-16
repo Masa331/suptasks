@@ -1,12 +1,9 @@
 body {
-  padding-top: 10px;
   padding-bottom: 20px;
 }
 
 footer {
   border-top: 1px solid #EEE;
-  /* position: absolute; */
-  width: inherit;
   bottom: 0px;
   height: 60px;
 }
@@ -18,10 +15,14 @@ footer {
 .header {
   min-height: 60px;
   margin-bottom: 30px;
-  padding-bottom: 20px;
+  padding-bottom: 10px;
   border-bottom: 2px solid #E5E5E5;
 }
 
 .gray {
   color: gray;
+}
+
+.terms-of-service {
+  margin-top: -20px;
 }
