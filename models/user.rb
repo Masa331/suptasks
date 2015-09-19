@@ -9,8 +9,4 @@ class User
   def login
     email.split('@').first
   end
-
-  def database_name
-    "#{login}_default"
-  end
 end

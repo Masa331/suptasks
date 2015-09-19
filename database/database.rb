@@ -2,13 +2,18 @@ require 'sequel'
 require 'base64'
 
 module Database
-  def self.connect_or_create(email)
-    database_relative_path = prefix + database_name_from_email(email)
+  def self.connect_user_database(user)
+    db_name = database_name_from_email(user.email)
+    path_to_database = Configuration.db_dir + db_name
 
-    if File.exist?(database_relative_path)
-      connect(database_relative_path)
+    connect_or_create(path_to_database)
+  end
+
+  def self.connect_or_create(path_to_database)
+    if File.exist?(path_to_database)
+      connect(path_to_database)
     else
-      db = connect(database_relative_path)
+      db = connect(path_to_database)
 
       db.run tasks_migration
       db.run time_records_migration
@@ -16,13 +21,13 @@ module Database
     end
   end
 
+  private
+
   def self.database_name_from_email(email)
+    name = "#{email}_default"
+
     name = Base64.urlsafe_encode64(email)
     name + ".db"
-  end
-
-  def self.prefix
-    "database/databases/"
   end
 
   def self.connect(database_path)

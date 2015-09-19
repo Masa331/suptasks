@@ -3,12 +3,12 @@ $:.unshift File.dirname(__FILE__)
 require 'roda'
 require_relative 'database/database'
 
-autoload :User,       'models/user'
-autoload :Task,       'models/task'
-autoload :TimeRecord, 'models/time_record'
-autoload :Tag,        'models/tag'
+autoload :User,          'models/user'
+autoload :Task,          'models/task'
+autoload :TimeRecord,    'models/time_record'
+autoload :Tag,           'models/tag'
 autoload :Configuration, 'models/configuration'
-autoload :SupLogger, 'models/sup_logger'
+autoload :SupLogger,     'models/sup_logger'
 
 require 'rack/protection'
 
@@ -66,14 +66,11 @@ class Suptasks < Roda
     #
     #
 
-    begin
-      connect_or_create_database(current_user.database_name)
-    end
+    connect_user_database!
 
     r.is 'dashboard' do
       @uncompleted_tasks = Task.uncompleted
-
-      @time_records = TimeRecord.all
+      @time_records      = TimeRecord.all
 
       view('dashboard.html')
     end
@@ -153,7 +150,7 @@ class Suptasks < Roda
     end
   end
 
-  def connect_or_create_database(database_name)
-    Database.connect_or_create(database_name)
+  def connect_user_database!
+    Database.connect_user_database(current_user)
   end
 end
