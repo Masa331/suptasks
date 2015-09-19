@@ -8,19 +8,25 @@ autoload :Task,       'models/task'
 autoload :TimeRecord, 'models/time_record'
 autoload :Tag,        'models/tag'
 autoload :Configuration, 'models/configuration'
+autoload :SupLogger, 'models/sup_logger'
 
 require 'rack/protection'
 
 class Suptasks < Roda
   use Rack::Session::Cookie, secret: 'secret', key: 'key'
-  # use Rack::Protection
-  # plugin :csrf
 
   plugin :static, ['/images', '/css', '/js']
   plugin :render, layout: 'layout.html'
   plugin :head
   plugin :all_verbs
   plugin :param_matchers
+
+  plugin :error_handler do |e|
+    SupLogger.error(e.inspect)
+    SupLogger.error(e.backtrace)
+
+    "Oh no, SupTasks fucked up!"
+  end
 
   route do |r|
     r.root do
