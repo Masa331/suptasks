@@ -11,8 +11,6 @@
     <link rel="stylesheet" href="/css/suptasks.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
-    <!-- <script src="https://apis.google.com/js/platform.js" async defer></script> -->
-
     <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"> -->
   </head>
   <body>
@@ -23,7 +21,6 @@
 
           <div class="navbar-header">
             <a class="navbar-brand" href="/">
-              <!-- <img width="30" height="30" alt="Suptasks" src="/images/icon.png"> -->
               <img alt="Suptasks" src="/images/logo.png">
             </a>
           </div>
@@ -31,9 +28,9 @@
           <nav>
             <ul class="nav nav-pills pull-right">
               <% if current_user %>
-                <li>
-                  <form action="/logout" method="post">
-                    <button type="submit">Log out</button>
+                <li role="presentation">
+                  <form class="navbar-form" action="/logout" method="post">
+                    <button class="btn btn-default" type="submit">Log out</button>
                   </form>
                 </li>
               <% end %>

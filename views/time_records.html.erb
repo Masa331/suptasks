@@ -23,7 +23,11 @@
                 <td><%= record.duration %></td>
                 <td><%= record.created_at %></td>
                 <td>
-                  <%= record.task.id_with_short_desc %>
+                  <% if record.task %>
+                    <%= record.task.id_with_short_desc %>
+                  <% else %>
+                    <i class="gray">No task</i>
+                  <% end %>
                 </td>
                 <td>
                   <form action="/time_records/<%= record.id %>" method="post">

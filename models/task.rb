@@ -8,18 +8,29 @@ class Task < Sequel::Model
     where(completed: 0).all
   end
 
+  #
+  # Presentation
+  #
+
   def tag_names
     tags.map(&:name).join(', ')
   end
 
   def id_with_short_desc
-
     if description.size > 25
       "#{id} - #{description[0..25]}..."
     else
       "#{id} - #{description}"
     end
   end
+
+  def time_spent
+    time_records.inject(0) { |sum, record| sum + record.duration }
+  end
+
+  #
+  # Logic
+  #
 
   def update_tags(new_tags)
     current_tags = tags.map(&:name)

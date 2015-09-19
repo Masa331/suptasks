@@ -26,3 +26,25 @@ footer {
 .terms-of-service {
   margin-top: -20px;
 }
+
+.undecorated-link {
+  color: #333;
+}
+
+.change-content-on-hover:hover .hide-on-hover {
+  display: none;
+  /* content: 'Hvno'; */
+}
+
+.change-content-on-hover .show-on-hover {
+  display: none;
+}
+.change-content-on-hover:hover .show-on-hover {
+  display: inline;
+}
+
+.homepage-centered-text {
+  text-align: center;
+  vertical-align: middle;
+  margin-bottom: 20px;
+}

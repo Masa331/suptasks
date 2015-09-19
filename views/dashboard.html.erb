@@ -2,7 +2,9 @@
   <div class="col-sm-8">
     <div class="panel panel-default">
       <div class="panel-heading">
-        <a href="/tasks">Tasks</a>
+        <a class="undecorated-link" href="/tasks">
+          Tasks
+        </a>
       </div>
 
       <div class="panel-body">
@@ -36,13 +38,9 @@
                 <td>
                   <form action="/tasks/<%= task.id %>" method="post">
                     <div class="pull-right">
-                    <button class="btn btn-default btn-xs" name="_complete_button" type="submit" value="true">
-                      <i class="fa fa-check fa-lg"></i>
-                    </button>
-
-                    <button class="btn btn-default btn-xs" name="_delete_button" type="submit" value="true">
-                      <i class="fa fa-trash fa-lg"></i>
-                    </button>
+                      <button class="btn btn-default btn-xs" name="_complete_button" type="submit" value="true">
+                        <i class="fa fa-check fa-lg"></i>
+                      </button>
                     </div>
                   </form>
                 </td>
@@ -54,33 +52,22 @@
         <div>
           <h3>New task</h3>
           <hr />
-          <form action="/tasks" method="post">
-            <div class="row">
-              <div class="col-sm-12">
-                <div class="form-group">
-                  <label for="description">Description</label>
-                  <input class="form-control" type="text" name="description" required/>
-                </div>
-              </div>
+          <form class="form-inline" action="/tasks" method="post">
+            <div class="form-group">
+              <input class="form-control" type="text" name="description" placeholder="Description" required/>
             </div>
 
-            <div class="row">
-              <div class="col-sm-4">
-                <div class="form-group">
-                  <label for="time_cost">Time cost in minutes</label>
-                  <input class="form-control" type="number" name="time_cost"/>
-                </div>
-              </div>
-
-              <div class="col-sm-8">
-                <div class="form-group">
-                  <label for="tags">Tags</label>
-                  <input class="form-control" type="text" name="tags" />
-                </div>
-              </div>
+            <div class="form-group">
+              <input class="form-control" type="number" name="time_cost" placeholder="Time cost" />
             </div>
 
-            <button type="submit" class="btn btn-default">Create</button>
+            <div class="form-group">
+              <input class="form-control" type="text" name="tags" placeholder="Tags" />
+            </div>
+
+            <div class="form-group">
+              <button type="submit" class="btn btn-default">Create</button>
+            </div>
           </form>
         </div>
       </div>
@@ -90,7 +77,9 @@
   <div class="col-sm-4">
     <div class="panel panel-default">
       <div class="panel-heading">
-        <a href="/time_records">Time spent</a>
+        <a class="undecorated-link" href="/time_records">
+          Time spent
+        </a>
       </div>
       <div class="panel-body">
         <table class="table">
@@ -104,7 +93,13 @@
           <tbody>
             <% @time_records.each do |record| %>
               <tr>
-                <td><%= record.task.id_with_short_desc %></td>
+                <td>
+                  <% if record.task %>
+                    <%= record.task.id_with_short_desc %>
+                  <% else %>
+                    <i class="gray">No task</i>
+                  <% end %>
+                </td>
                 <td><%= record.duration %></td>
 
                 <td>
