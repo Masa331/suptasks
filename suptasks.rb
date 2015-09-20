@@ -1,19 +1,27 @@
 $:.unshift File.dirname(__FILE__)
 
 require 'roda'
+
+autoload :Configuration, 'config/configuration'
 require_relative 'database/database'
 
 autoload :User,          'models/user'
 autoload :Task,          'models/task'
 autoload :TimeRecord,    'models/time_record'
 autoload :Tag,           'models/tag'
-autoload :Configuration, 'models/configuration'
 autoload :SupLogger,     'models/sup_logger'
 
+
 require 'rack/protection'
+require 'omniauth'
+require 'omniauth/google_oauth2'
 
 class Suptasks < Roda
   use Rack::Session::Cookie, secret: 'secret', key: 'key'
+
+  use OmniAuth::Builder do
+    provider :google_oauth2, Configuration.google_client_id, Configuration.google_client_secret
+  end
 
   plugin :static, ['/images', '/css', '/js']
   plugin :render, layout: 'layout.html'
@@ -41,14 +49,12 @@ class Suptasks < Roda
       view('tos.html')
     end
 
-    r.post 'login' do
-      if true
-        session[:user_email] = 'pdonat@seznam.cz'
-        session[:user_name]  = 'Premysl Donat'
-        r.redirect '/'
-      else
-        r.redirect '/login'
-      end
+    r.get 'auth/google_oauth2/callback' do
+      auth = request.env['omniauth.auth']
+
+      session[:user_email] = auth['info']['email']
+      session[:user_name] = auth['info']['name']
+      r.redirect '/'
     end
 
     r.post 'logout' do

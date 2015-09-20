@@ -48,3 +48,8 @@ footer {
   vertical-align: middle;
   margin-bottom: 20px;
 }
+
+.google_sign_in_button {
+  border: none;
+  background-color: white;
+}

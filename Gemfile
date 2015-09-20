@@ -13,3 +13,5 @@ gem 'sequel'
 
 gem 'rack-protection'
 gem 'rack_csrf'
+
+gem 'omniauth-google-oauth2'
