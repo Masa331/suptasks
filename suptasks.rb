@@ -76,7 +76,7 @@ class Suptasks < Roda
 
     r.is 'dashboard' do
       @uncompleted_tasks = Task.uncompleted.order(:time_cost).all
-      @time_records      = TimeRecord.all
+      @time_records      = TimeRecord.last_24_hours.all
 
       view('dashboard.html')
     end
