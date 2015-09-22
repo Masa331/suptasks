@@ -3,7 +3,7 @@
     <div class="panel panel-default">
       <div class="panel-heading">
         <a class="undecorated-link" href="/tasks">
-          Tasks
+          <%= @uncompleted_tasks.count %> Tasks
         </a>
       </div>
 
@@ -38,7 +38,7 @@
           <thead>
             <tr>
               <th class="col-sm-9">Description</th>
-              <th class="col-sm-1">Time</th>
+              <th class="col-sm-2" title="Time estimated/spent">Time e/s</th>
               <th class="col-sm-2"></th>
             </tr>
           </thead>
@@ -52,7 +52,7 @@
                     <span class="label label-primary"><%= tag.name %></span>
                   <% end %>
                 </td>
-                <td><%= task.time_cost %></td>
+                <td><%= task.time_cost %> / <%= task.time_spent %></td>
                 <td>
                   <form action="/tasks/<%= task.id %>" method="post">
                     <div class="pull-right">

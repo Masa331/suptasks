@@ -5,7 +5,7 @@ class Task < Sequel::Model
   one_to_many :tags
 
   def self.uncompleted
-    where(completed: 0).all
+    where(completed: 0)
   end
 
   #
