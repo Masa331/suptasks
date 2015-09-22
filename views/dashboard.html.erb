@@ -8,33 +8,51 @@
       </div>
 
       <div class="panel-body">
+        <div>
+          <form class='form-horizontal' action="/tasks" method="post">
+            <div class="form-group">
+              <div class="col-sm-12">
+                <input class="form-control" type="text" name="description" placeholder="Description" required/>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-sm-3">
+                <input class="form-control" type="number" name="time_cost" placeholder="Time cost" />
+              </div>
+
+              <div class="col-sm-6">
+                <input class="form-control" type="text" name="tags" placeholder="Tags" />
+              </div>
+
+              <div class="col-sm-3">
+                <button type="submit" class="btn btn-default">Create new task</button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <hr />
+
         <table class="table">
           <thead>
             <tr>
-              <th class="col-sm-1">#</th>
-              <th class="col-sm-6">Description</th>
+              <th class="col-sm-9">Description</th>
               <th class="col-sm-1">Time</th>
-              <th class="col-sm-2">Tags</th>
               <th class="col-sm-2"></th>
             </tr>
           </thead>
           <tbody>
             <% @uncompleted_tasks.each do |task| %>
               <tr>
-                <td><%= task.id %></td>
                 <td>
-                  <a href="/tasks/<%= task.id %>"><%= task.description %></a>
-                </td>
-                <td><%= task.time_cost %></td>
-                <td>
-                  <% if task.tags.empty? %>
-                    <i class="gray">No tags</i>
-                  <% else %>
-                    <% task.tags.each do |tag| %>
-                      <span class="label label-info"><%= tag.name %></span>
-                    <% end %>
+                  <a class="undecorated-link" href="/tasks/<%= task.id %>"><%= "#{task.id} - #{task.description}" %></a>
+                  &nbsp;
+                  <% task.tags.each do |tag| %>
+                    <span class="label label-primary"><%= tag.name %></span>
                   <% end %>
                 </td>
+                <td><%= task.time_cost %></td>
                 <td>
                   <form action="/tasks/<%= task.id %>" method="post">
                     <div class="pull-right">
@@ -49,27 +67,6 @@
           </tbody>
         </table>
 
-        <div>
-          <h3>New task</h3>
-          <hr />
-          <form class="form-inline" action="/tasks" method="post">
-            <div class="form-group">
-              <input class="form-control" type="text" name="description" placeholder="Description" required/>
-            </div>
-
-            <div class="form-group">
-              <input class="form-control" type="number" name="time_cost" placeholder="Time cost" />
-            </div>
-
-            <div class="form-group">
-              <input class="form-control" type="text" name="tags" placeholder="Tags" />
-            </div>
-
-            <div class="form-group">
-              <button type="submit" class="btn btn-default">Create</button>
-            </div>
-          </form>
-        </div>
       </div>
     </div>
   </div>
@@ -82,6 +79,31 @@
         </a>
       </div>
       <div class="panel-body">
+        <div>
+          <form class="form-horizontal" action="/time_records" method="post">
+            <div class="form-group">
+              <div class="col-sm-12">
+                <select class="form-control" name="task_id" placeholder="Task">
+                  <% @uncompleted_tasks.each do |task| %>
+                    <option value=<%= task.id %>><%= task.id_with_short_desc %></option>
+                  <% end %>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-sm-6">
+                <input class="form-control" id="timer" type="number" name="duration" value="0" required />
+              </div>
+              <div class="col-sm-6">
+                <button type="submit" class="btn btn-default">Create</button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <hr />
+
         <table class="table">
           <thead>
             <tr>
@@ -115,35 +137,6 @@
             <% end %>
           </tbody>
         </table>
-
-        <div>
-          <h3>New</h3>
-          <hr />
-          <form action="/time_records" method="post">
-            <div class="row">
-              <div class="col-sm-7">
-                <div class="form-group">
-                  <label for="task_id">Task</label>
-                  <select class="form-control" name="task_id">
-                    <% @uncompleted_tasks.each do |task| %>
-                      <option value=<%= task.id %>><%= task.id_with_short_desc %></option>
-                    <% end %>
-                  </select>
-                </div>
-              </div>
-
-              <div class="col-sm-5">
-                <div class="form-group">
-                  <label for="duration">Duration</label>
-                  <input class="form-control" id="timer" type="number" name="duration" value="0" required />
-                </div>
-              </div>
-            </div>
-
-            <button type="submit" class="btn btn-default">Create</button>
-          </form>
-        </div>
-
       </div>
     </div>
   </div>
