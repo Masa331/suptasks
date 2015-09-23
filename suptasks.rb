@@ -49,6 +49,10 @@ class Suptasks < Roda
       view('tos.html')
     end
 
+    r.get 'changelog' do
+      view('changelog.html')
+    end
+
     r.get 'auth/google_oauth2/callback' do
       auth = request.env['omniauth.auth']
 
