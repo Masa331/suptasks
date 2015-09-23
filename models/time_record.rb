@@ -1,8 +1,10 @@
 class TimeRecord < Sequel::Model
   many_to_one :task
 
-  def self.last_24_hours
+  def self.today
     # All times are stored in UTC. Huraaaaay!! :)
-    where('created_at > ?', Time.now.utc - (24 * 60 * 60))
+    start_of_the_day = Time.parse('00:01').utc
+
+    where('created_at > ?', start_of_the_day)
   end
 end
