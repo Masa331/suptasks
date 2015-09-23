@@ -53,3 +53,11 @@ footer {
   border: none;
   background-color: white;
 }
+
+.display-inline {
+  display: inline;
+}
+
+.green {
+  color: green;
+}

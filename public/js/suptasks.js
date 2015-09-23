@@ -1,19 +1,31 @@
-var Suptasks = {};
+var Suptasks = {
+  timer: 0
+};
 
 Suptasks.incrementTimer = function() {
-  var input = document.getElementById('timer');
-  var value = ~~timer.value;
-  value = value + 1;
+  Suptasks.timer = Suptasks.timer + 1;
+};
 
-  input.value = value;
+Suptasks.updateView = function() {
+  var inputs = document.getElementsByClassName('timer-inputs');
+  for (i = 0; i < inputs.length; i++) {
+    inputs[i].value = Suptasks.timer;
+  };
+
+  var tags = document.getElementsByClassName('timer-tags');
+  for (i = 0; i < tags.length; i++) {
+    tags[i].innerHTML = Suptasks.timer;
+  };
 };
 
 Suptasks.startStopWatch = function() {
-  stopWatch = window.setInterval(function() { Suptasks.incrementTimer() }, 60000);
+  stopWatch = window.setInterval(function() { Suptasks.incrementTimer(); Suptasks.updateView() }, 60000);
 };
 
 Suptasks.stopStopWatch = function() {
   window.clearInterval(stopWatch);
 };
 
-Suptasks.startStopWatch();
+window.onload = function() {
+  Suptasks.startStopWatch();
+};
