@@ -83,8 +83,7 @@
         </h3>
 
         <span class='pull-right'>
-          total: <%= @time_records.inject(0) { |sum, record| sum + record.duration } %>,
-          unassigned: <span class="green"><b class="timer-tags">0</b></span>
+          total: <%= @time_records.inject(0) { |sum, record| sum + record.duration } %>
         </span>
       </div>
       <div class="panel-body">
