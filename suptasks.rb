@@ -10,6 +10,7 @@ autoload :Task,          'models/task'
 autoload :TimeRecord,    'models/time_record'
 autoload :Tag,           'models/tag'
 autoload :SupLogger,     'models/sup_logger'
+autoload :TimeRecordsDecorator,     'models/time_records_decorator'
 
 
 require 'rack/protection'
@@ -80,7 +81,7 @@ class Suptasks < Roda
 
     r.is 'dashboard' do
       @uncompleted_tasks = Task.uncompleted.order(:time_cost).all
-      @time_records      = TimeRecord.today.all
+      @time_records      = TimeRecordsDecorator.new(TimeRecord.today.all)
 
       view('dashboard.html')
     end

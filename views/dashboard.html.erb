@@ -116,31 +116,20 @@
           <thead>
             <tr>
               <th class="col-sm-8">Task</th>
-              <th class="col-sm-2">Duration</th>
-              <th class="col-sm-2"></th>
+              <th class="col-sm-4">Duration Total</th>
             </tr>
           </thead>
           <tbody>
-            <% @time_records.each do |record| %>
+            <% @time_records.grouped_by_task do |record| %>
               <tr>
                 <td>
-                  <% if record.task %>
-                    <%= record.task.id_with_short_desc %>
+                  <% if record.description %>
+                    <%= record.description %>
                   <% else %>
                     <i class="gray">No task</i>
                   <% end %>
                 </td>
                 <td><%= record.duration %></td>
-
-                <td>
-                  <form action="/time_records/<%= record.id %>" method="post">
-                    <div class="pull-right">
-                    <button class="btn btn-default btn-xs" name="_delete_button" type="submit" value="true">
-                      <i class="fa fa-trash fa-lg"></i>
-                    </button>
-                    </div>
-                  </form>
-                </td>
               </tr>
             <% end %>
           </tbody>
