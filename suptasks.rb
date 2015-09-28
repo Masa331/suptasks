@@ -132,6 +132,7 @@ class Suptasks < Roda
     r.on 'time_records' do
       r.get do
         @time_records = TimeRecord.reverse_order(:created_at).all
+        @last_21_days = TimeRecords.new(TimeRecord.last_21_days.all)
         view('time_records.html')
       end
 

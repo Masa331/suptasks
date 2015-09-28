@@ -2,6 +2,67 @@
   <div class="col-sm-12">
     <div class="panel panel-default">
       <div class="panel-heading">
+        12 hours
+      </div>
+
+      <div class="panel-body">
+
+        <div class="graph">
+          <ul>
+            <% left_margin = 45 %>
+
+            <% last_21_days = @last_21_days.grouped_by_created_at %>
+            <% last_21_dates = (Date.today - 21).upto(Date.today) %>
+
+            <% last_21_dates.each do |date| %>
+              <% records = last_21_days.find { |group| group.first.created_at.to_date == date } %>
+
+              <% if records %>
+                <li class="bar" style="left: <%= left_margin %>px;">
+
+                  <% blank_chart_high = 288 - (records.total_duration.duration.to_f / 2.5) %>
+                  <div class="task white-background" style="height: <%= blank_chart_high %>px;">
+                  </div>
+
+                  <% index = 1 %>
+                  <% records.grouped_by_task.each do |records2| %>
+                    <% chart_height = (records2.total_duration.duration.to_f / 2.5) %>
+                    <% title = "#{records2.first.task.id_with_short_desc} &#013; #{records2.total_duration}" %>
+                    <% if index.odd? %>
+                      <div class="task grey-background1" style="height: <%= chart_height %>px;" title="<%= title %>">
+                      </div>
+                    <% else %>
+                      <div class="task grey-background2" style="height: <%= chart_height %>px;" title="<%= title %>">
+                      </div>
+                    <% end %>
+                    <% index += 1 %>
+                  <% end %>
+
+                  <%= date.strftime('%-d.%-m') %>
+                </li>
+              <% else %>
+                <li class="bar" style="left: <%= left_margin %>px;">
+                  <div class="task grey-background" style="height: 288px;">
+                  </div>
+                  <%= date.strftime('%-d.%-m') %>
+                </li>
+              <% end %>
+
+              <% left_margin += 45 %>
+            <% end %>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
         All time
       </div>
 
@@ -30,9 +91,9 @@
                 <td>
                   <form action="/time_records/<%= record.id %>" method="post">
                     <div class="pull-right">
-                    <button class="btn btn-default btn-xs" name="_delete_button" type="submit" value="true">
-                      <i class="fa fa-trash fa-lg"></i>
-                    </button>
+                      <button class="btn btn-default btn-xs" name="_delete_button" type="submit" value="true">
+                        <i class="fa fa-trash fa-lg"></i>
+                      </button>
                     </div>
                   </form>
                 </td>

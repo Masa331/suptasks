@@ -9,6 +9,12 @@ class TimeRecord < Sequel::Model
     where('created_at > ?', start_of_the_day)
   end
 
+  def self.last_21_days
+    start_date = Date.today - 21
+
+    where('created_at > ?', start_date)
+  end
+
   def to_duration
     TimeDuration.new(duration)
   end

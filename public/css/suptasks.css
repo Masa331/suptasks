@@ -68,3 +68,62 @@ footer {
 .show-hidden-on-hover:hover .my-hide {
   display: inline;
 }
+
+
+.graph {
+  width: 1108px;  /* the image width  */ 
+  height: 330px; /* the image height */  
+  position: relative;
+  background: url('/images/barchart_background.png') no-repeat left top;
+  /* background: lightblue; */
+}
+
+.graph ul li {  
+  position: absolute; 
+  width: 30px;  /* the width the vertical bar */ 
+  height: 288px;  /* the max height of the vertical bar */ 
+  bottom: 21px;   /* distance between bottom of image and x-axis */   
+  /* background: url("http://www.mobilefish.com/download/css/bar.gif"); */
+  text-align: center; 
+  font-weight: normal; 
+  color: #ffffff; 
+  line-height: 2.5em;
+  /* border: 1px solid; */
+  list-style: none;
+  color: black;
+}
+
+/* left = the distance between image left and bar left */
+.graph li.bar div.first-task { height: 30px; background-color: black; }
+.graph li.bar div.second-task { height: 50px; background-color: blue; }
+.graph li.bar div.third-task { height: 1px; background-color: red; }
+
+/* .graph li.bar div.task { */
+/*   background-color: black; */
+/* } */
+
+.black-background {
+  background-color: black;
+}
+
+.blue-background {
+  background-color: blue;
+}
+
+.red-background {
+  background-color: red;
+}
+
+.white-background {
+  /* background-color: lightgrey; */
+  /* background-color: white; */
+  background-color: rgba(255,0,0,0);
+}
+
+.grey-background1 {
+  background-color: #d2d2d2;
+}
+
+.grey-background2 {
+  background-color: #aeaeae;
+}
