@@ -1,8 +1,15 @@
 require 'spec_helper'
 
 
-RSpec.describe 'features' do
-  describe 'it can visit some page', type: :feature do
+RSpec.describe 'User' do
+  describe 'signs in', type: :feature do
+    before do 
+      OmniAuth.config.mock_auth[:google] = OmniAuth::AuthHash.new({
+        :provider => 'twitter',
+        :uid => '123545'
+        # etc.
+        #     })
+    end
     it "works" do
       visit '/'
 
