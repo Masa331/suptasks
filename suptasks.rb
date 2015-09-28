@@ -134,7 +134,7 @@ class Suptasks < Roda
 
     r.on 'time_records' do
       r.get do
-        @time_records = TimeRecord.all
+        @time_records = TimeRecord.reverse_order(:created_at).all
         view('time_records.html')
       end
 
