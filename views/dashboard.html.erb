@@ -54,7 +54,7 @@
                     <span class="label label-primary"><%= tag.name %></span>
                   <% end %>
                 </td>
-                <td><%= task.time_cost %> / <%= task.time_spent %></td>
+                <td><%= TimeDuration.new(task.time_cost) %> / <%= task.time_spent %></td>
                 <td>
                   <form action="/tasks/<%= task.id %>" method="post">
                     <div class="pull-right">
@@ -83,7 +83,7 @@
         </h3>
 
         <span class='pull-right'>
-          total: <%= @time_records.inject(0) { |sum, record| sum + record.duration } %>
+          total: <%= @time_records.inject(TimeDuration.new(0)) { |sum, record| sum + record.to_duration } %>
         </span>
       </div>
       <div class="panel-body">
@@ -129,7 +129,7 @@
                     <i class="gray">No task</i>
                   <% end %>
                 </td>
-                <td><%= record.duration %></td>
+                <td><%= record.to_duration %></td>
               </tr>
             <% end %>
           </tbody>

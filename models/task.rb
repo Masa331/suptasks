@@ -4,6 +4,10 @@ class Task < Sequel::Model
   one_to_many :time_records
   one_to_many :tags
 
+  def time_cost
+    super || 0
+  end
+
   def self.uncompleted
     where(completed: 0)
   end
@@ -25,7 +29,7 @@ class Task < Sequel::Model
   end
 
   def time_spent
-    time_records.inject(0) { |sum, record| sum + record.duration }
+    time_records.inject(TimeDuration.new(0)) { |sum, record| sum + record.to_duration }
   end
 
   #

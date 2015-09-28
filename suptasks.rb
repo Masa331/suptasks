@@ -10,7 +10,10 @@ autoload :Task,          'models/task'
 autoload :TimeRecord,    'models/time_record'
 autoload :Tag,           'models/tag'
 autoload :SupLogger,     'models/sup_logger'
+
 autoload :TimeRecordsDecorator,     'models/time_records_decorator'
+autoload :TimeDuration,     'models/time_duration'
+autoload :TimeRecordsGrouped,     'models/time_records_grouped'
 
 
 require 'rack/protection'

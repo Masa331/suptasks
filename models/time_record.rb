@@ -1,4 +1,5 @@
 class TimeRecord < Sequel::Model
+
   many_to_one :task
 
   def self.today
@@ -6,5 +7,9 @@ class TimeRecord < Sequel::Model
     start_of_the_day = Time.parse('00:01').utc
 
     where('created_at > ?', start_of_the_day)
+  end
+
+  def to_duration
+    TimeDuration.new(duration)
   end
 end
