@@ -1,7 +1,7 @@
 var Suptasks = {
   timer: 0,
 
-  incrementTimer: function() { 
+  incrementTimer: function() {
     Suptasks.timer = Suptasks.timer + 1; 
   },
 
@@ -12,16 +12,39 @@ var Suptasks = {
     };
   },
 
-  startStopWatch: function() {
-    stopWatch = window.setInterval(function() { Suptasks.incrementTimer(); Suptasks.updateView() }, 6000);
+  updateTimerStore: function() {
+    sessionStorage.setItem('suptasks_timer', Suptasks.timer);
   },
 
-  stopStopWatch: function() {
-    window.clearInterval(stopWatch);
+  stopWatchIntervalFunction: function() {
+    Suptasks.incrementTimer();
+    Suptasks.updateTimerStore();
+    Suptasks.updateView();
+  },
+
+  startStopWatch: function() {
+    stopWatch = window.setInterval(function() { Suptasks.stopWatchIntervalFunction() }, 60000);
+  },
+
+  clearTimerStore: function() {
+    sessionStorage.removeItem('suptasks_timer');
+  },
+
+  renewStopWatchFromStore: function() {
+    if (sessionStorage.getItem('suptasks_timer')) {
+      Suptasks.timer = ~~sessionStorage.getItem('suptasks_timer');
+    };
   }
 };
 
 
 window.onload = function() {
+  Suptasks.renewStopWatchFromStore();
+  Suptasks.updateView();
   Suptasks.startStopWatch();
+
+  var form = document.getElementById('time-records-form');
+  if (form) {
+    form.addEventListener('submit', Suptasks.clearTimerStore);
+  };
 };
