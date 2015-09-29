@@ -54,7 +54,7 @@
                     <span class="label label-primary"><%= tag.name %></span>
                   <% end %>
                 </td>
-                <td><%= TimeDuration.new(task.time_cost) %> / <%= task.time_spent %></td>
+                <td><%= task.time_spent %> / <%= TimeDuration.new(task.time_cost) %></td>
                 <td>
                   <form action="/tasks/<%= task.id %>" method="post">
                     <div class="pull-right">
