@@ -10,6 +10,11 @@ var Suptasks = {
     for (i = 0; i < inputs.length; i++) {
       inputs[i].value = Suptasks.timer;
     };
+
+    var quickTimers = document.getElementsByClassName('quick-timer');
+    for (i = 0; i < quickTimers.length; i++) {
+      quickTimers[i].innerHTML = Suptasks.timer;
+    };
   },
 
   updateTimerStore: function() {
@@ -43,8 +48,10 @@ window.onload = function() {
   Suptasks.updateView();
   Suptasks.startStopWatch();
 
-  var form = document.getElementById('time-records-form');
-  if (form) {
-    form.addEventListener('submit', Suptasks.clearTimerStore);
+  var timerForms = document.getElementsByClassName('time-records-form');
+  if (timerForms.length > 0) {
+    for (i = 0; i < timerForms.length; i++) {
+      timerForms[i].addEventListener('submit', Suptasks.clearTimerStore);
+    };
   };
 };

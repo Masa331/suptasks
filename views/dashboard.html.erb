@@ -4,7 +4,7 @@
       <div class="panel-heading">
         <h3 class="panel-title display-inline">
           <a class="undecorated-link" href="/tasks">
-             Tasks
+            Tasks
           </a>
         </h3>
       </div>
@@ -39,14 +39,14 @@
         <table class="table">
           <thead>
             <tr>
-              <th class="col-sm-9">Description</th>
-              <th class="col-sm-2" title="Time estimated/spent">Time e/s</th>
+              <th class="col-sm-8">Description</th>
+              <th class="col-sm-3" title="Time spent/estimated">Time s/e</th>
               <th class="col-sm-2"></th>
             </tr>
           </thead>
           <tbody>
             <% @uncompleted_tasks.each do |task| %>
-              <tr>
+              <tr class="show-hidden-on-hover">
                 <td>
                   <a class="undecorated-link" href="/tasks/<%= task.id %>"><%= "#{task.id} - #{task.description}" %></a>
                   &nbsp;
@@ -54,7 +54,15 @@
                     <span class="label label-primary"><%= tag.name %></span>
                   <% end %>
                 </td>
-                <td><%= task.time_spent %> / <%= TimeDuration.new(task.time_cost) %></td>
+                <td>
+                  <%= task.time_spent %> / <%= TimeDuration.new(task.time_cost) %>
+
+                  <form class="time-records-form display-inline" action="/time_records" method="post">
+                    <input class="hide" type="number" name="task_id" value=<%= task.id %> />
+                    <input class="timer-inputs hide" type="number" name="duration" value="0" required />
+                    <button type="submit" class="green unstyled-button my-hide"><span><b>+<span class="quick-timer">0</span></b></span></button>
+                  </form>
+                </td>
                 <td>
                   <form action="/tasks/<%= task.id %>" method="post">
                     <div class="pull-right">
@@ -84,57 +92,57 @@
 
         <span class='pull-right'>
           total: <%= @time_records.inject(TimeDuration.new(0)) { |sum, record| sum + record.to_duration } %>
-        </span>
+      </span>
+    </div>
+    <div class="panel-body">
+      <div>
+        <form class="time-records-form form-horizontal" action="/time_records" method="post">
+          <div class="form-group">
+            <div class="col-sm-12">
+              <select class="form-control" name="task_id" placeholder="Task">
+                <% @uncompleted_tasks.each do |task| %>
+                  <option value=<%= task.id %>><%= task.id_with_short_desc %></option>
+                <% end %>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-sm-6">
+              <input class="form-control timer-inputs green bold" type="number" name="duration" value="0" required />
+            </div>
+            <div class="col-sm-6">
+              <button type="submit" class="btn btn-default">Create</button>
+            </div>
+          </div>
+        </form>
       </div>
-      <div class="panel-body">
-        <div>
-          <form id="time-records-form" class="form-horizontal" action="/time_records" method="post">
-            <div class="form-group">
-              <div class="col-sm-12">
-                <select class="form-control" name="task_id" placeholder="Task">
-                  <% @uncompleted_tasks.each do |task| %>
-                    <option value=<%= task.id %>><%= task.id_with_short_desc %></option>
-                  <% end %>
-                </select>
-              </div>
-            </div>
 
-            <div class="form-group">
-              <div class="col-sm-6">
-                <input class="form-control timer-inputs green bold" type="number" name="duration" value="0" required />
-              </div>
-              <div class="col-sm-6">
-                <button type="submit" class="btn btn-default">Create</button>
-              </div>
-            </div>
-          </form>
-        </div>
+      <hr />
 
-        <hr />
-
-        <table class="table">
-          <thead>
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="col-sm-8">Task</th>
+            <th class="col-sm-4">Duration Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @time_records.grouped_by_task do |record| %>
             <tr>
-              <th class="col-sm-8">Task</th>
-              <th class="col-sm-4">Duration Total</th>
+              <td>
+                <% if record.description %>
+                  <%= record.description %>
+                <% else %>
+                  <i class="gray">No task</i>
+                <% end %>
+              </td>
+              <td><%= record.to_duration %></td>
             </tr>
-          </thead>
-          <tbody>
-            <% @time_records.grouped_by_task do |record| %>
-              <tr>
-                <td>
-                  <% if record.description %>
-                    <%= record.description %>
-                  <% else %>
-                    <i class="gray">No task</i>
-                  <% end %>
-                </td>
-                <td><%= record.to_duration %></td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
-      </div>
+          <% end %>
+        </tbody>
+      </table>
     </div>
   </div>
+</div>
 </div>

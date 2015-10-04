@@ -31,18 +31,6 @@ footer {
   color: #333;
 }
 
-.change-content-on-hover:hover .hide-on-hover {
-  display: none;
-  /* content: 'Hvno'; */
-}
-
-.change-content-on-hover .show-on-hover {
-  display: none;
-}
-.change-content-on-hover:hover .show-on-hover {
-  display: inline;
-}
-
 .homepage-centered-text {
   text-align: center;
   vertical-align: middle;
@@ -64,4 +52,19 @@ footer {
 
 .bold {
   font-weight: bold;
+}
+
+/* Bootstrapt's hide has !important for some reason in it */
+.my-hide {
+  display: none;
+}
+
+.unstyled-button {
+  border: none;
+  background: white
+}
+
+/* Bootstrapt's hide has !important for some reason in it */
+.show-hidden-on-hover:hover .my-hide {
+  display: inline;
 }
