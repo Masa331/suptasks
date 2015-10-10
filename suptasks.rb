@@ -1,6 +1,9 @@
 $:.unshift File.dirname(__FILE__)
 
 require 'roda'
+require 'rack/protection'
+require 'omniauth'
+require 'omniauth/google_oauth2'
 
 autoload :Configuration, 'config/configuration'
 require_relative 'database/database'
@@ -11,14 +14,8 @@ autoload :TimeRecord,    'models/time_record'
 autoload :Tag,           'models/tag'
 autoload :SupLogger,     'models/sup_logger'
 
-autoload :TimeRecordsDecorator,     'models/time_records_decorator'
-autoload :TimeDuration,     'models/time_duration'
-autoload :TimeRecordsGrouped,     'models/time_records_grouped'
-
-
-require 'rack/protection'
-require 'omniauth'
-require 'omniauth/google_oauth2'
+autoload :TimeRecords,   'models/time_records'
+autoload :TimeDuration,  'models/time_duration'
 
 class Suptasks < Roda
   use Rack::Session::Cookie, secret: 'secret', key: 'key'
@@ -84,7 +81,7 @@ class Suptasks < Roda
 
     r.is 'dashboard' do
       @uncompleted_tasks = Task.uncompleted.order(:time_cost).all
-      @time_records      = TimeRecordsDecorator.new(TimeRecord.today.all)
+      @time_records      = TimeRecords.new(TimeRecord.today.all)
 
       view('dashboard.html')
     end

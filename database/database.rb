@@ -2,6 +2,14 @@ require 'sequel'
 require 'base64'
 
 module Database
+  def self.connect_test_database
+    db = Sequel.sqlite
+
+    db.run tasks_migration
+    db.run time_records_migration
+    db.run tags_migration
+  end
+
   def self.connect_user_database(user)
     db_name = database_name_from_email(user.email)
     path_to_database = Configuration.db_dir + db_name

@@ -128,16 +128,16 @@
           </tr>
         </thead>
         <tbody>
-          <% @time_records.grouped_by_task do |record| %>
+          <% @time_records.grouped_by_task.each do |group| %>
             <tr>
               <td>
-                <% if record.description %>
-                  <%= record.description %>
+                <% if group.first.task %>
+                  <%= group.first.task.id_with_short_desc; %>
                 <% else %>
                   <i class="gray">No task</i>
                 <% end %>
               </td>
-              <td><%= record.to_duration %></td>
+              <td><%= group.total_duration %></td>
             </tr>
           <% end %>
         </tbody>
