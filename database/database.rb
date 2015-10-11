@@ -29,6 +29,10 @@ module Database
     end
   end
 
+  def self.database_count
+    Dir.glob("#{Configuration.db_dir}/*").count
+  end
+
   private
 
   def self.database_name_from_email(email)
