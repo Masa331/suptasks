@@ -1,6 +1,6 @@
 require "minitest/autorun"
 require 'minitest/reporters'
-require_relative "../database/database"
+require_relative "../database/database_manager"
 
-Database.connect_test_database
+DatabaseManager.connect_test_database
 Minitest::Reporters.use!

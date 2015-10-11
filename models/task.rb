@@ -1,4 +1,4 @@
-require_relative '../database/database.rb'
+require_relative '../database/database_manager'
 
 class Task < Sequel::Model
   one_to_many :time_records

@@ -6,7 +6,7 @@ require 'omniauth'
 require 'omniauth/google_oauth2'
 
 autoload :Configuration, 'config/configuration'
-require_relative 'database/database'
+require_relative 'database/database_manager'
 
 autoload :User,          'models/user'
 autoload :Task,          'models/task'
@@ -42,7 +42,7 @@ class Suptasks < Roda
       if current_user
         r.redirect '/dashboard'
       else
-        @databases_count = Database.database_count
+        @databases_count = DatabaseManager.database_count
         view('homepage.html')
       end
     end
@@ -164,6 +164,6 @@ class Suptasks < Roda
   end
 
   def connect_user_database!
-    Database.connect_user_database(current_user)
+    DatabaseManager.connect_user_database(current_user)
   end
 end
