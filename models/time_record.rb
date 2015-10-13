@@ -9,10 +9,17 @@ class TimeRecord < Sequel::Model
     where('created_at > ?', start_of_the_day)
   end
 
-  def self.last_21_days
-    start_date = Date.today - 21
+  def self.between_dates(start_date, end_date)
+    where('created_at > ? ', start_date).where('created_at < ? ', end_date)
+  end
 
-    where('created_at > ?', start_date)
+  # This returns time records paged by 21 days.
+  #   TODO: Add better explaining comment
+  def self.paged_by_14_days(page_number = 1)
+    start_date = Date.today - ((14 * page_number) - 1) # -1 for start day
+    end_date   = start_date + (14 + 2) # +2 for current day and -1 offset :)
+
+    between_dates(start_date, end_date)
   end
 
   def to_duration

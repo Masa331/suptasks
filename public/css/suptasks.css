@@ -71,11 +71,10 @@ footer {
 
 
 .graph {
-  width: 1108px;  /* the image width  */ 
-  height: 330px; /* the image height */  
+  width: 1108px;  /* the image width  */
+  height: 330px; /* the image height */
   position: relative;
-  background: url('/images/barchart_background.png') no-repeat left top;
-  /* background: lightblue; */
+  background: url('/images/barchart_background_8_cols.png') no-repeat left top;
 }
 
 .graph ul li {  

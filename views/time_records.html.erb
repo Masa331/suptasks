@@ -1,8 +1,24 @@
 <div class="row">
-  <div class="col-sm-12">
+  <div class="col-sm-8">
     <div class="panel panel-default">
+      <% time_records = @time_records.grouped_by_created_at %>
+
+      <% start_date = Date.today - ((14 * @current_page) - 1) %>
+      <% end_date   = start_date + (14 - 1) %>
+      <% last_21_dates = (start_date).upto(end_date) %>
+
       <div class="panel-heading">
-        Last 21 days
+        <%= start_date.strftime('%-d.%-m.%Y') %> - <%= end_date.strftime('%-d.%-m.%Y') %>
+
+        <div class="time_records_pagination pull-right">
+          <% 1.upto(@number_of_pages) do |page| %>
+            <% if page != @current_page %>
+            <a href="/time_records?page=<%= page %>"><%= page %></a>
+            <% else %>
+              <b><%= page %></b>
+            <% end %>
+          <% end %>
+        </div>
       </div>
 
       <div class="panel-body">
@@ -11,11 +27,9 @@
           <ul>
             <% left_margin = 45 %>
 
-            <% last_21_days = @last_21_days.grouped_by_created_at %>
-            <% last_21_dates = (Date.today - 21).upto(Date.today) %>
 
             <% last_21_dates.each do |date| %>
-              <% records = last_21_days.find { |group| group.first.created_at.to_date == date } %>
+              <% records = time_records.find { |group| group.first.created_at.to_date == date } %>
 
               <% if records %>
                 <li class="bar" style="left: <%= left_margin %>px;">
@@ -55,6 +69,60 @@
 
         <br />
 
+
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        New Time Record
+      </div>
+
+      <div class="panel-body">
+        <form class="time-records-form form-horizontal" action="/time_records" method="post">
+          <div class="form-group">
+            <div class="col-sm-12">
+              <select class="form-control" name="task_id" placeholder="Task">
+                <% @tasks.each do |task| %>
+                  <option value=<%= task.id %>><%= task.id_with_short_desc %></option>
+                <% end %>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-sm-6">
+              <div class="input-group">
+                <input class="form-control timer-inputs green bold" type="text" name="duration" value="0" required />
+                  <span class="input-group-addon" id="basic-addon1">
+                    <a href="#" class="duration-reset">
+                      <i class="fa fa-close">
+                      </i>
+                    </a>
+                  </span>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <button type="submit" class="btn btn-default">Create</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <%= start_date.strftime('%-d.%-m.%Y') %> - <%= end_date.strftime('%-d.%-m.%Y') %>
+      </div>
+
+      <div class="panel-body">
+
         <table class="table">
           <thead>
             <tr>
@@ -65,7 +133,7 @@
             </tr>
           </thead>
           <tbody>
-            <% @last_21_days.each do |record| %>
+            <% @time_records.each do |record| %>
               <tr>
                 <td><%= record.to_duration %></td>
                 <td>
@@ -89,9 +157,7 @@
             <% end %>
           </tbody>
         </table>
-
       </div>
     </div>
-
   </div>
 </div>

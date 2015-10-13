@@ -132,7 +132,21 @@ class Suptasks < Roda
 
     r.on 'time_records' do
       r.get do
-        @last_21_days = TimeRecords.new(TimeRecord.last_21_days.all)
+        @current_page    = (r.params['page'] || 1).to_i
+        @number_of_pages =
+          begin
+            first_time_record_created = TimeRecord.order(:created_at).first
+
+            dates_from_first_record = (Date.today - first_time_record_created.created_at.to_date).to_i
+
+            (dates_from_first_record/14.to_f).ceil
+          end
+
+        @time_records = TimeRecord.paged_by_14_days(@current_page).order(:created_at).all
+        @time_records = TimeRecords.new(@time_records)
+
+        @tasks = Task.order(:time_cost).all
+
         view('time_records.html')
       end
 
