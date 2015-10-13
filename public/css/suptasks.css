@@ -127,3 +127,11 @@ footer {
 .grey-background2 {
   background-color: #aeaeae;
 }
+
+.duration-reset {
+  color: grey;
+}
+
+.duration-reset:hover {
+  color: red;
+}

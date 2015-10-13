@@ -39,6 +39,12 @@ var Suptasks = {
     if (sessionStorage.getItem('suptasks_timer')) {
       Suptasks.timer = ~~sessionStorage.getItem('suptasks_timer');
     };
+  },
+
+  resetStopWatch: function() {
+    Suptasks.timer = 0;
+    sessionStorage.removeItem('suptasks_timer');
+    Suptasks.updateView();
   }
 };
 
@@ -52,6 +58,13 @@ window.onload = function() {
   if (timerForms.length > 0) {
     for (i = 0; i < timerForms.length; i++) {
       timerForms[i].addEventListener('submit', Suptasks.clearTimerStore);
+    };
+  };
+
+  var timerForms = document.getElementsByClassName('duration-reset');
+  if (timerForms.length > 0) {
+    for (i = 0; i < timerForms.length; i++) {
+      timerForms[i].addEventListener('click', Suptasks.resetStopWatch);
     };
   };
 };
