@@ -93,6 +93,12 @@
           </div>
 
           <div class="form-group">
+            <div class="col-sm-12">
+              <input class="form-control" type="text" name="description" placeholder="Description" required/>
+            </div>
+          </div>
+
+          <div class="form-group">
             <div class="col-sm-6">
               <div class="input-group">
                 <input class="form-control timer-inputs green bold" type="text" name="duration" value="0" required />
@@ -137,10 +143,15 @@
               <tr>
                 <td><%= record.to_duration %></td>
                 <td>
-                  <% if record.task %>
-                    <%= record.task.id_with_short_desc %>
-                  <% else %>
-                    <i class="gray">No task</i>
+                  <p>
+                    <% if record.task %>
+                      <%= record.task.id_with_short_desc %>
+                    <% else %>
+                      <i class="gray">No task</i>
+                    <% end %>
+                  </p>
+                  <% if record.description && !record.description.empty?  %>
+                    <span><i><%= record.description %></i></span>
                   <% end %>
                 </td>
                 <td><%= record.created_at_formated %></td>
