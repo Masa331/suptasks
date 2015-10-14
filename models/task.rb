@@ -1,6 +1,7 @@
 require_relative '../database/database_manager'
 
 class Task < Sequel::Model
+
   one_to_many :time_records
   one_to_many :tags
 
@@ -11,10 +12,6 @@ class Task < Sequel::Model
   def self.uncompleted
     where(completed: 0)
   end
-
-  #
-  # Presentation
-  #
 
   def tag_names
     tags.map(&:name).join(', ')
@@ -31,10 +28,6 @@ class Task < Sequel::Model
   def time_spent
     time_records.inject(TimeDuration.new(0)) { |sum, record| sum + record.to_duration }
   end
-
-  #
-  # Logic
-  #
 
   def update_tags(new_tags)
     current_tags = tags.map(&:name)

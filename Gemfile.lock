@@ -56,6 +56,7 @@ GEM
     slop (3.6.0)
     sqlite3 (1.3.10)
     tilt (2.0.1)
+    yard (0.8.7.6)
 
 PLATFORMS
   ruby
@@ -72,6 +73,7 @@ DEPENDENCIES
   sequel
   sqlite3
   tilt
+  yard
 
 BUNDLED WITH
    1.10.6

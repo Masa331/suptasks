@@ -17,3 +17,5 @@ gem 'rack_csrf'
 gem 'omniauth-google-oauth2'
 
 gem 'minitest-reporters'
+
+gem 'yard'
