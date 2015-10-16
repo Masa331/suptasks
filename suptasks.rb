@@ -15,6 +15,7 @@ autoload :Tag,           'models/tag'
 autoload :SupLogger,     'models/sup_logger'
 
 autoload :TimeRecords,   'models/time_records'
+autoload :TimeRecordsPager,   'models/time_records_pager'
 autoload :TimeDuration,  'models/time_duration'
 
 class Suptasks < Roda
@@ -132,20 +133,13 @@ class Suptasks < Roda
 
     r.on 'time_records' do
       r.get do
+        pager = TimeRecordsPager.new(TimeRecord.select_all).by_number_of_days(14)
+
+        @number_of_pages = pager.size
         @current_page    = (r.params['page'] || 1).to_i
-        @number_of_pages =
-          begin
-            first_time_record_created = TimeRecord.order(:created_at).first
-
-            dates_from_first_record = (Date.today - first_time_record_created.created_at.to_date).to_i
-
-            (dates_from_first_record/14.to_f).ceil
-          end
-
-        @time_records = TimeRecord.paged_by_14_days(@current_page).order(:created_at).all
-        @time_records = TimeRecords.new(@time_records)
-
-        @tasks = Task.order(:time_cost).all
+        # -1 is for ary index from zero :). I don't know why the pager is reversed tho
+        @time_records    = TimeRecords.new(pager.reverse[(@current_page - 1)].order(:created_at).all)
+        @tasks           = Task.order(:time_cost).all
 
         view('time_records.html')
       end
