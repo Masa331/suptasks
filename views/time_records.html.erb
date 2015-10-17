@@ -11,7 +11,7 @@
         <%= start_date.strftime('%-d.%-m.%Y') %> - <%= end_date.strftime('%-d.%-m.%Y') %>
 
         <div class="time_records_pagination pull-right">
-          <% 1.upto(@number_of_pages) do |page| %>
+          <% 1.upto(@number_of_pages).reverse_each do |page| %>
             <% if page != @current_page %>
             <a href="/time_records?page=<%= page %>"><%= page %></a>
             <% else %>
@@ -26,7 +26,6 @@
         <div class="graph">
           <ul>
             <% left_margin = 45 %>
-
 
             <% last_21_dates.each do |date| %>
               <% records = time_records.find { |group| group.first.started_at.to_date == date } %>
@@ -111,7 +110,6 @@
               </div>
             </div>
             <div class="col-sm-6">
-              <!-- <button type="submit" class="btn btn&#45;default btn&#45;block">Create</button> -->
               <input class="form-control" type="datetime" name="started_at" placeholder="Started at"/>
             </div>
           </div>
@@ -134,13 +132,12 @@
       </div>
 
       <div class="panel-body">
-
         <table class="table">
           <thead>
             <tr>
               <th class="col-sm-2">Duration</th>
               <th class="col-sm-5">Task</th>
-              <th class="col-sm-3">Created at</th>
+              <th class="col-sm-3">Started at</th>
               <th class="col-sm-2"></th>
             </tr>
           </thead>
@@ -151,7 +148,7 @@
                 <td>
                   <p>
                     <% if record.task %>
-                      <%= record.task.id_with_short_desc %>
+                      <a href="/tasks/<%= record.task.id%>" class="undecorated-link"><%= record.task.id_with_short_desc %></a>
                     <% else %>
                       <i class="gray">No task</i>
                     <% end %>
