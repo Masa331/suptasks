@@ -92,71 +92,71 @@
 
         <span class='pull-right'>
           total: <%= @time_records.inject(TimeDuration.new(0)) { |sum, record| sum + record.to_duration } %>
-      </span>
-    </div>
-    <div class="panel-body">
-      <div>
-        <form class="time-records-form form-horizontal" action="/time_records" method="post">
-          <div class="form-group">
-            <div class="col-sm-12">
-              <select class="form-control" name="task_id" placeholder="Task">
-                <% @uncompleted_tasks.each do |task| %>
-                  <option value=<%= task.id %>><%= task.id_with_short_desc %></option>
-                <% end %>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <div class="col-sm-12">
-              <input class="form-control" type="text" name="description" placeholder="Description"/>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <div class="col-sm-6">
-              <div class="input-group">
-                <input class="form-control timer-inputs green bold" type="text" name="duration" value="0" required />
-                  <span class="input-group-addon" id="basic-addon1">
-                    <a href="#" class="duration-reset">
-                      <i class="fa fa-close">
-                      </i>
-                    </a>
-                  </span>
+        </span>
+      </div>
+      <div class="panel-body">
+        <div>
+          <form class="time-records-form form-horizontal" action="/time_records" method="post">
+            <div class="form-group">
+              <div class="col-sm-12">
+                <select class="form-control" name="task_id" placeholder="Task">
+                  <% @uncompleted_tasks.each do |task| %>
+                    <option value=<%= task.id %>><%= task.id_with_short_desc %></option>
+                  <% end %>
+                </select>
               </div>
             </div>
-            <div class="col-sm-6">
-              <button type="submit" class="btn btn-default btn-block">Create</button>
+
+            <div class="form-group">
+              <div class="col-sm-12">
+                <input class="form-control" type="text" name="description" placeholder="Description"/>
+              </div>
             </div>
-          </div>
-        </form>
-      </div>
 
-      <hr />
+            <div class="form-group">
+              <div class="col-sm-6">
+                <div class="input-group">
+                  <input class="form-control timer-inputs green bold" type="text" name="duration" value="0" required />
+                    <span class="input-group-addon" id="basic-addon1">
+                      <a href="#" class="duration-reset">
+                        <i class="fa fa-close">
+                        </i>
+                      </a>
+                    </span>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <button type="submit" class="btn btn-default btn-block">Create</button>
+              </div>
+            </div>
+          </form>
+        </div>
 
-      <table class="table">
-        <thead>
-          <tr>
-            <th class="col-sm-8">Task</th>
-            <th class="col-sm-4">Duration Total</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @time_records.grouped_by_task.each do |group| %>
+        <hr />
+
+        <table class="table">
+          <thead>
             <tr>
-              <td>
-                <% if group.first.task %>
-                  <%= group.first.task.id_with_short_desc; %>
-                <% else %>
-                  <i class="gray">No task</i>
-                <% end %>
-              </td>
-              <td><%= group.total_duration %></td>
+              <th class="col-sm-8">Task</th>
+              <th class="col-sm-4">Duration Total</th>
             </tr>
-          <% end %>
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            <% @time_records.grouped_by_task.each do |group| %>
+              <tr>
+                <td>
+                  <% if group.first.task %>
+                    <%= group.first.task.id_with_short_desc; %>
+                  <% else %>
+                    <i class="gray">No task</i>
+                  <% end %>
+                </td>
+                <td><%= group.total_duration %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
-</div>
 </div>

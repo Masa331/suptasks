@@ -64,9 +64,55 @@
   <div class="col-sm-4">
     <div class="panel panel-default">
       <div class="panel-heading">
-        All time spent
+        <h3 class="panel-title display-inline">
+          Time
+        </h3>
+
+        <span class='pull-right'>
+          total: <%= @task.time_records.inject(TimeDuration.new(0)) { |sum, record| sum + record.to_duration } %>
+        </span>
       </div>
       <div class="panel-body">
+        <div>
+          <form class="time-records-form form-horizontal" action="/time_records" method="post">
+            <div class="form-group">
+              <div class="col-sm-12">
+                <input class="form-control" name="task_id" value="<%= @task.id_with_short_desc %>" disabled />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-sm-12">
+                <input class="form-control" type="text" name="description" placeholder="Description"/>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-sm-6">
+                <div class="input-group">
+                  <input class="form-control timer-inputs green bold" type="text" name="duration" value="0" required />
+                    <span class="input-group-addon" id="basic-addon1">
+                      <a href="#" class="duration-reset">
+                        <i class="fa fa-close">
+                        </i>
+                      </a>
+                    </span>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <input class="form-control" type="datetime" name="started_at" placeholder="Started at"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-12">
+                <button type="submit" class="btn btn-default btn-block">Create</button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <hr />
+
         <table class="table">
           <thead>
             <tr>
@@ -94,32 +140,6 @@
             <% end %>
           </tbody>
         </table>
-
-        <div>
-          <h3>New</h3>
-          <hr />
-          <form action="/time_records" method="post">
-
-            <div class="row">
-              <div class="col-sm-7">
-                <div class="form-group">
-                  <label for="task_id">Task</label>
-                  <input class="form-control" name="task_id" value="<%= @task.id_with_short_desc %>" disabled />
-                </div>
-              </div>
-
-              <div class="col-sm-5">
-                <div class="form-group">
-                  <label for="duration">Duration</label>
-                  <input class="form-control" type="number" name="duration" required />
-                </div>
-              </div>
-            </div>
-
-            <button type="submit" class="btn btn-default">Create new</button>
-          </form>
-        </div>
-
       </div>
     </div>
   </div>
