@@ -57,6 +57,7 @@ module DatabaseManager
     db.run tasks_migration
     db.run time_records_migration
     db.run tags_migration
+    db.run add_started_at_to_time_records
   end
 
   def self.connect_user_database(user)
@@ -76,6 +77,7 @@ module DatabaseManager
     db.connection.run tasks_migration
     db.connection.run time_records_migration
     db.connection.run tags_migration
+    db.connection.run add_started_at_to_time_records
 
     db
   end
@@ -91,6 +93,22 @@ module DatabaseManager
 
     name = Base64.urlsafe_encode64(email)
     name + ".db"
+  end
+
+  def self.add_started_at_to_time_records
+    <<-SQL
+      CREATE TABLE time_records_x (id INTEGER NOT NULL PRIMARY KEY,
+                          task_id INTEGER,
+                          description VARCHAR,
+                          duration INTEGER NOT NULL,
+                          started_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+                          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL);
+
+      INSERT INTO time_records_x SELECT id, task_id, description, duration, created_at, created_at FROM time_records;
+
+      DROP TABLE time_records;
+      ALTER TABLE time_records_x RENAME TO time_records;
+    SQL
   end
 
   def self.tasks_migration
