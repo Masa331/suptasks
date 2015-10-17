@@ -86,10 +86,18 @@ footer {
   text-align: center; 
   font-weight: normal; 
   color: #ffffff; 
-  line-height: 2.5em;
+  /* line-height: 2.5em; */
   /* border: 1px solid; */
   list-style: none;
   color: black;
+}
+
+.graph ul li div.bar-meta {
+  margin-top: 3px;
+}
+
+.graph ul li div.bar-meta span.bar-meta-submeta {
+  font-size:12px;
 }
 
 /* left = the distance between image left and bar left */

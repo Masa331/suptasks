@@ -51,13 +51,31 @@
                     <% index += 1 %>
                   <% end %>
 
-                  <%= date.strftime('%-d.%-m') %>
+                  <div class="bar-meta">
+                    <span>
+                      <%= date.strftime('%-d.%-m') %>
+                    </span>
+                    <span class="bar-meta-submeta">
+                      <i>
+                        <%= date.strftime('%a') %>
+                      </i>
+                    </span>
+                  </div>
                 </li>
               <% else %>
                 <li class="bar" style="left: <%= left_margin %>px;">
                   <div class="task grey-background" style="height: 288px;">
                   </div>
-                  <%= date.strftime('%-d.%-m') %>
+                  <div class="bar-meta">
+                    <span>
+                      <%= date.strftime('%-d.%-m') %>
+                    </span>
+                    <span class="bar-meta-submeta">
+                      <i>
+                        <%= date.strftime('%a') %>
+                      </i>
+                    </span>
+                  </div>
                 </li>
               <% end %>
 
