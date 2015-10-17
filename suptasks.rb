@@ -138,7 +138,7 @@ class Suptasks < Roda
         @number_of_pages = pager.size
         @current_page    = (r.params['page'] || 1).to_i
         # -1 is for ary index from zero :). I don't know why the pager is reversed tho
-        @time_records    = TimeRecords.new(pager.reverse[(@current_page - 1)].order(:created_at).all)
+        @time_records    = TimeRecords.new(pager.reverse[(@current_page - 1)].order(:started_at).all)
         @tasks           = Task.order(:time_cost).all
 
         view('time_records.html')

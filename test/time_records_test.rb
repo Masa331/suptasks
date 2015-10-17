@@ -44,14 +44,14 @@ class TimeRecordsTest < Minitest::Test
     assert_includes group2, record3
   end
 
-  def test_grouping_by_created_at
-    record1 = TimeRecord.new(created_at: Time.parse('1.1.2015 12:00'))
-    record2 = TimeRecord.new(created_at: Time.parse('1.1.2015 14:00'))
-    record3 = TimeRecord.new(created_at: Time.parse('2.1.2015'))
+  def test_grouping_by_started_at
+    record1 = TimeRecord.new(started_at: Time.parse('1.1.2015 12:00'))
+    record2 = TimeRecord.new(started_at: Time.parse('1.1.2015 14:00'))
+    record3 = TimeRecord.new(started_at: Time.parse('2.1.2015'))
 
     time_records = TimeRecords.new([record1, record2, record3])
 
-    grouped = time_records.grouped_by_created_at
+    grouped = time_records.grouped_by_started_at
 
     assert_equal 2, grouped.size
 

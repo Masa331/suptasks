@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-sm-8">
     <div class="panel panel-default">
-      <% time_records = @time_records.grouped_by_created_at %>
+      <% time_records = @time_records.grouped_by_started_at %>
 
       <% start_date = Date.today - ((14 * @current_page) - 1) %>
       <% end_date   = start_date + (14 - 1) %>
@@ -29,7 +29,7 @@
 
 
             <% last_21_dates.each do |date| %>
-              <% records = time_records.find { |group| group.first.created_at.to_date == date } %>
+              <% records = time_records.find { |group| group.first.started_at.to_date == date } %>
 
               <% if records %>
                 <li class="bar" style="left: <%= left_margin %>px;">
@@ -111,6 +111,12 @@
               </div>
             </div>
             <div class="col-sm-6">
+              <!-- <button type="submit" class="btn btn&#45;default btn&#45;block">Create</button> -->
+              <input class="form-control" type="datetime" name="started_at" placeholder="Started at"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-12">
               <button type="submit" class="btn btn-default btn-block">Create</button>
             </div>
           </div>
@@ -154,7 +160,7 @@
                     <span><i><%= record.description %></i></span>
                   <% end %>
                 </td>
-                <td><%= record.created_at_formated %></td>
+                <td><%= record.started_at_formated %></td>
                 <td>
                   <form action="/time_records/<%= record.id %>" method="post">
                     <div class="pull-right">
