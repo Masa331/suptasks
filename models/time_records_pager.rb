@@ -14,11 +14,13 @@ class TimeRecordsPager
         (dates_from_first_record/number_of_days.to_f).ceil
       end
 
-    number_of_pages.times.map do |page_number|
-      start_date = Date.today - ((number_of_days * page_number) - 1) # -1 for start day
-      end_date   = start_date + (number_of_days + 2) # +2 for current day and -1 offset :)
+    1.upto(number_of_pages).map do |page_number|
+      start_date = Date.today - (number_of_days * page_number)
+      # HACK: +1 cos Date.today.to_time returns eg. 1.1.2015 00:00 but we want in fact 23:59 and
+      #    00:00 next day is almost the same
+      end_date   = (start_date + number_of_days + 1)
 
-      TimeRecords.new(time_records.where('started_at > ? ', start_date).where('started_at < ? ', end_date))
+      TimeRecords.new(time_records.where('started_at >= ? ', start_date).where('started_at <= ? ', end_date))
     end
   end
 end
