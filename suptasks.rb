@@ -96,12 +96,6 @@ class Suptasks < Roda
           view('task.html')
         end
 
-        r.post param: '_delete_button' do
-          @task.destroy
-
-          r.redirect('/')
-        end
-
         r.post param: '_complete_button' do
           @task.update(completed: true)
 
