@@ -15,34 +15,32 @@
     <div class="container">
 
       <div class="header">
-        <div class="container-fluid">
+        <a class="navbar-brand" href="/">
+          <img alt="Suptasks" src="/images/logo.png">
+        </a>
 
-          <div class="navbar-header">
-            <a class="navbar-brand" href="/">
-              <img alt="Suptasks" src="/images/logo.png">
-            </a>
-          </div>
+        <nav>
+          <ul class="nav nav-pills pull-right">
+            <% if current_user %>
+              <li>
+                <p class="navbar-text"><a class="navbar-link" href="/time_records">Time Records </a></p>
+              </li>
 
-          <nav>
-            <ul class="nav nav-pills pull-right">
-              <% if current_user %>
-                <li role="presentation">
-                  <form class="navbar-form" action="/logout" method="post">
-                    <button class="btn btn-default" type="submit">Log out</button>
-                  </form>
-                </li>
-              <% end %>
-            </ul>
-          </nav>
-
-        </div>
+              <li role="presentation">
+                <form class="my-navbar-form" action="/logout" method="post">
+                  <button class="btn-linklike navbar-btn" type="submit">Log out <i class="fa fa-sign-out"></i></button>
+                </form>
+              </li>
+            <% end %>
+          </ul>
+        </nav>
       </div>
 
       <%= yield %>
 
       <footer class="footer">
         <p class="text-muted pull-left">
-          2015 Imagine Anything
+          2015 <a class="text-muted" href="imagineanything.cz">Imagine Anything</a>
         </p>
 
         <p class="text-muted pull-right">

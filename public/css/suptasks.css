@@ -64,9 +64,32 @@ footer {
   background: white
 }
 
+.btn-linklike {
+  border: none;
+  background: white;
+
+  color: #337AB7;
+}
+
+.btn-linklike:hover, .btn-linklike:focus  {
+  text-decoration: underline;
+  color: #23527C;
+}
+
 /* Bootstrapt's hide has !important for some reason in it */
 .show-hidden-on-hover:hover .my-hide {
   display: inline;
+}
+
+.my-navbar-form {
+  margin-top: 7px;
+  margin-bottom: 7px;
+  padding-right: 15px;
+}
+
+ul.nav {
+  padding-top: 6px;
+
 }
 
 
