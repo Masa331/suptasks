@@ -2,6 +2,7 @@
 This app is simple Task & Time tracker. I develop it in my free time. I use it daily for my personal task & time tracking and also as a project where can i experiment with various technology things.
 
 It's online and running here: https://suptasks.com
+
 I might blog about development here: http://masa331.github.io/
 
 ## Technology stack
