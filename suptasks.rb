@@ -48,8 +48,8 @@ class Suptasks < Roda
       end
     end
 
-    r.get 'tos' do
-      view('tos.html')
+    r.get 'about' do
+      view('about.html')
     end
 
     r.get 'changelog' do
