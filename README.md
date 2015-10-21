@@ -1,16 +1,19 @@
-# @markup markdown
+# Suptasks - task & time tracking app
+This app is simple Task & Time tracker. I develop it in my free time. I use it daily for my personal task & time tracking and also as a project where can i experiment with various technology things.
 
-# Readme for Suptasks task & time tracking app
-This app is simple Task & Time tracker and is my side project. I love it.
+It's online and running here: https://suptasks.com
+I might blog about development here: http://masa331.github.io/
 
-## Purpose
+## Technology stack
 
-WIP
+* Roda - Tiny but great Ruby web framework
+* Sequel - Ruby ORM
+* SQLite
+* Bootstrap 3
+* Fonta Awesome
 
-## Technology used
+## Contributing
 
-WIP
+I'v decided to release this project under MIT license so you are free to fork it and do whatever you want with it. However, here in this repo i will not accept any pull requests. This is my side project and right now i'm feeling like writing all the code myself. It's kind of a therapy for me.
 
-## Philosophies
-
-WIP
+ But i will be more than happy for your feedback in form of issues here.
