@@ -5,18 +5,18 @@ require 'rack/protection'
 require 'omniauth'
 require 'omniauth/google_oauth2'
 
-autoload :Configuration, 'config/configuration'
-require_relative 'database/database_manager'
+autoload :Configuration, 'lib/configuration'
+require_relative 'lib/database_manager'
 
-autoload :User,          'models/user'
-autoload :Task,          'models/task'
-autoload :TimeRecord,    'models/time_record'
-autoload :Tag,           'models/tag'
-autoload :SupLogger,     'models/sup_logger'
+autoload :User,          'lib/user'
+autoload :Task,          'lib/task'
+autoload :TimeRecord,    'lib/time_record'
+autoload :Tag,           'lib/tag'
+autoload :SupLogger,     'lib/sup_logger'
 
-autoload :TimeRecords,   'models/time_records'
-autoload :TimeRecordsPager,   'models/time_records_pager'
-autoload :TimeDuration,  'models/time_duration'
+autoload :TimeRecords,   'lib/time_records'
+autoload :TimeRecordsPager,   'lib/time_records_pager'
+autoload :TimeDuration,  'lib/time_duration'
 
 class Suptasks < Roda
   use Rack::Session::Cookie, secret: 'secret', key: 'key'

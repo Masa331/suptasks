@@ -1,4 +1,4 @@
-require_relative '../database/database_manager'
+require_relative 'database_manager'
 
 class Task < Sequel::Model
 

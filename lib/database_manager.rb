@@ -1,6 +1,6 @@
 require 'sequel'
 require 'base64'
-require_relative '../config/configuration'
+require_relative 'configuration'
 
 module DatabaseManager
   class Database
