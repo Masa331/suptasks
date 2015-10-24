@@ -1,10 +1,10 @@
 <div class="row">
-  <div class="col-sm-8">
+  <div class="col-sm-12">
     <div class="panel panel-default">
       <% time_records = @time_records.grouped_by_started_at %>
 
-      <% start_date = Date.today - ((14 * @current_page) - 1) %>
-      <% end_date   = start_date + (14 - 1) %>
+      <% start_date = Date.today - ((23 * @current_page) - 1) %>
+      <% end_date   = start_date + (23 - 1) %>
       <% last_21_dates = (start_date).upto(end_date) %>
 
       <div class="panel-heading">
@@ -85,20 +85,6 @@
         </div>
 
         <br />
-
-
-      </div>
-    </div>
-  </div>
-
-  <div class="col-sm-4">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        New Time Record
-      </div>
-
-      <div class="panel-body">
-        <%= view('partials/time_records_form.html', layout: false, locals: { tasks: @tasks }) %>
       </div>
     </div>
   </div>

@@ -133,13 +133,12 @@ class Suptasks < Roda
 
     r.on 'time_records' do
       r.get do
-        pager = TimeRecordsPager.new(TimeRecord.select_all).by_number_of_days(14)
+        pager = TimeRecordsPager.new(TimeRecord.select_all).by_number_of_days(23)
 
         @number_of_pages = pager.size
         @current_page    = (r.params['page'] || 1).to_i
         # -1 is for array index from zero :)
         @time_records    = TimeRecords.new(pager[(@current_page - 1)].order(:started_at).all)
-        @tasks           = Task.order(:time_cost).all
 
         view('time_records.html')
       end
