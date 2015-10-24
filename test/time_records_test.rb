@@ -1,7 +1,7 @@
 require_relative "test_helper"
 
-require_relative "../models/time_records"
-require_relative "../models/time_record"
+require_relative "../lib/time_records"
+require_relative "../lib/time_record"
 
 class TimeRecordsTest < Minitest::Test
   def test_time_records_delegate

@@ -1,6 +1,6 @@
 require_relative "test_helper"
 
-require_relative "../database/database_manager"
+require_relative "../lib/database_manager"
 
 class DatabaseTest < Minitest::Test
   def test_user_email
