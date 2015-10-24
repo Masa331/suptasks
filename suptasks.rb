@@ -4,6 +4,7 @@ require 'roda'
 require 'rack/protection'
 require 'omniauth'
 require 'omniauth/google_oauth2'
+require 'logger'
 
 autoload :Configuration, 'lib/configuration'
 require_relative 'lib/database_manager'
@@ -12,7 +13,6 @@ autoload :User,          'lib/user'
 autoload :Task,          'lib/task'
 autoload :TimeRecord,    'lib/time_record'
 autoload :Tag,           'lib/tag'
-autoload :SupLogger,     'lib/sup_logger'
 
 autoload :TimeRecords,   'lib/time_records'
 autoload :TimeRecordsPager,   'lib/time_records_pager'
@@ -32,8 +32,14 @@ class Suptasks < Roda
   plugin :param_matchers
 
   plugin :error_handler do |e|
-    SupLogger.error(e.inspect)
-    SupLogger.error(e.backtrace)
+    logger ||=
+      begin
+        logger = Logger.new(Configuration.log_file)
+        logger.level = Logger::ERROR
+        logger
+      end
+
+    logger.error(e.inspect)
 
     "Oh no, SupTasks fucked up!"
   end
