@@ -1,93 +1,67 @@
+<% start_date = Date.today - ((23 * @current_page) - 1) %>
+<% end_date   = start_date + (23 - 1) %>
+<% dates = (start_date).upto(end_date) %>
+
+<% time_records = @time_records.grouped_by_started_at %>
+
+<% time_records_by_date = {} %>
+
+<% dates.each do |date| %>
+  <% time_records_by_date[date] = (time_records.find(-> { TimeRecords.new([]) }) { |group| group.first.started_at.to_date == date }) %>
+<% end %>
+
 <div class="row">
   <div class="col-sm-12">
     <div class="panel panel-default">
-      <% time_records = @time_records.grouped_by_started_at %>
-
-      <% start_date = Date.today - ((23 * @current_page) - 1) %>
-      <% end_date   = start_date + (23 - 1) %>
-      <% last_21_dates = (start_date).upto(end_date) %>
 
       <div class="panel-heading">
         <%= start_date.strftime('%-d.%-m.%Y') %> - <%= end_date.strftime('%-d.%-m.%Y') %>
 
-        <div class="time_records_pagination pull-right">
-          <% 1.upto(@number_of_pages).reverse_each do |page| %>
-            <% if page != @current_page %>
+      <div class="time_records_pagination pull-right">
+        <% 1.upto(@number_of_pages).reverse_each do |page| %>
+          <% if page != @current_page %>
             <a href="/time_records?page=<%= page %>"><%= page %></a>
-            <% else %>
-              <b><%= page %></b>
-            <% end %>
+          <% else %>
+            <b><%= page %></b>
           <% end %>
-        </div>
-      </div>
-
-      <div class="panel-body">
-
-        <div class="graph">
-          <ul>
-            <% left_margin = 45 %>
-
-            <% last_21_dates.each do |date| %>
-              <% records = time_records.find { |group| group.first.started_at.to_date == date } %>
-
-              <% if records %>
-                <li class="bar" style="left: <%= left_margin %>px;">
-
-                  <% blank_chart_high = 288 - (records.total_duration.duration.to_f / 2.5) %>
-                  <div class="task white-background" style="height: <%= blank_chart_high %>px;">
-                  </div>
-
-                  <% index = 1 %>
-                  <% records.grouped_by_task.each do |records2| %>
-                    <% chart_height = (records2.total_duration.duration.to_f / 2.5) %>
-                    <% title = "#{records2.first.task.id_with_short_desc} &#013; #{records2.total_duration}" %>
-                    <% if index.odd? %>
-                      <div class="task grey-background1" style="height: <%= chart_height %>px;" title="<%= title %>">
-                      </div>
-                    <% else %>
-                      <div class="task grey-background2" style="height: <%= chart_height %>px;" title="<%= title %>">
-                      </div>
-                    <% end %>
-                    <% index += 1 %>
-                  <% end %>
-
-                  <div class="bar-meta">
-                    <span>
-                      <%= date.strftime('%-d.%-m') %>
-                    </span>
-                    <span class="bar-meta-submeta">
-                      <i>
-                        <%= date.strftime('%a') %>
-                      </i>
-                    </span>
-                  </div>
-                </li>
-              <% else %>
-                <li class="bar" style="left: <%= left_margin %>px;">
-                  <div class="task grey-background" style="height: 288px;">
-                  </div>
-                  <div class="bar-meta">
-                    <span>
-                      <%= date.strftime('%-d.%-m') %>
-                    </span>
-                    <span class="bar-meta-submeta">
-                      <i>
-                        <%= date.strftime('%a') %>
-                      </i>
-                    </span>
-                  </div>
-                </li>
-              <% end %>
-
-              <% left_margin += 45 %>
-            <% end %>
-          </ul>
-        </div>
-
-        <br />
+        <% end %>
       </div>
     </div>
+
+    <div class="panel-body">
+      <div class="graph">
+        <% time_records_by_date.each_pair do |date, records| %>
+          <div class="bar">
+            <div class="tasks">
+              <% blank_chart_hight = 288 - (records.total_duration.duration.to_f / 2.5) %>
+              <div class="task white-background" style="height: <%= blank_chart_hight %>px;">
+              </div>
+
+              <% records.grouped_by_task.each_with_index do |records_by_task, index| %>
+                <% height = (records_by_task.total_duration.duration.to_f / 2.5) %>
+                <% background = index.even? ? 'grey-background1' : 'grey-background2' %>
+                <% title = "#{records_by_task.first.task.id_with_short_desc} &#013; #{records_by_task.total_duration}" %>
+
+                <div class="task <%= background %>" style="height: <%= height %>px;" title="<%= title %>"></div>
+              <% end %>
+            </div>
+
+            <div class="bar-meta">
+              <span>
+                <%= date.strftime('%-d.%-m') %>
+              </span>
+              <span class="bar-meta-submeta">
+                <i><%= date.strftime('%a') %></i>
+              </span>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+      <br />
+    </div>
   </div>
+</div>
 </div>
 
 <div class="row">
