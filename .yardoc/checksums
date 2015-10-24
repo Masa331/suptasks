@@ -1,0 +1,9 @@
+lib/tag.rb 0f823c2e3277c4b0fe622447018108d21bef727d
+lib/task.rb 3b980b439bc14e4f0382813f4bd2d6e8fa70fbc7
+lib/user.rb d7e98489442e2efece14ee97fa5b18d9dd59a8f3
+lib/time_record.rb e6f1d417e2262e626f57e355a6c89e9fd59371e8
+lib/time_records.rb a4df131077ef36908c003968541d9d6775793fcd
+lib/configuration.rb 9dbe2ae84aa891f9952c2859fab4f65bc7728cca
+lib/time_duration.rb 81531a915d911aebec70071f218fb72b2a34b856
+lib/database_manager.rb b19f73007b1c3702a15b495d853ac749d3c1c3c3
+lib/time_records_pager.rb dd20fac25e9dd03b5489ff80a82cfffee0dc3bab

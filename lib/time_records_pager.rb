@@ -1,3 +1,8 @@
+# This class knows how to page TimeRecord dataset. You initialize it with dataset and then call one of the
+#   pagination methods.
+#
+#   All pagination methods should returns array of TimeRecords, each representing one page.
+#   By counting the returned array you get back number of pages.
 class TimeRecordsPager
   attr_reader :time_records
 
@@ -5,13 +10,18 @@ class TimeRecordsPager
     @time_records = dataset
   end
 
+  # Splits dataset into pages each holding given number of days
+  #
+  # @param number_of_days [Integer]
+  #
+  # @return array of TimeRecords [Array]
   def by_number_of_days(number_of_days)
     number_of_pages =
       begin
-        first_time_record_created = TimeRecord.order(:started_at).first
-        dates_from_first_record = (Date.today - first_time_record_created.started_at.to_date).to_i
+        oldest_record = time_records.order(:started_at).first
+        days_from_first_record = (Date.today - oldest_record.started_at.to_date).to_i
 
-        (dates_from_first_record/number_of_days.to_f).ceil
+        (days_from_first_record/number_of_days.to_f).ceil
       end
 
     1.upto(number_of_pages).map do |page_number|

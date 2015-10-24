@@ -79,7 +79,7 @@
   
   
     <dt class="r1 last">Defined in:</dt>
-    <dd class="r1 last">database/database_manager.rb</dd>
+    <dd class="r1 last">lib/database_manager.rb</dd>
   
 </dl>
 <div class="clear"></div>
@@ -252,7 +252,7 @@
 52</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'database/database_manager.rb', line 46</span>
+      <pre class="code"><span class="info file"># File 'lib/database_manager.rb', line 46</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_all_databases'>all_databases</span>
   <span class='id identifier rubyid_databases'>databases</span> <span class='op'>=</span> <span class='const'>Dir</span><span class='period'>.</span><span class='id identifier rubyid_glob'>glob</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='const'>Configuration</span><span class='period'>.</span><span class='id identifier rubyid_db_dir'>db_dir</span><span class='embexpr_end'>}</span><span class='tstring_content'>/*</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_path'>path</span><span class='op'>|</span>
@@ -287,10 +287,11 @@
 57
 58
 59
-60</pre>
+60
+61</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'database/database_manager.rb', line 54</span>
+      <pre class="code"><span class="info file"># File 'lib/database_manager.rb', line 54</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_connect_test_database'>connect_test_database</span>
   <span class='id identifier rubyid_db'>db</span> <span class='op'>=</span> <span class='const'>Sequel</span><span class='period'>.</span><span class='id identifier rubyid_sqlite'>sqlite</span>
@@ -298,6 +299,7 @@
   <span class='id identifier rubyid_db'>db</span><span class='period'>.</span><span class='id identifier rubyid_run'>run</span> <span class='id identifier rubyid_tasks_migration'>tasks_migration</span>
   <span class='id identifier rubyid_db'>db</span><span class='period'>.</span><span class='id identifier rubyid_run'>run</span> <span class='id identifier rubyid_time_records_migration'>time_records_migration</span>
   <span class='id identifier rubyid_db'>db</span><span class='period'>.</span><span class='id identifier rubyid_run'>run</span> <span class='id identifier rubyid_tags_migration'>tags_migration</span>
+  <span class='id identifier rubyid_db'>db</span><span class='period'>.</span><span class='id identifier rubyid_run'>run</span> <span class='id identifier rubyid_add_started_at_to_time_records'>add_started_at_to_time_records</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -319,17 +321,17 @@
       <pre class="lines">
 
 
-62
 63
 64
 65
 66
 67
 68
-69</pre>
+69
+70</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'database/database_manager.rb', line 62</span>
+      <pre class="code"><span class="info file"># File 'lib/database_manager.rb', line 63</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_connect_user_database'>connect_user_database</span><span class='lparen'>(</span><span class='id identifier rubyid_user'>user</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='lparen'>(</span><span class='id identifier rubyid_database'>database</span> <span class='op'>=</span> <span class='id identifier rubyid_all_databases'>all_databases</span><span class='period'>.</span><span class='id identifier rubyid_find_by_user_email'>find_by_user_email</span><span class='lparen'>(</span><span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_email'>email</span><span class='rparen'>)</span><span class='rparen'>)</span>
@@ -359,7 +361,6 @@
       <pre class="lines">
 
 
-71
 72
 73
 74
@@ -369,10 +370,12 @@
 78
 79
 80
-81</pre>
+81
+82
+83</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'database/database_manager.rb', line 71</span>
+      <pre class="code"><span class="info file"># File 'lib/database_manager.rb', line 72</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_create_database_for_email'>create_database_for_email</span><span class='lparen'>(</span><span class='id identifier rubyid_email'>email</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_db_name'>db_name</span> <span class='op'>=</span> <span class='id identifier rubyid_database_name_from_email'>database_name_from_email</span><span class='lparen'>(</span><span class='id identifier rubyid_email'>email</span><span class='rparen'>)</span>
@@ -382,6 +385,7 @@
   <span class='id identifier rubyid_db'>db</span><span class='period'>.</span><span class='id identifier rubyid_connection'>connection</span><span class='period'>.</span><span class='id identifier rubyid_run'>run</span> <span class='id identifier rubyid_tasks_migration'>tasks_migration</span>
   <span class='id identifier rubyid_db'>db</span><span class='period'>.</span><span class='id identifier rubyid_connection'>connection</span><span class='period'>.</span><span class='id identifier rubyid_run'>run</span> <span class='id identifier rubyid_time_records_migration'>time_records_migration</span>
   <span class='id identifier rubyid_db'>db</span><span class='period'>.</span><span class='id identifier rubyid_connection'>connection</span><span class='period'>.</span><span class='id identifier rubyid_run'>run</span> <span class='id identifier rubyid_tags_migration'>tags_migration</span>
+  <span class='id identifier rubyid_db'>db</span><span class='period'>.</span><span class='id identifier rubyid_connection'>connection</span><span class='period'>.</span><span class='id identifier rubyid_run'>run</span> <span class='id identifier rubyid_add_started_at_to_time_records'>add_started_at_to_time_records</span>
 
   <span class='id identifier rubyid_db'>db</span>
 <span class='kw'>end</span></pre>
@@ -405,12 +409,12 @@
       <pre class="lines">
 
 
-83
-84
-85</pre>
+85
+86
+87</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'database/database_manager.rb', line 83</span>
+      <pre class="code"><span class="info file"># File 'lib/database_manager.rb', line 85</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_database_count'>database_count</span>
   <span class='id identifier rubyid_all_databases'>all_databases</span><span class='period'>.</span><span class='id identifier rubyid_count'>count</span>
@@ -425,7 +429,7 @@
 </div>
 
     <div id="footer">
-  Generated on Wed Oct 14 20:16:18 2015 by
+  Generated on Sat Oct 24 12:36:35 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.3).
 </div>
