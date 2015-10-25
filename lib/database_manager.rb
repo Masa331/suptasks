@@ -1,5 +1,7 @@
 require 'sequel'
 require 'base64'
+require 'delegate'
+
 require_relative 'configuration'
 
 module DatabaseManager

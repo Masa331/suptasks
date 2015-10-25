@@ -3,8 +3,6 @@ source 'https://rubygems.org'
 gem 'roda'
 gem 'tilt'
 gem 'erubis'
-# gem 'rspec'
-# gem 'capybara'
 gem 'pry'
 gem 'pry-byebug'
 
@@ -15,7 +13,5 @@ gem 'rack-protection'
 gem 'rack_csrf'
 
 gem 'omniauth-google-oauth2'
-
-gem 'minitest-reporters'
 
 gem 'yard'

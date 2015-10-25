@@ -1,3 +1,4 @@
+require 'delegate'
 require_relative 'time_duration'
 
 class TimeRecords < SimpleDelegator
