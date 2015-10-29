@@ -19,7 +19,7 @@ autoload :TimeRecordsPager,   'lib/time_records_pager'
 autoload :TimeDuration,  'lib/time_duration'
 
 class Suptasks < Roda
-  use Rack::Session::Cookie, secret: 'secret', key: 'key'
+  use Rack::Session::Cookie
 
   use OmniAuth::Builder do
     provider :google_oauth2, Configuration.google_client_id, Configuration.google_client_secret
