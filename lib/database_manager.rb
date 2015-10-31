@@ -7,7 +7,7 @@ require_relative 'databases'
 
 module DatabaseManager
   def self.all_databases
-    databases = Dir.glob("#{Configuration.db_dir}/*").map do |path|
+    databases = Dir.glob("#{Configuration.db_dir}*").map do |path|
       Database.new(path)
     end
 
@@ -23,36 +23,22 @@ module DatabaseManager
     db.run add_started_at_to_time_records
   end
 
-  def self.connect_user_database(user)
-    name = database_name_from_email(user.email)
-
-    if (database = all_databases.find_by_name(name))
-      database.connect!
-    else
-      database = create_database_for_email(user.email)
-      database.connect!
-    end
-  end
-
   def self.create_database_for_email(email)
     db_name = database_name_from_email(email)
     path_to_database = Configuration.db_dir + db_name + ".db"
 
     db = Database.new(path_to_database)
-    db.connect!
     db.connection.run tasks_migration
     db.connection.run time_records_migration
     db.connection.run tags_migration
     db.connection.run add_started_at_to_time_records
-
-    db
   end
-
-  private
 
   def self.database_name_from_email(email)
     email.delete('@').delete('.')
   end
+
+  private
 
   def self.add_started_at_to_time_records
     <<-SQL

@@ -5,17 +5,24 @@ require 'omniauth'
 require 'omniauth/google_oauth2'
 require 'logger'
 
-autoload :Configuration, 'lib/configuration'
+require_relative 'lib/configuration'
 require_relative 'lib/database_manager'
 
-autoload :User,          'lib/user'
-autoload :Task,          'lib/task'
-autoload :TimeRecord,    'lib/time_record'
-autoload :Tag,           'lib/tag'
+servers = {}
+DatabaseManager.all_databases.each do |db|
+  servers[db.name.to_sym] = { database: db.path.to_s }
+end
 
-autoload :TimeRecords,   'lib/time_records'
-autoload :TimeRecordsPager,   'lib/time_records_pager'
-autoload :TimeDuration,  'lib/time_duration'
+DB = Sequel.sqlite('databases/empty_database.db', servers: servers)
+DB.extension :server_block
+
+require_relative 'lib/task'
+require_relative 'lib/time_record'
+require_relative 'lib/tag'
+require_relative 'lib/user'
+require_relative 'lib/time_records'
+require_relative 'lib/time_records_pager'
+require_relative 'lib/time_duration'
 
 class Suptasks < Roda
   use Rack::Session::Cookie
@@ -66,6 +73,11 @@ class Suptasks < Roda
 
       session[:user_email] = auth['info']['email']
       session[:user_name] = auth['info']['name']
+
+      unless DatabaseManager.all_databases.find_by_name(current_database.to_s)
+        DatabaseManager.create_database_for_email(current_user.email)
+      end
+
       r.redirect '/'
     end
 
@@ -84,81 +96,86 @@ class Suptasks < Roda
     #
     #
 
-    connect_user_database!
 
-    r.is 'dashboard' do
-      @uncompleted_tasks = Task.uncompleted.order(:time_cost).all
-      @time_records      = TimeRecords.new(TimeRecord.today.all)
+    DB.with_server(current_database) do
+      r.is 'dashboard' do
+        @uncompleted_tasks = Task.uncompleted.order(:time_cost).all
+        @time_records      = TimeRecords.new(TimeRecord.today.all)
 
-      view('dashboard.html')
-    end
+        view('dashboard.html')
+      end
 
-    r.on 'tasks' do
-      r.is ':id' do |id|
-        @task = Task[id]
+      r.on 'tasks' do
+        r.is ':id' do |id|
+          @task = Task[id]
 
-        r.get do
-          view('task.html')
+          r.get do
+            view('task.html')
+          end
+
+          r.post param: '_complete_button' do
+            @task.update(completed: true)
+
+            r.redirect('/')
+          end
+
+          r.post do
+            @task.update(description: r.params['description'], time_cost: r.params['time_cost'])
+            @task.update_tags(r.params['tags'])
+
+            r.redirect("/tasks/#{@task.id}")
+          end
         end
 
-        r.post param: '_complete_button' do
-          @task.update(completed: true)
+        r.is do
+          r.get do
+            @tasks = Task.order(:completed).all
+            view('tasks.html')
+          end
 
-          r.redirect('/')
+          r.post do
+            task = Task.create(description: r.params['description'], time_cost: r.params['time_cost'])
+            task.update_tags(r.params['tags'])
+
+            r.redirect('/')
+          end
+        end
+      end
+
+      r.on 'time_records' do
+        r.get do
+          pager = TimeRecordsPager.new(TimeRecord.select_all).by_number_of_days(23)
+
+          @number_of_pages = pager.size
+          @current_page    = (r.params['page'] || 1).to_i
+          # -1 is for array index from zero :)
+          @time_records    = TimeRecords.new(pager[(@current_page - 1)].order(:started_at).all)
+
+          view('time_records.html')
+        end
+
+        r.is ':id' do |id|
+          r.post param: '_delete_button' do
+            time_record = TimeRecord[id]
+            time_record.destroy
+
+            r.redirect('/')
+          end
         end
 
         r.post do
-          @task.update(description: r.params['description'], time_cost: r.params['time_cost'])
-          @task.update_tags(r.params['tags'])
-
-          r.redirect("/tasks/#{@task.id}")
-        end
-      end
-
-      r.is do
-        r.get do
-          @tasks = Task.order(:completed).all
-          view('tasks.html')
-        end
-
-        r.post do
-          task = Task.create(description: r.params['description'], time_cost: r.params['time_cost'])
-          task.update_tags(r.params['tags'])
-
+          TimeRecord.create(r.params)
           r.redirect('/')
         end
-      end
-    end
-
-    r.on 'time_records' do
-      r.get do
-        pager = TimeRecordsPager.new(TimeRecord.select_all).by_number_of_days(23)
-
-        @number_of_pages = pager.size
-        @current_page    = (r.params['page'] || 1).to_i
-        # -1 is for array index from zero :)
-        @time_records    = TimeRecords.new(pager[(@current_page - 1)].order(:started_at).all)
-
-        view('time_records.html')
-      end
-
-      r.is ':id' do |id|
-        r.post param: '_delete_button' do
-          time_record = TimeRecord[id]
-          time_record.destroy
-
-          r.redirect('/')
-        end
-      end
-
-      r.post do
-        TimeRecord.create(r.params)
-        r.redirect('/')
       end
     end
   end
 
   private
+
+  def current_database
+    DatabaseManager.database_name_from_email(current_user.email).to_sym
+  end
 
   def current_user
     if session[:user_email] && session[:user_name]
@@ -166,9 +183,5 @@ class Suptasks < Roda
     else
       nil
     end
-  end
-
-  def connect_user_database!
-    DatabaseManager.connect_user_database(current_user)
   end
 end
