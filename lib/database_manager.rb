@@ -14,6 +14,14 @@ module DatabaseManager
     Databases.new(databases)
   end
 
+  def self.servers_hash
+    servers = {}
+    all_databases.each do |db|
+      servers[db.name.to_sym] = { database: db.path.to_s }
+    end
+    servers
+  end
+
   def self.connect_test_database
     db = Sequel.sqlite
 

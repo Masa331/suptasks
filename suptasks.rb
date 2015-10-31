@@ -8,12 +8,7 @@ require 'logger'
 require_relative 'lib/configuration'
 require_relative 'lib/database_manager'
 
-servers = {}
-DatabaseManager.all_databases.each do |db|
-  servers[db.name.to_sym] = { database: db.path.to_s }
-end
-
-DB = Sequel.sqlite('databases/empty_database.db', servers: servers)
+DB = Sequel.sqlite('databases/empty_database.db', servers: DatabaseManager.servers_hash)
 DB.extension :server_block
 
 require_relative 'lib/task'
@@ -75,6 +70,8 @@ class Suptasks < Roda
 
       unless DatabaseManager.all_databases.find_by_name(current_database.to_s)
         DatabaseManager.create_database_for_email(current_user.email)
+
+        DB.add_servers(DatabaseManager.servers_hash)
       end
 
       r.redirect '/'
@@ -94,7 +91,6 @@ class Suptasks < Roda
     #
     #
     #
-
 
     DB.with_server(current_database) do
       r.is 'dashboard' do
