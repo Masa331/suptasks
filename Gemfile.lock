@@ -37,10 +37,6 @@ GEM
       byebug (~> 5.0)
       pry (~> 0.10)
     rack (1.6.4)
-    rack-protection (1.5.3)
-      rack
-    rack_csrf (2.5.0)
-      rack (>= 1.1.0)
     roda (2.5.1)
       rack
     sequel (4.26.0)
@@ -57,8 +53,6 @@ DEPENDENCIES
   omniauth-google-oauth2
   pry
   pry-byebug
-  rack-protection
-  rack_csrf
   roda
   sequel
   sqlite3

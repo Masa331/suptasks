@@ -1,7 +1,6 @@
 $:.unshift File.dirname(__FILE__)
 
 require 'roda'
-require 'rack/protection'
 require 'omniauth'
 require 'omniauth/google_oauth2'
 require 'logger'
