@@ -40,7 +40,7 @@
               <% records.grouped_by_task.each_with_index do |records_by_task, index| %>
                 <% height = (records_by_task.total_duration.duration.to_f / 2.5) %>
                 <% background = index.even? ? 'grey-background1' : 'grey-background2' %>
-                <% title = "#{records_by_task.first.task.id_with_short_desc} &#013; #{records_by_task.total_duration}" %>
+                <% title = "#{records_by_task.first.task.short_description} &#013; #{records_by_task.total_duration}" %>
 
                 <div class="task <%= background %>" style="height: <%= height %>px;" title="<%= title %>"></div>
               <% end %>
@@ -91,7 +91,7 @@
                     <td>
                       <b>
                       <% if group.first.task %>
-                        <a href="/tasks/<%= group.first.task.id%>" class="undecorated-link"><%= group.first.task.id_with_short_desc %></a>
+                        <a href="/tasks/<%= group.first.task.id%>" class="undecorated-link"><%= group.first.task.short_description %></a>
                       <% else %>
                         <i class="gray">No task</i>
                       <% end %>

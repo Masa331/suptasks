@@ -62,17 +62,17 @@ ul.nav {
   padding-top: 6px;
 }
 
-.duration-reset {
-  color: grey;
-}
-
-.duration-reset:hover {
-  color: red;
-
-}
 /* ######## */
 /* Helpers */
 /* ######## */
+
+.bold {
+  font-weight: bold;
+}
+
+.text-center {
+  text-align: center;
+}
 
 .white-background {
   background-color: rgba(255,0,0,0);
@@ -90,6 +90,10 @@ ul.nav {
   color: gray;
 }
 
+.red-hover:hover {
+  color: red;
+}
+
 .undecorated-link {
   color: #333;
 }
@@ -100,10 +104,6 @@ ul.nav {
 
 .green {
   color: green;
-}
-
-.bold {
-  font-weight: bold;
 }
 
 /* Bootstrapt's hide has !important for some reason in it */

@@ -17,11 +17,11 @@ class Task < Sequel::Model
     tags.map(&:name).join(', ')
   end
 
-  def id_with_short_desc
-    if description.size > 25
-      "#{id} - #{description[0..25]}..."
+  def short_description
+    if description.size > 30
+      description[0..30] + "..."
     else
-      "#{id} - #{description}"
+      description
     end
   end
 

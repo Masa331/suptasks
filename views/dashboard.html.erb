@@ -46,7 +46,7 @@
             <% @uncompleted_tasks.each do |task| %>
               <tr class="show-hidden-on-hover">
                 <td>
-                  <a class="undecorated-link" href="/tasks/<%= task.id %>"><%= "#{task.id} - #{task.description}" %></a>
+                  <a class="undecorated-link" href="/tasks/<%= task.id %>"><%= "#{task.description}" %></a>
                   &nbsp;
                   <% task.tags.each do |tag| %>
                     <span class="label label-primary"><%= tag.name %></span>
@@ -86,9 +86,11 @@
           Time
         </h3>
 
-        <span class='pull-right'>
-          total: <%= @time_records.inject(TimeDuration.new(0)) { |sum, record| sum + record.to_duration } %>
-        </span>
+        <% if @time_records.total_duration > 0 %>
+          <span class='pull-right'>
+            total: <%= @time_records.total_duration %>
+          </span>
+        <% end %>
       </div>
       <div class="panel-body">
         <div>
@@ -101,21 +103,27 @@
           <thead>
             <tr>
               <th class="col-sm-8">Task</th>
-              <th class="col-sm-4">Duration Total</th>
+              <th class="col-sm-4">Duration</th>
             </tr>
           </thead>
           <tbody>
-            <% @time_records.grouped_by_task.each do |group| %>
+            <% if @time_records.empty? %>
               <tr>
-                <td>
-                  <% if group.first.task %>
-                    <%= group.first.task.id_with_short_desc; %>
-                  <% else %>
-                    <i class="gray">No task</i>
-                  <% end %>
-                </td>
-                <td><%= group.total_duration %></td>
+                <td class="gray text-center" colspan='2'><i>No time records today</i></td>
               </tr>
+            <% else %>
+              <% @time_records.grouped_by_task.each do |group| %>
+                <tr>
+                  <td>
+                    <% if group.first.task %>
+                      <%= group.first.task.short_description; %>
+                    <% else %>
+                      <i class="gray">No task</i>
+                    <% end %>
+                  </td>
+                  <td><%= group.total_duration %></td>
+                </tr>
+              <% end %>
             <% end %>
           </tbody>
         </table>

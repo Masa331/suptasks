@@ -2,7 +2,7 @@
   <div class="col-sm-8">
     <div class="panel panel-default">
       <div class="panel-heading">
-        <%= @task.id %> <%= @task.description %>
+        <%= @task.description %>
       </div>
 
       <div class="panel-body">
@@ -68,9 +68,11 @@
           Time
         </h3>
 
-        <span class='pull-right'>
-          total: <%= @task.time_records.inject(TimeDuration.new(0)) { |sum, record| sum + record.to_duration } %>
-        </span>
+        <% if @time_records.total_duration > 0 %>
+          <span class='pull-right'>
+            total: <%= @time_records.total_duration %>
+          </span>
+        <% end %>
       </div>
       <div class="panel-body">
         <div>
@@ -88,7 +90,7 @@
             </tr>
           </thead>
           <tbody>
-            <% @task.time_records.each do |record| %>
+            <% @time_records.each do |record| %>
               <tr>
                 <td><%= record.task_id %></td>
                 <td><%= record.duration %></td>
