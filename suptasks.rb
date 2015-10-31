@@ -20,7 +20,7 @@ require_relative 'lib/time_records_pager'
 require_relative 'lib/time_duration'
 
 class Suptasks < Roda
-  use Rack::Session::Cookie
+  use Rack::Session::Cookie, { secret: Configuration.cookie_secret }
 
   use OmniAuth::Builder do
     provider :google_oauth2, Configuration.google_client_id, Configuration.google_client_secret
