@@ -40,7 +40,7 @@ class Suptasks < Roda
 
     logger.error(e.inspect)
 
-    "Oh no, SupTasks fucked up!"
+    raise
   end
 
   route do |r|
