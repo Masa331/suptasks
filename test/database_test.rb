@@ -4,15 +4,15 @@ require_relative "../lib/database_manager"
 
 class DatabaseTest < Minitest::Test
   def test_user_email
-    database = DatabaseManager::Database.new('ZG9uYXRAdW9sLmN6.db')
+    database = Database.new('ZG9uYXRAdW9sLmN6.db')
 
     assert_equal 'donat@uol.cz', database.user_email
   end
 
   def test_inspect
-    database = DatabaseManager::Database.new('ZG9uYXRAdW9sLmN6.db')
+    database = Database.new('ZG9uYXRAdW9sLmN6.db')
 
-    assert_equal "#<DatabaseManager::Database path=\"ZG9uYXRAdW9sLmN6.db\" user_email=\"donat@uol.cz\">", database.inspect
+    assert_equal "#<Database path=\"ZG9uYXRAdW9sLmN6.db\" user_email=\"donat@uol.cz\">", database.inspect
   end
 
   def test_connect!

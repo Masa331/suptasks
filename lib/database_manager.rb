@@ -3,48 +3,10 @@ require 'base64'
 require 'delegate'
 
 require_relative 'configuration'
+require_relative 'database'
+require_relative 'databases'
 
 module DatabaseManager
-  class Database
-    attr_accessor :path
-
-    def initialize(path)
-      @path = path
-    end
-
-    def user_email
-      db_name = path.split('/').last
-      db_name = db_name.gsub('.db', '')
-
-      name = Base64.urlsafe_decode64(db_name)
-      name.gsub('_default', '')
-    end
-
-    def connect!
-      self.tap do |db|
-        connection
-      end
-    end
-
-    def connection
-      @connection ||= Sequel.sqlite(path)
-    end
-
-    def inspect
-      "#<DatabaseManager::Database path=\"#{path}\" user_email=\"#{user_email}\">"
-    end
-  end
-
-  class Databases < SimpleDelegator
-    def initialize(databases)
-      super
-    end
-
-    def find_by_user_email(email)
-      find { |database| database.user_email == email }
-    end
-  end
-
   def self.all_databases
     databases = Dir.glob("#{Configuration.db_dir}/*").map do |path|
       Database.new(path)
