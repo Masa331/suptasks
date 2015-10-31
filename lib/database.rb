@@ -1,19 +1,16 @@
 require 'sequel'
 require 'base64'
+require 'pathname'
 
 class Database
   attr_accessor :path
 
   def initialize(path)
-    @path = path
+    @path = Pathname.new(path)
   end
 
-  def user_email
-    db_name = path.split('/').last
-    db_name = db_name.gsub('.db', '')
-
-    name = Base64.urlsafe_decode64(db_name)
-    name.gsub('_default', '')
+  def name
+    path.basename.to_s.gsub('.db', '')
   end
 
   def connect!
@@ -23,10 +20,10 @@ class Database
   end
 
   def connection
-    @connection ||= Sequel.sqlite(path)
+    @connection ||= Sequel.sqlite(path.to_s)
   end
 
   def inspect
-    "#<Database path=\"#{path}\" user_email=\"#{user_email}\">"
+    "#<Database file_name=\"#{path}\">"
   end
 end

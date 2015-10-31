@@ -49,7 +49,7 @@ class Suptasks < Roda
       if current_user
         r.redirect '/dashboard'
       else
-        @databases_count = DatabaseManager.database_count
+        @databases_count = DatabaseManager.all_databases.count
         view('homepage.html')
       end
     end

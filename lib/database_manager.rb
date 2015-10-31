@@ -1,5 +1,4 @@
 require 'sequel'
-require 'base64'
 require 'delegate'
 
 require_relative 'configuration'
@@ -25,7 +24,9 @@ module DatabaseManager
   end
 
   def self.connect_user_database(user)
-    if (database = all_databases.find_by_user_email(user.email))
+    name = database_name_from_email(user.email)
+
+    if (database = all_databases.find_by_name(name))
       database.connect!
     else
       database = create_database_for_email(user.email)
@@ -35,7 +36,8 @@ module DatabaseManager
 
   def self.create_database_for_email(email)
     db_name = database_name_from_email(email)
-    path_to_database = Configuration.db_dir + db_name
+    path_to_database = Configuration.db_dir + db_name + ".db"
+
     db = Database.new(path_to_database)
     db.connect!
     db.connection.run tasks_migration
@@ -46,17 +48,10 @@ module DatabaseManager
     db
   end
 
-  def self.database_count
-    all_databases.count
-  end
-
   private
 
   def self.database_name_from_email(email)
-    name = "#{email}_default"
-
-    name = Base64.urlsafe_encode64(email)
-    name + ".db"
+    email.delete('@').delete('.')
   end
 
   def self.add_started_at_to_time_records

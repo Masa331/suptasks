@@ -3,7 +3,7 @@ class Databases < SimpleDelegator
     super
   end
 
-  def find_by_user_email(email)
-    find { |database| database.user_email == email }
+  def find_by_name(name)
+    find { |database| database.name == name }
   end
 end
