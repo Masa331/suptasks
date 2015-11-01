@@ -50,7 +50,7 @@ class Suptasks < Roda
   route do |r|
     r.root do
       if current_user
-        r.redirect '/dashboard'
+        r.redirect '/tasks'
       else
         @databases_count = DatabaseManager.all_databases.count
         view('homepage.html')
@@ -96,13 +96,6 @@ class Suptasks < Roda
     #
 
     DB.with_server(current_database) do
-      r.is 'dashboard' do
-        @uncompleted_tasks = Task.uncompleted.order(:time_cost).all
-        @time_records      = TimeRecords.new(TimeRecord.today.all)
-
-        view('dashboard.html')
-      end
-
       r.on 'tasks' do
         r.is ':id' do |id|
           @task = Task[id]
@@ -121,7 +114,9 @@ class Suptasks < Roda
 
         r.is do
           r.get do
-            @tasks = Task.order(:completed).all
+            @uncompleted_tasks = Task.uncompleted.order(:time_cost).all
+            @time_records      = TimeRecords.new(TimeRecord.today.all)
+
             view('tasks.html')
           end
 
