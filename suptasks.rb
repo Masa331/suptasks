@@ -97,6 +97,10 @@ class Suptasks < Roda
 
     DB.with_server(current_database) do
       r.on 'tasks' do
+        r.get 'new' do
+          view('new_task.html')
+        end
+
         r.is ':id' do |id|
           @task = Task[id]
 
