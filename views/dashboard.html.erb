@@ -64,7 +64,8 @@
                 <td>
                   <form action="/tasks/<%= task.id %>" method="post">
                     <div class="pull-right">
-                      <button class="btn btn-default btn-xs" name="_complete_button" type="submit" value="true">
+                      <input class="hide" type="checkbox" name="completed" value="true" checked/>
+                      <button class="btn btn-default btn-xs" name="submit" type="submit">
                         <i class="fa fa-check fa-lg"></i>
                       </button>
                     </div>

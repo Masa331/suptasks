@@ -3,5 +3,6 @@ require_relative "database_test"
 require_relative "databases_test"
 require_relative "time_records_test"
 require_relative "time_duration_test"
+require_relative "task_params_sanitizer"
 
 require "minitest/autorun"

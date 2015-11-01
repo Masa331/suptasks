@@ -1,9 +1,20 @@
 require_relative 'database_manager'
 
 class Task < Sequel::Model
-
   one_to_many :time_records
   one_to_many :tags
+
+  def self.create(params, &block)
+    tags = params.delete 'tags'
+
+    task = super(params)
+
+    if tags && !tags.empty?
+      task.update_tags(tags)
+    end
+
+    task
+  end
 
   def time_cost
     super || 0
@@ -27,6 +38,16 @@ class Task < Sequel::Model
 
   def time_spent
     time_records.inject(TimeDuration.new(0)) { |sum, record| sum + record.to_duration }
+  end
+
+  def update(params)
+    tags = params.delete 'tags'
+
+    super
+
+    if tags && !tags.empty?
+      update_tags(tags)
+    end
   end
 
   def update_tags(new_tags)

@@ -15,6 +15,7 @@ DB.extension :server_block
 
 require_relative 'lib/task'
 require_relative 'lib/time_record'
+require_relative 'lib/task_params_sanitizer'
 require_relative 'lib/tag'
 require_relative 'lib/user'
 require_relative 'lib/time_records'
@@ -111,15 +112,8 @@ class Suptasks < Roda
             view('task.html')
           end
 
-          r.post param: '_complete_button' do
-            @task.update(completed: true)
-
-            r.redirect('/')
-          end
-
           r.post do
-            @task.update(description: r.params['description'], time_cost: r.params['time_cost'])
-            @task.update_tags(r.params['tags'])
+            @task.update(TaskParamsSanitizer.new(r.params).call)
 
             r.redirect("/tasks/#{@task.id}")
           end
@@ -132,8 +126,7 @@ class Suptasks < Roda
           end
 
           r.post do
-            task = Task.create(description: r.params['description'], time_cost: r.params['time_cost'])
-            task.update_tags(r.params['tags'])
+            Task.create(TaskParamsSanitizer.new(r.params).call)
 
             r.redirect('/')
           end
