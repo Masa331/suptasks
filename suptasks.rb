@@ -4,6 +4,8 @@ require 'roda'
 require 'omniauth'
 require 'omniauth/google_oauth2'
 require 'logger'
+require 'dotenv'
+Dotenv.load
 
 require_relative 'lib/configuration'
 require_relative 'lib/database_manager'

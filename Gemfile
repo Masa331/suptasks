@@ -13,3 +13,4 @@ gem 'omniauth-google-oauth2'
 
 gem 'yard'
 gem 'minitest'
+gem 'dotenv'
