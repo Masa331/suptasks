@@ -2,7 +2,18 @@
   <div class="col-sm-8">
     <div class="panel panel-default">
       <div class="panel-heading">
-        <%= @task.description %>
+        <h3 class="panel-title display-inline">
+          <%= @task.description %>
+          <% if @task.completed %>
+            (<span class="green">completed</span>)
+          <% end %>
+        </h3>
+
+        <% if @task.time_cost > 0 %>
+          <span class='pull-right'>
+            Estimated: <%= @task.time_cost %>
+          </span>
+        <% end %>
       </div>
 
       <div class="panel-body">
@@ -17,10 +28,6 @@
               <% end %>
             <% end %>
           </dd>
-          <dt>Time cost</dt>
-          <dd><%= @task.time_cost %></dd>
-          <dt>Status</dt>
-          <dd><%= @task.completed %></dd>
           <dt>Created at</dt>
           <dd><%= @task.created_at %></dd>
         </dl>
