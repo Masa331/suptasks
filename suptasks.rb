@@ -1,4 +1,7 @@
 $:.unshift File.dirname(__FILE__)
+require 'rack-mini-profiler'
+require 'flamegraph'
+require 'memory_profiler'
 
 require 'roda'
 require 'omniauth'
@@ -22,6 +25,7 @@ require_relative 'lib/time_records_pager'
 require_relative 'lib/time_duration'
 
 class Suptasks < Roda
+  use Rack::MiniProfiler
   use Rack::Session::Cookie, { secret: Configuration.cookie_secret }
 
   use OmniAuth::Builder do
