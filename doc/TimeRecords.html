@@ -263,12 +263,12 @@
       <pre class="lines">
 
 
-4
 5
-6</pre>
+6
+7</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/time_records.rb', line 4</span>
+      <pre class="code"><span class="info file"># File 'lib/time_records.rb', line 5</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_time_records'>time_records</span><span class='rparen'>)</span>
   <span class='kw'>super</span>
@@ -300,7 +300,6 @@
       <pre class="lines">
 
 
-18
 19
 20
 21
@@ -309,10 +308,11 @@
 24
 25
 26
-27</pre>
+27
+28</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/time_records.rb', line 18</span>
+      <pre class="code"><span class="info file"># File 'lib/time_records.rb', line 19</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_grouped_by_started_at'>grouped_by_started_at</span>
   <span class='id identifier rubyid_uniques'>uniques</span> <span class='op'>=</span> <span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:started_at</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_uniq'>uniq</span>
@@ -344,7 +344,6 @@
       <pre class="lines">
 
 
-8
 9
 10
 11
@@ -352,10 +351,11 @@
 13
 14
 15
-16</pre>
+16
+17</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/time_records.rb', line 8</span>
+      <pre class="code"><span class="info file"># File 'lib/time_records.rb', line 9</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_grouped_by_task'>grouped_by_task</span>
   <span class='id identifier rubyid_uniques'>uniques</span> <span class='op'>=</span> <span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:task_id</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_uniq'>uniq</span>
@@ -386,16 +386,16 @@
       <pre class="lines">
 
 
-33
 34
 35
 36
 37
 38
-39</pre>
+39
+40</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/time_records.rb', line 33</span>
+      <pre class="code"><span class="info file"># File 'lib/time_records.rb', line 34</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_select'>select</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id identifier rubyid___getobj__'>__getobj__</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span> <span class='const'>Sequel</span><span class='op'>::</span><span class='const'>SQLite</span><span class='op'>::</span><span class='const'>Dataset</span>
@@ -424,12 +424,12 @@
       <pre class="lines">
 
 
-29
 30
-31</pre>
+31
+32</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/time_records.rb', line 29</span>
+      <pre class="code"><span class="info file"># File 'lib/time_records.rb', line 30</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_total_duration'>total_duration</span>
   <span class='const'>TimeDuration</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_inject'>inject</span><span class='lparen'>(</span><span class='int'>0</span><span class='rparen'>)</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_sum'>sum</span><span class='comma'>,</span> <span class='id identifier rubyid_record'>record</span><span class='op'>|</span> <span class='id identifier rubyid_sum'>sum</span> <span class='op'>+</span> <span class='id identifier rubyid_record'>record</span><span class='period'>.</span><span class='id identifier rubyid_duration'>duration</span> <span class='rbrace'>}</span><span class='rparen'>)</span>
@@ -444,7 +444,7 @@
 </div>
 
     <div id="footer">
-  Generated on Sat Oct 24 12:36:35 2015 by
+  Generated on Sun Nov  1 19:55:33 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.3).
 </div>
