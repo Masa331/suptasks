@@ -3,7 +3,7 @@
     <div class="col-sm-12">
       <select class="form-control" name="task_id" placeholder="Task">
         <% tasks.each do |task| %>
-          <option value=<%= task.id %>><%= task.short_description %></option>
+          <option value=<%= task.id %>><%= task.description %></option>
         <% end %>
       </select>
     </div>

@@ -29,14 +29,6 @@ class Task < Sequel::Model
     tags.map(&:name).join(', ')
   end
 
-  def short_description
-    if description.size > 30
-      description[0..30] + "..."
-    else
-      description
-    end
-  end
-
   def time_spent
     time_records.inject(TimeDuration.new(0)) { |sum, record| sum + record.to_duration }
   end
