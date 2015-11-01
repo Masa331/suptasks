@@ -61,10 +61,8 @@ window.onload = function() {
     };
   };
 
-  var timerForms = document.getElementsByClassName('duration-reset');
-  if (timerForms.length > 0) {
-    for (i = 0; i < timerForms.length; i++) {
-      timerForms[i].addEventListener('click', Suptasks.resetStopWatch);
-    };
+  var durationReset = document.getElementById('duration-reset');
+  if (durationReset) {
+    durationReset.addEventListener('click', Suptasks.resetStopWatch);
   };
 };
