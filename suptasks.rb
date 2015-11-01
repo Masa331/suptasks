@@ -32,6 +32,7 @@ class Suptasks < Roda
   plugin :static, ['/images', '/css', '/js']
   plugin :render, layout: 'layout.html'
   plugin :head
+  plugin :flash
 
   plugin :error_handler do |e|
     logger ||=
@@ -121,7 +122,12 @@ class Suptasks < Roda
           end
 
           r.post do
-            Task.create(TaskParamsSanitizer.new(r.params).call)
+            task = Task.create(TaskParamsSanitizer.new(r.params).call)
+            task = task.reload # Otherwise tags are not present - candidate for OPTIMIZE
+            tags = task.tags.map(&:name).map { |tag| "<span class='label label-primary'>#{tag}</span>" }.join(' ')
+            msg = "<b>#{task.description}</b> with #{tags} tags created! Your time estimation is #{task.time_cost}"
+
+            flash['success'] = msg
 
             r.redirect('/')
           end

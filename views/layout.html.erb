@@ -36,6 +36,10 @@
         </nav>
       </div>
 
+      <% flash.each_pair do |type, message| %>
+        <div class="alert alert-<%= type %>" role="alert"><%= message %></div>
+      <% end %>
+
       <%= yield %>
 
       <footer class="footer">

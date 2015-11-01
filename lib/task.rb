@@ -17,7 +17,8 @@ class Task < Sequel::Model
   end
 
   def time_cost
-    super || 0
+    raw_duration = super || 0
+    TimeDuration.new(raw_duration)
   end
 
   def self.uncompleted
