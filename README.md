@@ -1,4 +1,7 @@
 # Suptasks - task & time tracking app
+
+[![Build Status](https://travis-ci.org/Masa331/suptasks.svg?branch=master)](https://travis-ci.org/Masa331/suptasks)
+
 This app is simple Task & Time tracker. I develop it in my free time. I use it daily for my personal task & time tracking and also as a project where can i experiment with various technology things.
 
 It's online and running here: https://suptasks.com
