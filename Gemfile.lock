@@ -11,6 +11,7 @@ GEM
     hashie (3.4.2)
     jwt (1.5.1)
     method_source (0.8.2)
+    minitest (5.8.2)
     multi_json (1.11.2)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
@@ -50,6 +51,7 @@ PLATFORMS
 
 DEPENDENCIES
   erubis
+  minitest
   omniauth-google-oauth2
   pry
   pry-byebug
