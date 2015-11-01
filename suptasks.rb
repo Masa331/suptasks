@@ -32,7 +32,6 @@ class Suptasks < Roda
   plugin :static, ['/images', '/css', '/js']
   plugin :render, layout: 'layout.html'
   plugin :head
-  plugin :param_matchers
 
   plugin :error_handler do |e|
     logger ||=
