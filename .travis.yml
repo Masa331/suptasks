@@ -2,4 +2,4 @@ language: ruby
 rvm:
   - 2.2.3
 script:
-  - ruby test/all_test_runner.rb
+  - bundle exec ruby test/all_test_runner.rb
