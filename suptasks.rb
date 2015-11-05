@@ -16,11 +16,13 @@ DB.extension :server_block
 require_relative 'lib/task'
 require_relative 'lib/time_record'
 require_relative 'lib/task_params_sanitizer'
+require_relative 'lib/time_record_params_sanitizer'
 require_relative 'lib/tag'
 require_relative 'lib/user'
 require_relative 'lib/time_records'
 require_relative 'lib/time_records_pager'
 require_relative 'lib/time_duration'
+require_relative 'lib/one_who_talks_too_much'
 
 class Suptasks < Roda
   use Rack::Session::Cookie, { secret: Configuration.cookie_secret }
@@ -128,8 +130,7 @@ class Suptasks < Roda
           r.post do
             task = Task.create(TaskParamsSanitizer.new(r.params).call)
             task = task.reload # Otherwise tags are not present - candidate for OPTIMIZE
-            tags = task.tags.map(&:name).map { |tag| "<span class='label label-primary'>#{tag}</span>" }.join(' ')
-            msg = "<b>#{task.description}</b> with #{tags} tags created! Your time estimation is #{task.time_cost}"
+            msg = OneWhoTalksTooMuch.comment_task_creation_html(task)
 
             flash['success'] = msg
 
@@ -160,7 +161,11 @@ class Suptasks < Roda
         end
 
         r.post do
-          TimeRecord.create(r.params)
+          time_record = TimeRecord.create(TimeRecordParamsSanitizer.new(r.params).call)
+          msg = OneWhoTalksTooMuch.comment_time_record_creation_html(time_record)
+
+          flash['success'] = msg
+
           r.redirect('/')
         end
       end

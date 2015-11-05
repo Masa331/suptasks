@@ -21,6 +21,10 @@ class TimeDuration
     duration
   end
 
+  def zero?
+    duration.zero?
+  end
+
   def to_s
     if duration >= 60
       hours   = duration / 60

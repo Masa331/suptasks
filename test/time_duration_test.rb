@@ -21,6 +21,12 @@ class TimeDurationTest < Minitest::Test
     assert(ten_minutes > 5)
   end
 
+  def test_zero?
+    duration = TimeDuration.new(0)
+
+    assert duration.zero?
+  end
+
   def test_to_i
     duration = TimeDuration.new(30)
 
