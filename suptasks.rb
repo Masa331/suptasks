@@ -49,8 +49,13 @@ class Suptasks < Roda
   end
 
   route do |r|
+    @current_user =
+      if session[:user_email] && session[:user_name]
+        User.new(email: session[:user_email], name: session[:user_name])
+      end
+
     r.root do
-      if current_user
+      if @current_user
         r.redirect '/tasks'
       else
         @databases_count = DatabaseManager.all_databases.count
@@ -69,11 +74,11 @@ class Suptasks < Roda
     r.get 'auth/google_oauth2/callback' do
       auth = request.env['omniauth.auth']
 
-      session[:user_email] = auth['info']['email']
+      email = session[:user_email] = auth['info']['email']
       session[:user_name] = auth['info']['name']
 
-      unless DatabaseManager.all_databases.find_by_name(current_database.to_s)
-        DatabaseManager.create_database_for_email(current_user.email)
+      unless DatabaseManager.all_databases.find_by_name(DatabaseManager.database_name_from_email(email))
+        DatabaseManager.create_database_for_email(email)
 
         DB.add_servers(DatabaseManager.servers_hash)
       end
@@ -89,14 +94,14 @@ class Suptasks < Roda
     #
     # Authentication
     #
-    unless current_user
+    unless @current_user
       r.redirect '/'
     end
     #
     #
     #
 
-    DB.with_server(current_database) do
+    DB.with_server(DatabaseManager.database_name_from_email(@current_user.email).to_sym) do
       r.on 'tasks' do
         r.get 'new' do
           view('new_task.html')
@@ -176,15 +181,4 @@ class Suptasks < Roda
 
   private
 
-  def current_database
-    DatabaseManager.database_name_from_email(current_user.email).to_sym
-  end
-
-  def current_user
-    if session[:user_email] && session[:user_name]
-      User.new(email: session[:user_email], name: session[:user_name])
-    else
-      nil
-    end
-  end
 end
