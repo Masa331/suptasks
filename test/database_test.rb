@@ -13,12 +13,4 @@ class DatabaseTest < Minitest::Test
 
     assert_equal 'donatuolcz', database.name
   end
-
-  def test_connect!
-    skip('not yet implemented')
-  end
-
-  def test_connection
-    skip('not yet implemented')
-  end
 end
