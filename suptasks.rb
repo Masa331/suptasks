@@ -103,13 +103,17 @@ class Suptasks < Roda
           view('new_task.html')
         end
 
-        r.is ':id' do |id|
+        r.on ':id' do |id|
           @task = Task[id]
 
-          r.get do
+          r.is do
             @time_records = TimeRecords.new(@task.time_records)
 
             view('task.html')
+          end
+
+          r.get 'edit' do
+            view('edit_task.html')
           end
 
           r.post do
