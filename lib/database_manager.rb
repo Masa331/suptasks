@@ -5,6 +5,9 @@ require_relative 'configuration'
 require_relative 'database'
 require_relative 'databases'
 
+DB = Sequel.sqlite('databases/empty_database.db', servers: {})
+DB.extension :server_block
+
 module DatabaseManager
   def self.all_databases
     databases = Dir.glob("#{Configuration.db_dir}*").map do |path|
@@ -93,3 +96,5 @@ module DatabaseManager
     SQL
   end
 end
+
+DB.add_servers(DatabaseManager.servers_hash)

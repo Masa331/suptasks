@@ -8,10 +8,9 @@ require 'dotenv'
 Dotenv.load
 
 require_relative 'lib/configuration'
+# DatabaseManager must come first because it opens up a default
+#   Sequel connection and that is required for subclassing Sequel::Model
 require_relative 'lib/database_manager'
-
-DB = Sequel.sqlite('databases/empty_database.db', servers: DatabaseManager.servers_hash)
-DB.extension :server_block
 
 require_relative 'lib/task'
 require_relative 'lib/time_record'
