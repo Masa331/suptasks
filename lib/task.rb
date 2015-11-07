@@ -13,7 +13,7 @@ class Task < Sequel::Model
       task.update_tags(tags)
     end
 
-    task
+    task.reload # Otherwise tags are not present - candidate for OPTIMIZE
   end
 
   def time_cost

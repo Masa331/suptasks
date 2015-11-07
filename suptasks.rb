@@ -132,7 +132,6 @@ class Suptasks < Roda
 
           r.post do
             task = Task.create(TaskParamsSanitizer.new(r.params).call)
-            task = task.reload # Otherwise tags are not present - candidate for OPTIMIZE
             msg = OneWhoTalksTooMuch.comment_task_creation_html(task)
 
             flash['success'] = msg
