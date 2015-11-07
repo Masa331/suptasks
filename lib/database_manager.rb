@@ -1,5 +1,4 @@
 require 'sequel'
-require 'delegate'
 
 require_relative 'configuration'
 require_relative 'database'
