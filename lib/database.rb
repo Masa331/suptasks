@@ -1,5 +1,4 @@
 require 'sequel'
-require 'base64'
 require 'pathname'
 
 class Database
