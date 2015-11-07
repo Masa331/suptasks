@@ -13,12 +13,6 @@ class Database
     path.basename.to_s.gsub('.db', '')
   end
 
-  def connect!
-    self.tap do |db|
-      connection
-    end
-  end
-
   def connection
     @connection ||= Sequel.sqlite(path.to_s)
   end
