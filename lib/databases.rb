@@ -1,3 +1,5 @@
+require 'delegate'
+
 class Databases < SimpleDelegator
   def initialize(databases)
     super
