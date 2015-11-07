@@ -21,35 +21,41 @@
             </tr>
           </thead>
           <tbody>
-            <% @uncompleted_tasks.each do |task| %>
-              <tr class="show-hidden-on-hover">
-                <td>
-                  <a class="undecorated-link" href="/tasks/<%= task.id %>"><%= "#{task.description}" %></a>
-                  &nbsp;
-                  <% task.tags.each do |tag| %>
-                    <span class="label label-primary"><%= tag.name %></span>
-                  <% end %>
-                </td>
-                <td>
-                  <%= task.time_spent %> / <%= task.time_cost %>
-
-                  <form class="time-records-form display-inline" action="/time_records" method="post">
-                    <input class="hide" type="number" name="task_id" value=<%= task.id %> />
-                    <input class="timer-inputs hide" type="number" name="duration" value="0" required />
-                    <button type="submit" class="green unstyled-button my-hide"><span><b>+<span class="quick-timer">0</span></b></span></button>
-                  </form>
-                </td>
-                <td>
-                  <form action="/tasks/<%= task.id %>" method="post">
-                    <div class="pull-right">
-                      <input class="hide" type="checkbox" name="completed" value="true" checked/>
-                      <button class="btn btn-default btn-xs" name="submit" type="submit">
-                        <i class="fa fa-check fa-lg"></i>
-                      </button>
-                    </div>
-                  </form>
-                </td>
+            <% if @uncompleted_tasks.empty? %>
+              <tr>
+                <td class="gray text-center" colspan='2'><i>Seems like you don't have any tasks to do. That's cool!</i></td>
               </tr>
+            <% else %>
+              <% @uncompleted_tasks.each do |task| %>
+                <tr class="show-hidden-on-hover">
+                  <td>
+                    <a class="undecorated-link" href="/tasks/<%= task.id %>"><%= "#{task.description}" %></a>
+                    &nbsp;
+                    <% task.tags.each do |tag| %>
+                      <span class="label label-primary"><%= tag.name %></span>
+                    <% end %>
+                  </td>
+                  <td>
+                    <%= task.time_spent %> / <%= task.time_cost %>
+
+                    <form class="time-records-form display-inline" action="/time_records" method="post">
+                      <input class="hide" type="number" name="task_id" value=<%= task.id %> />
+                      <input class="timer-inputs hide" type="number" name="duration" value="0" required />
+                      <button type="submit" class="green unstyled-button my-hide"><span><b>+<span class="quick-timer">0</span></b></span></button>
+                    </form>
+                  </td>
+                  <td>
+                    <form action="/tasks/<%= task.id %>" method="post">
+                      <div class="pull-right">
+                        <input class="hide" type="checkbox" name="completed" value="true" checked/>
+                        <button class="btn btn-default btn-xs" name="submit" type="submit">
+                          <i class="fa fa-check fa-lg"></i>
+                        </button>
+                      </div>
+                    </form>
+                  </td>
+                </tr>
+              <% end %>
             <% end %>
           </tbody>
         </table>
