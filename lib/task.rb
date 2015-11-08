@@ -4,14 +4,9 @@ class Task < Sequel::Model
 
   def self.create(params, &block)
     tags = params.delete 'tags'
-
-    task = super(params)
-
-    if tags && !tags.empty?
-      task.update_tags(tags)
+    super(params).tap do |task|
+      task.update_tags(tags) if tags
     end
-
-    task.reload # Otherwise tags are not present - candidate for OPTIMIZE
   end
 
   def time_cost
@@ -33,29 +28,24 @@ class Task < Sequel::Model
 
   def update(params)
     tags = params.delete 'tags'
-
-    super
-
-    if tags && !tags.empty?
-      update_tags(tags)
+    super(params).tap do |tag|
+      update_tags(tags) if tags
     end
   end
 
-  def update_tags(new_tags)
-    current_tags = tags.map(&:name)
+  def update_tags(tag_names)
+    new_tags = tag_names.split(',').map(&:strip)
 
-    new_tags = new_tags.split(',')
-    new_tags = new_tags.map(&:strip)
-
-    to_be_created = new_tags - current_tags
-    to_be_deleted = current_tags - new_tags
-
-    to_be_created.each do |tag|
-      Tag.create(name: tag, task_id: id)
+    tags.select do |tag|
+      !new_tags.include? tag.name
+    end.each do |tag|
+      tags.delete(tag).destroy
     end
 
-    to_be_deleted.each do |tag|
-      Tag.where(task_id: id, name: tag).destroy
+    new_tags.select do |name|
+      !tags.map(&:name).include? name
+    end.each do |name|
+      add_tag(Tag.new(name: name))
     end
   end
 end
