@@ -1,5 +1,10 @@
-require_relative "test_helper"
+require 'sequel'
 
+DB = Sequel.sqlite
+Sequel.extension :migration
+Sequel::Migrator.run(DB, 'db/migrations')
+
+require_relative "test_helper"
 require_relative "../lib/time_records"
 require_relative "../lib/time_record"
 

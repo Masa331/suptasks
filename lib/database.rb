@@ -12,10 +12,6 @@ class Database
     path.basename.to_s.gsub('.db', '')
   end
 
-  def connection
-    @connection ||= Sequel.sqlite(path.to_s)
-  end
-
   def inspect
     "#<Database file_name=\"#{path}\">"
   end

@@ -1,5 +1,5 @@
 require_relative "test_helper"
-require_relative "../lib/database_manager"
+require_relative "../lib/database"
 
 class DatabaseTest < Minitest::Test
   def test_inspect

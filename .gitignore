@@ -1,3 +1,4 @@
 /databases/*
+/db/*.db
 suptasks.log*
 .env

@@ -1,5 +1,3 @@
-require_relative 'database_manager'
-
 class Task < Sequel::Model
   one_to_many :time_records
   one_to_many :tags
