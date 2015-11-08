@@ -22,6 +22,7 @@ require_relative 'lib/time_records'
 require_relative 'lib/time_records_pager'
 require_relative 'lib/time_duration'
 require_relative 'lib/one_who_talks_too_much'
+require_relative 'lib/task_filter'
 
 class Suptasks < Roda
   use Rack::Session::Cookie, { secret: Configuration.cookie_secret }
@@ -129,8 +130,9 @@ class Suptasks < Roda
 
         r.is do
           r.get do
-            @uncompleted_tasks = Task.uncompleted.order(:time_cost).all
-            @time_records      = TimeRecords.new(TimeRecord.today.all)
+            @filter = TaskFilter.new(r.params)
+            @tasks = Task.where(@filter.to_sql).order(:time_cost).all
+            @time_records = TimeRecords.new(TimeRecord.today.where(task_id: @tasks.map(&:id)).all)
 
             view('tasks.html')
           end
