@@ -12,6 +12,26 @@
       </div>
 
       <div class="panel-body">
+        <span class="text-muted"><a class="text-muted" href="#">Showing all uncomplete tasks</a></span>
+
+        <div class="well well-sm task-filter">
+          <form class='form-inline' action="/tasks" method="post">
+            <div class="form-group">
+              <input class="form-control" type="text" name="description" placeholder="Description" required/>
+            </div>
+
+            <div class="form-group">
+              <input class="form-control" type="text" name="tags" placeholder="tags" />
+            </div>
+
+            <div class="form-group">
+              <input class="form-control" type="text" name="time_cost" placeholder="Time cost" />
+            </div>
+
+            <button type="submit" class="btn btn-default">Filter</button>
+          </form>
+        </div>
+
         <table class="table">
           <thead>
             <tr>
@@ -26,6 +46,7 @@
                 <td class="gray text-center" colspan='2'><i>Seems like you don't have any tasks to do. That's cool!</i></td>
               </tr>
             <% else %>
+
               <% @uncompleted_tasks.each do |task| %>
                 <tr class="show-hidden-on-hover">
                   <td>
@@ -74,45 +95,45 @@
         <% if @time_records.total_duration > 0 %>
           <span class='pull-right'>
             total: <%= @time_records.total_duration %>
-          </span>
-        <% end %>
+        </span>
+      <% end %>
+    </div>
+    <div class="panel-body">
+      <div>
+        <%= view('partials/time_record_form.html', layout: false, locals: { tasks: @uncompleted_tasks }) %>
       </div>
-      <div class="panel-body">
-        <div>
-          <%= view('partials/time_record_form.html', layout: false, locals: { tasks: @uncompleted_tasks }) %>
-        </div>
 
-        <hr />
+      <hr />
 
-        <table class="table">
-          <thead>
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="col-sm-8">Task</th>
+            <th class="col-sm-4">Duration</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if @time_records.empty? %>
             <tr>
-              <th class="col-sm-8">Task</th>
-              <th class="col-sm-4">Duration</th>
+              <td class="gray text-center" colspan='2'><i>No time records today</i></td>
             </tr>
-          </thead>
-          <tbody>
-            <% if @time_records.empty? %>
+          <% else %>
+            <% @time_records.grouped_by_task.each do |group| %>
               <tr>
-                <td class="gray text-center" colspan='2'><i>No time records today</i></td>
+                <td>
+                  <% if group.first.task %>
+                    <%= group.first.task.description %>
+                  <% else %>
+                    <i class="gray">No task</i>
+                  <% end %>
+                </td>
+                <td><%= group.total_duration %></td>
               </tr>
-            <% else %>
-              <% @time_records.grouped_by_task.each do |group| %>
-                <tr>
-                  <td>
-                    <% if group.first.task %>
-                      <%= group.first.task.description %>
-                    <% else %>
-                      <i class="gray">No task</i>
-                    <% end %>
-                  </td>
-                  <td><%= group.total_duration %></td>
-                </tr>
-              <% end %>
             <% end %>
-          </tbody>
-        </table>
-      </div>
+          <% end %>
+        </tbody>
+      </table>
     </div>
   </div>
+</div>
 </div>
