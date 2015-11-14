@@ -16,12 +16,14 @@ class TimeRecordsPager
   #
   # @return array of TimeRecords [Array]
   def by_number_of_days(number_of_days)
+
     number_of_pages =
       begin
         oldest_record = time_records.order(:started_at).first
         days_from_first_record = (Date.today - oldest_record.started_at.to_date).to_i
 
-        (days_from_first_record/number_of_days.to_f).ceil
+        pn = (days_from_first_record/number_of_days.to_f).ceil
+        pn == 0 ? 1 : pn
       end
 
     1.upto(number_of_pages).map do |page_number|
