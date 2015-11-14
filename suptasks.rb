@@ -178,7 +178,4 @@ class Suptasks < Roda
       end
     end
   end
-
-  private
-
 end
