@@ -65,18 +65,4 @@ window.onload = function() {
   if (durationReset) {
     durationReset.addEventListener('click', Suptasks.resetStopWatch);
   };
-
-  var toggler = document.getElementById('task-filter-toggler');
-  var filter = document.getElementById('task-filter');
-  if (toggler) {
-    toggler.addEventListener('click', function() {
-      filter.classList.toggle('hide');
-
-      if (filter.classList.contains('hide')) {
-        toggler.innerHTML = 'Open filter';
-      } else {
-        toggler.innerHTML = 'Close filter';
-      };
-    });
-  };
 };

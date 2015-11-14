@@ -7,6 +7,5 @@ require_relative "time_duration_test"
 require_relative "task_params_sanitizer_test"
 require_relative "time_record_params_sanitizer_test"
 require_relative "task_test"
-require_relative "task_filter_test"
 
 require "minitest/autorun"

@@ -12,6 +12,11 @@ footer {
   height: 60px;
 }
 
+.filter-form .form-group {
+  margin-right: 10px;
+
+}
+
 .footer .text-muted {
   margin: 20px 0px;
 }
@@ -67,10 +72,6 @@ ul.nav {
 
 .bold {
   font-weight: bold;
-}
-
-.left-margin {
-  margin-left: 10px;
 }
 
 .text-center {
