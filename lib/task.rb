@@ -34,6 +34,11 @@ class Task < Sequel::Model
   end
 
   def update_tags(tag_names)
+    remove_tags_not_in_list(tag_names)
+    add_extra_tags_in_list(tag_names)
+  end
+
+  def remove_tags_not_in_list(tag_names)
     new_tags = tag_names.split(',').map(&:strip)
 
     tags.select do |tag|
@@ -41,6 +46,10 @@ class Task < Sequel::Model
     end.each do |tag|
       tags.delete(tag).destroy
     end
+  end
+
+  def add_extra_tags_in_list(tag_names)
+    new_tags = tag_names.split(',').map(&:strip)
 
     new_tags.select do |name|
       !tags.map(&:name).include? name
