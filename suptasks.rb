@@ -111,7 +111,7 @@ class Suptasks < Roda
         r.on ':id' do |id|
           @task = Task[id]
 
-          r.is do
+          r.get do
             @time_records = TimeRecords.new(@task.time_records)
 
             view('task.html')
