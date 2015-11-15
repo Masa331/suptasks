@@ -74,14 +74,16 @@
                     </form>
                   </td>
                   <td>
-                    <form action="/tasks/<%= task.id %>" method="post">
-                      <div class="pull-right">
-                        <input class="hide" type="checkbox" name="completed" value="true" checked/>
-                        <button class="btn btn-default btn-xs" name="submit" type="submit">
-                          <i class="fa fa-check fa-lg"></i>
-                        </button>
-                      </div>
-                    </form>
+                    <% unless task.completed %>
+                      <form action="/tasks/<%= task.id %>" method="post">
+                        <div class="pull-right">
+                          <input class="hide" type="checkbox" name="completed" value="true" checked/>
+                          <button class="btn btn-default btn-xs" name="submit" type="submit">
+                            <i class="fa fa-check fa-lg"></i>
+                          </button>
+                        </div>
+                      </form>
+                    <% end %>
                   </td>
                 </tr>
               <% end %>
