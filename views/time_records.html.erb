@@ -67,9 +67,9 @@
 
     <div class="panel-body">
       <% time_records_by_date.each_pair do |date, records| %>
-        <h3><%= date.strftime('%-d.%-m.%Y') %> - <%= date.strftime('%A') %>, <%= records.total_duration %></h3>
-
         <% if records.any? %>
+          <h3><%= date.strftime('%-d.%-m.%Y') %> - <%= date.strftime('%A') %>, <%= records.total_duration %></h3>
+
           <table class="table">
             <thead>
               <tr>
@@ -119,10 +119,8 @@
                 <% end %>
               </tbody>
             </table>
-          <% else %>
-            <i class="gray">No records</i>
+            <hr />
           <% end %>
-          <hr />
         <% end %>
 
       </div>
