@@ -1,14 +1,6 @@
 <% start_date = Date.today - ((23 * @current_page) - 1) %>
-<% end_date   = start_date + (23 - 1) %>
-<% dates = (start_date).upto(end_date) %>
-
-<% time_records = @time_records.grouped_by_started_at %>
-
-<% time_records_by_date = {} %>
-
-<% dates.each do |date| %>
-  <% time_records_by_date[date] = (time_records.find(-> { TimeRecords.new([]) }) { |group| group.first.started_at.to_date == date }) %>
-<% end %>
+<% end_date = start_date + (23 - 1) %>
+<% time_records_by_date = @time_records.grouped_by_dates_between(start_date, end_date) %>
 
 <div class="row">
   <%= view('partials/task_filter.html', layout: false, locals: { filter: @filter, form_path: '/time_records' }) %>

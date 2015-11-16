@@ -27,6 +27,17 @@ class TimeRecords < SimpleDelegator
     end
   end
 
+  def grouped_by_dates_between(start_date, end_date)
+    by_starte_at = grouped_by_started_at
+    by_date = {}
+
+    (start_date).upto(end_date).each do |date|
+      by_date[date] = (by_starte_at.find(-> { TimeRecords.new([]) }) { |group| group.first.started_at.to_date == date })
+    end
+
+    by_date
+  end
+
   def total_duration
     TimeDuration.new(inject(0) { |sum, record| sum + record.duration })
   end
