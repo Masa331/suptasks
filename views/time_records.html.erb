@@ -11,6 +11,8 @@
 <% end %>
 
 <div class="row">
+  <%= view('partials/task_filter.html', layout: false, locals: { filter: @filter, form_path: '/time_records' }) %>
+
   <div class="col-sm-12">
     <div class="panel panel-default">
 

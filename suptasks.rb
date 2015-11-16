@@ -150,7 +150,10 @@ class Suptasks < Roda
 
       r.on 'time_records' do
         r.get do
-          pager = TimeRecordsPager.new(TimeRecord.select_all).by_number_of_days(23)
+          @filter = TaskFilter.new(r.params)
+          tasks = Task.where(@filter.to_sql).order(:time_cost).all
+
+          pager = TimeRecordsPager.new(TimeRecord.where(task_id: tasks.map(&:id))).by_number_of_days(23)
 
           @number_of_pages = pager.size
           @current_page    = (r.params['page'] || 1).to_i

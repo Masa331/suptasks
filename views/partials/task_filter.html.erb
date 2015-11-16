@@ -1,0 +1,26 @@
+<div class="col-sm-12">
+  <div id="task-filter" class="well well-sm task-filter">
+    <form class='form-inline filter-form' action="<%= form_path %>" method="get">
+
+      <div class="form-group">
+        <label for="status">Status</label>
+        <label class="radio-inline">
+          <input type="radio" name="status" value="1" <%= "checked" if filter.status_filter.status %>> Complete
+        </label>
+        <label class="radio-inline">
+          <input type="radio" name="status" value="0" <%= "checked" unless filter.status_filter.status %>> Uncomplete
+        </label>
+        <label class="radio-inline">
+          <input type="radio" name="status" <%= "checked" if filter.status_filter.status.nil? %>> All
+        </label>
+      </div>
+      <div class="form-group">
+        <label for="description">Description</label>
+        <input class="form-control" type="text" name="description" placeholder="Description" value="<%= filter.description_filter.description %>"/>
+      </div>
+
+      <a href="<%= form_path %>" class="btn btn-default pull-right">Reset filter</a>
+      <button type="submit" class="btn btn-default pull-right">Filter</button>
+    </form>
+  </div>
+</div>
