@@ -9,6 +9,10 @@ class Task < Sequel::Model
     end
   end
 
+  def completed?
+    completed
+  end
+
   def time_cost
     raw_duration = super || 0
     TimeDuration.new(raw_duration)

@@ -4,7 +4,7 @@
       <div class="panel-heading">
         <h3 class="panel-title display-inline">
           <%= @task.description %>
-          <% if @task.completed %>
+          <% if @task.completed? %>
             (<span class="green">completed</span>)
           <% end %>
         </h3>
