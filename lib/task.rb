@@ -10,16 +10,12 @@ class Task < Sequel::Model
   end
 
   def completed?
-    completed
+    tag_names.include? 'completed'
   end
 
   def time_cost
     raw_duration = super || 0
     TimeDuration.new(raw_duration)
-  end
-
-  def self.uncompleted
-    where(completed: 0)
   end
 
   def tag_names

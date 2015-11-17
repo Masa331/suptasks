@@ -25,8 +25,10 @@ class TaskFilter
     def call
       if @status.nil?
         @dataset
+      elsif @status
+        @dataset.where(id: Tag.where(name: 'completed').select(:task_id))
       else
-        @dataset.where(completed: @status)
+        @dataset.exclude(id: Tag.where(name: 'completed').select(:task_id))
       end
     end
   end

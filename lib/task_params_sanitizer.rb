@@ -3,7 +3,7 @@
 class TaskParamsSanitizer
   attr_reader :params
 
-  PERMITTED_KEYS = ['description', 'time_cost', 'completed', 'tags']
+  PERMITTED_KEYS = ['description', 'time_cost', 'tags']
 
   def initialize(params)
     @params = params

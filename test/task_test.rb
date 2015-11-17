@@ -9,9 +9,10 @@ require_relative "../lib/task"
 require_relative "../lib/tag"
 
 class TaskTest < Minitest::Test
-  def test_completed_returns_true_or_false_based_on_db_column
-    completed_task = Task.create(completed: true, description: 'Some desc')
-    uncomplete_task = Task.create(completed: false, description: 'Some desc')
+  def test_completed_returns_true_or_false_based_on_specific_tag_presence
+    completed_task = Task.create(description: 'Some desc')
+    Tag.create(name: 'completed', task_id: completed_task.id)
+    uncomplete_task = Task.create(description: 'Some desc')
 
     assert completed_task.completed?
     refute uncomplete_task.completed?
