@@ -2,49 +2,54 @@ require 'sequel'
 
 class TaskFilter
   class DescriptionFilter
-    attr_accessor :description
-
-    def initialize(description)
+    def initialize(description, dataset)
       @description = description
+      @dataset = dataset
     end
 
-    def to_sql
+    def call
       if @description
-        Sequel.ilike(:description, "%#{@description}%")
+        @dataset.where(Sequel.ilike(:description, "%#{@description}%"))
       else
-        Sequel.expr(true)
+        @dataset
       end
     end
   end
 
   class StatusFilter
-    attr_accessor :status
-
-    def initialize(status)
-      @status =
-        case status
-        when '0' then false
-        when '1' then true
-        end
+    def initialize(status, dataset)
+      @status = status
+      @dataset = dataset
     end
 
-    def to_sql
+    def call
       if @status.nil?
-        Sequel.expr(true)
+        @dataset
       else
-        Sequel.expr(completed: @status)
+        @dataset.where(completed: @status)
       end
     end
   end
 
-  attr_accessor :description_filter, :status_filter
+  attr_accessor :description, :status, :dataset
 
-  def initialize(params = {})
-    @description_filter = DescriptionFilter.new(params.fetch('description', nil))
-    @status_filter = StatusFilter.new(params.fetch('status', '0'))
+  def initialize(params = {}, dataset)
+    @description = params.fetch('description', nil)
+    @status = parse_status(params.fetch('status', '0'))
+    @dataset = dataset
   end
 
-  def to_sql
-    @description_filter.to_sql.&(@status_filter.to_sql)
+  def call
+    filtered = DescriptionFilter.new(description, dataset).call
+    StatusFilter.new(status, filtered).call
+  end
+
+  private
+
+  def parse_status(status)
+    case status
+    when '0' then false
+    when '1' then true
+    end
   end
 end
