@@ -31,17 +31,38 @@ class TaskFilter
     end
   end
 
-  attr_accessor :description, :status, :dataset
+  class TagsFilter
+    def initialize(tags, dataset)
+      @tags = tags
+      @dataset = dataset
+    end
+
+    def call
+      subqueries = @tags.map do |tag|
+        Tag.where(name: tag).select(:task_id)
+      end
+
+      subqueries.each do |subquery|
+        @dataset = @dataset.where(id: subquery)
+      end
+
+      @dataset
+    end
+  end
+
+  attr_accessor :description, :status, :tags, :dataset
 
   def initialize(params = {}, dataset)
     @description = params.fetch('description', nil)
     @status = parse_status(params.fetch('status', '0'))
+    @tags = parse_tags(params.fetch('tags', ''))
     @dataset = dataset
   end
 
   def call
     filtered = DescriptionFilter.new(description, dataset).call
-    StatusFilter.new(status, filtered).call
+    filtered = StatusFilter.new(status, filtered).call
+    TagsFilter.new(tags, filtered).call
   end
 
   private
@@ -51,5 +72,9 @@ class TaskFilter
     when '0' then false
     when '1' then true
     end
+  end
+
+  def parse_tags(tags)
+    tags.split(',').map(&:strip)
   end
 end

@@ -1,7 +1,6 @@
 <div class="col-sm-12">
   <div id="task-filter" class="well well-sm task-filter">
     <form class='form-inline filter-form' action="<%= form_path %>" method="get">
-
       <div class="form-group">
         <label for="status">Status</label>
         <label class="radio-inline">
@@ -14,9 +13,15 @@
           <input type="radio" name="status" <%= "checked" if filter.status.nil? %>> All
         </label>
       </div>
+
       <div class="form-group">
         <label for="description">Description</label>
         <input class="form-control" type="text" name="description" placeholder="Description" value="<%= filter.description %>"/>
+      </div>
+
+      <div class="form-group">
+        <label for="tags">Tags</label>
+        <input class="form-control" type="text" name="tags" placeholder="Tags" value="<%= filter.tags.join(', ') %>"/>
       </div>
 
       <a href="<%= form_path %>" class="btn btn-default pull-right">Reset filter</a>
