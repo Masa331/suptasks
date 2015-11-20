@@ -17,11 +17,10 @@ class TimeRecords < SimpleDelegator
   end
 
   def grouped_by_started_at
-    uniques = map(&:started_at).uniq
     uniques = map { |time_record| time_record.started_at.to_date }.uniq
 
     uniques.map do |started_at|
-      same = select { |record| record.started_at.to_date == started_at.to_date }
+      same = select { |record| record.started_at.to_date == started_at }
 
       self.class.new(same)
     end
