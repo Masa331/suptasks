@@ -7,23 +7,11 @@ class TimeRecords < SimpleDelegator
   end
 
   def grouped_by_task
-    uniques = map(&:task_id).uniq
-
-    uniques.map do |task_id|
-      same = select { |record| record.task_id == task_id }
-
-      self.class.new(same)
-    end
+    group_by(&:task_id).map { |_, v| TimeRecords.new(v) }
   end
 
   def grouped_by_started_at
-    uniques = map { |time_record| time_record.started_at.to_date }.uniq
-
-    uniques.map do |started_at|
-      same = select { |record| record.started_at.to_date == started_at }
-
-      self.class.new(same)
-    end
+    group_by { |record| record.started_at.to_date }.map { |_, v| TimeRecords.new(v) }
   end
 
   def grouped_by_dates_between(start_date, end_date)
