@@ -60,12 +60,13 @@ class TimeRecordsTest < Minitest::Test
 
     assert_equal 2, grouped.size
 
-    group1 = grouped.first
+    group1 = grouped[Date.parse('1.1.2015 12:00')]
+
     assert_instance_of TimeRecords, group1
     assert_includes group1, record1
     assert_includes group1, record2
 
-    group2 = grouped.last
+    group2 = grouped[Date.parse('2.1.2015')]
     assert_instance_of TimeRecords, group2
     assert_includes group2, record3
   end
