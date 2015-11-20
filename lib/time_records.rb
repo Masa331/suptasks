@@ -2,7 +2,7 @@ require 'delegate'
 require_relative 'time_duration'
 
 class TimeRecords < SimpleDelegator
-  def initialize(time_records)
+  def initialize(time_records = [])
     super
   end
 

@@ -25,7 +25,7 @@
     <div class="panel-body">
       <div class="graph">
         <% (start_date).upto(end_date).each do |date| %>
-          <% records = records_by_started_at[date] || TimeRecords.new([]) %>
+          <% records = records_by_started_at[date] || TimeRecords.new %>
 
           <div class="bar">
             <div class="tasks">
