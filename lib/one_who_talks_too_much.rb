@@ -23,6 +23,6 @@ module OneWhoTalksTooMuch
   end
 
   def self.comment_time_record_creation_html(time_record)
-    "<b>#{time_record.to_duration}</b> added to <b>#{time_record.task.description}</b>."
+    "<b>#{time_record.duration}</b> added to <b>#{time_record.task.description}</b>."
   end
 end

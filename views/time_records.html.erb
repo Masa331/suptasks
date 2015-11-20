@@ -104,7 +104,7 @@
                           <i class="gray">No description</i>
                         <% end %>
                       </td>
-                      <td><%= record.to_duration %>, started at <%= record.started_at.strftime("%H:%M") %></td>
+                      <td><%= record.duration %>, started at <%= record.started_at.strftime("%H:%M") %></td>
                       <td>
                         <form action="/time_records/<%= record.id %>" method="post">
                           <div class="pull-right">

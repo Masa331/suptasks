@@ -24,7 +24,7 @@ class TimeRecord < Sequel::Model
     super
   end
 
-  def to_duration
-    TimeDuration.new(duration)
+  def duration
+    TimeDuration.new(super)
   end
 end

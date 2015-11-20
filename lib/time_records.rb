@@ -39,7 +39,7 @@ class TimeRecords < SimpleDelegator
   end
 
   def total_duration
-    TimeDuration.new(inject(0) { |sum, record| sum + record.duration })
+    inject(TimeDuration.new) { |sum, record| sum + record.duration }
   end
 
   def select(&block)
