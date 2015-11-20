@@ -19,7 +19,7 @@ class Task < Sequel::Model
   end
 
   def tag_names
-    tags.map(&:name).join(', ')
+    tags.map(&:name)
   end
 
   def time_records
@@ -33,25 +33,23 @@ class Task < Sequel::Model
     end
   end
 
-  def update_tags(tag_names)
-    remove_tags_not_in_list(tag_names)
-    add_extra_tags_in_list(tag_names)
+  def update_tags(new_tag_names)
+    new_tag_names = new_tag_names.split(',').map(&:strip)
+
+    remove_tags_not_in_list(new_tag_names)
+    add_extra_tags_in_list(new_tag_names)
   end
 
-  def remove_tags_not_in_list(tag_names)
-    new_tags = tag_names.split(',').map(&:strip)
-
+  def remove_tags_not_in_list(new_tag_names)
     tags.select do |tag|
-      !new_tags.include? tag.name
+      !new_tag_names.include? tag.name
     end.each do |tag|
       tags.delete(tag).destroy
     end
   end
 
-  def add_extra_tags_in_list(tag_names)
-    new_tags = tag_names.split(',').map(&:strip)
-
-    new_tags.select do |name|
+  def add_extra_tags_in_list(new_tag_names)
+    new_tag_names.select do |name|
       !tags.map(&:name).include? name
     end.each do |name|
       add_tag(Tag.new(name: name))

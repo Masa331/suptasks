@@ -52,7 +52,7 @@
                     <% unless task.completed? %>
                       <form action="/tasks/<%= task.id %>" method="post">
                         <div class="pull-right">
-                          <input class="hide" type="text" name="tags" value="<%= task.tag_names + ',completed' %>" />
+                          <input class="hide" type="text" name="tags" value="<%= task.tag_names.join(', ') + ',completed' %>" />
                           <button class="btn btn-default btn-xs" name="submit" type="submit">
                             <i class="fa fa-check fa-lg"></i>
                           </button>

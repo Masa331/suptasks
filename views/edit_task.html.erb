@@ -15,7 +15,7 @@
 
           <div class="form-group">
             <div class="col-sm-9">
-              <input class="form-control" type="text" name="tags" placeholder="Tags" value="<%= @task.tag_names %>" />
+              <input class="form-control" type="text" name="tags" placeholder="Tags" value="<%= @task.tag_names.join(', ') %>" />
             </div>
 
             <div class="col-sm-3">
