@@ -40,7 +40,7 @@
                     <% end %>
                   </td>
                   <td>
-                    <%= task.time_spent %> / <%= task.time_cost %>
+                    <%= task.time_records.total_duration %> / <%= task.time_cost %>
 
                     <form class="time-records-form display-inline" action="/time_records" method="post">
                       <input class="hide" type="number" name="task_id" value=<%= task.id %> />

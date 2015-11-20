@@ -22,8 +22,8 @@ class Task < Sequel::Model
     tags.map(&:name).join(', ')
   end
 
-  def time_spent
-    time_records.inject(TimeDuration.new) { |sum, record| sum + record.duration }
+  def time_records
+    TimeRecords.new(super)
   end
 
   def update(params)
