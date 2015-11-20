@@ -27,12 +27,4 @@ class TimeRecord < Sequel::Model
   def to_duration
     TimeDuration.new(duration)
   end
-
-  def created_at_formated
-    created_at.strftime("%e.%-m.%Y %H:%M (UTC)")
-  end
-
-  def started_at_formated
-    started_at.strftime("%e.%-m.%Y %H:%M (UTC)")
-  end
 end
