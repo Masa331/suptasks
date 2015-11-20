@@ -37,13 +37,7 @@ class Suptasks < Roda
   plugin :flash
 
   plugin :error_handler do |e|
-    logger ||=
-      begin
-        logger = Logger.new(Configuration.log_file)
-        logger.level = Logger::ERROR
-        logger
-      end
-
+    logger ||= Logger.new(Configuration.log_file)
     logger.error(e.inspect)
 
     raise
