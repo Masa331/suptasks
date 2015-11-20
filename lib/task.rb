@@ -40,6 +40,8 @@ class Task < Sequel::Model
     add_extra_tags_in_list(new_tag_names)
   end
 
+  private
+
   def remove_tags_not_in_list(new_tag_names)
     tags.select do |tag|
       !new_tag_names.include? tag.name
