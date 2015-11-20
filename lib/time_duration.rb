@@ -1,7 +1,7 @@
 class TimeDuration
   attr_accessor :duration
 
-  def initialize(duration)
+  def initialize(duration = 0)
     @duration = duration
   end
 

@@ -23,7 +23,7 @@ class Task < Sequel::Model
   end
 
   def time_spent
-    time_records.inject(TimeDuration.new(0)) { |sum, record| sum + record.to_duration }
+    time_records.inject(TimeDuration.new) { |sum, record| sum + record.to_duration }
   end
 
   def update(params)
