@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-sm-6 col-sm-offset-3">
+  <div class="col-sm-6">
     <div class="panel panel-default">
       <div class="panel-heading">
         New task
@@ -9,23 +9,26 @@
         <form class='form-horizontal' action="/tasks" method="post">
           <div class="form-group">
             <div class="col-sm-12">
-              <input class="form-control" type="text" name="description" placeholder="Description" required/>
+              <label for="description">Description</label>
+              <input class="form-control" type="text" name="description" placeholder="buy some groceries" required autofocus/>
             </div>
           </div>
 
           <div class="form-group">
             <div class="col-sm-9">
-              <input class="form-control" type="text" name="tags" placeholder="Tags" />
+              <label for="tags">Tags</label>
+              <input class="form-control" type="text" name="tags" placeholder="health, food" />
             </div>
 
             <div class="col-sm-3">
-              <input class="form-control" type="number" name="time_cost" placeholder="Time cost" />
+              <label for="time_cost">Time Cost</label>
+              <input class="form-control" type="number" name="time_cost" placeholder="10" value="10" required/>
             </div>
           </div>
 
           <div class="form-group">
             <div class="col-sm-12">
-              <button type="submit" class="btn btn-default btn-block">Create new task</button>
+              <button type="submit" class="btn btn-success btn-block"><b>Create new task</b></button>
             </div>
           </div>
         </form>
@@ -33,4 +36,6 @@
 
     </div>
   </div>
+
+  <%= view('partials/task_settings_description.html', layout: false) %>
 </div>
