@@ -1,7 +1,7 @@
 <div class="row">
   <%= view('partials/task_filter.html', layout: false, locals: { filter: @filter, form_path: '/tasks' }) %>
 
-  <div class="col-sm-8">
+  <div class="col-sm-12">
     <div class="panel panel-default">
       <div class="panel-heading">
         <h3 class="panel-title display-inline">
@@ -19,7 +19,7 @@
           <thead>
             <tr>
               <th class="col-sm-8">Description</th>
-              <th class="col-sm-3" title="Time spent/estimated">Time s/e</th>
+              <th class="col-sm-2" title="Time spent/estimated">Time cost</th>
               <th class="col-sm-2"></th>
             </tr>
           </thead>
@@ -31,94 +31,41 @@
             <% else %>
 
               <% @tasks.each do |task| %>
-                <tr class="show-hidden-on-hover">
+                <tr>
                   <td>
                     <a class="undecorated-link" href="/tasks/<%= task.id %>"><%= "#{task.description}" %></a>
-                    &nbsp;
                     <% task.tags.each do |tag| %>
                       <span class="label label-primary"><%= tag.name %></span>
                     <% end %>
                   </td>
                   <td>
-                    <%= task.time_records.total_duration %> / <%= task.time_cost %>
-
-                    <form class="time-records-form display-inline" action="/time_records" method="post">
-                      <input class="hide" type="number" name="task_id" value=<%= task.id %> />
-                      <input class="timer-inputs hide" type="number" name="duration" value="0" required />
-                      <button type="submit" class="green unstyled-button my-hide"><span><b>+<span class="quick-timer">0</span></b></span></button>
-                    </form>
+                    <%= task.time_cost %>
                   </td>
                   <td>
-                    <% unless task.completed? %>
-                      <form action="/tasks/<%= task.id %>" method="post">
-                        <div class="pull-right">
+                    <div class="pull-right">
+                      <button id="task-<%= task.id %>" class="timer-starter timer display-inline btn btn-default btn-xs">
+                        <b></b>
+                        <i class="fa fa-clock-o fa-lg"></i>
+                      </button>
+
+                      <% unless task.completed? %>
+                        <form class="display-inline" action="/tasks/<%= task.id %>" method="post">
                           <input class="hide" type="text" name="tags" value="<%= task.tag_names.join(', ') + ',completed' %>" />
-                          <button class="btn btn-default btn-xs" name="submit" type="submit">
+                          <button class="btn btn-default btn-xs task-closer" name="submit" type="submit">
                             <i class="fa fa-check fa-lg"></i>
                           </button>
-                        </div>
-                      </form>
-                    <% end %>
+                        </form>
+                      <% end %>
+                    </div>
                   </td>
                 </tr>
               <% end %>
             <% end %>
           </tbody>
         </table>
-
       </div>
     </div>
   </div>
-
-  <div class="col-sm-4">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title display-inline">
-          Time
-        </h3>
-
-        <% if @time_records.total_duration > 0 %>
-          <span class='pull-right'>
-            total: <%= @time_records.total_duration %>
-        </span>
-      <% end %>
-    </div>
-    <div class="panel-body">
-      <div>
-        <%= view('partials/time_record_form.html', layout: false, locals: { tasks: @tasks }) %>
-      </div>
-
-      <hr />
-
-      <table class="table">
-        <thead>
-          <tr>
-            <th class="col-sm-8">Task</th>
-            <th class="col-sm-4">Duration</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% if @time_records.empty? %>
-            <tr>
-              <td class="gray text-center" colspan='2'><i>No time records today</i></td>
-            </tr>
-          <% else %>
-            <% @time_records.grouped_by_task.each do |group| %>
-              <tr>
-                <td>
-                  <% if group.first.task %>
-                    <%= group.first.task.description %>
-                  <% else %>
-                    <i class="gray">No task</i>
-                  <% end %>
-                </td>
-                <td><%= group.total_duration %></td>
-              </tr>
-            <% end %>
-          <% end %>
-        </tbody>
-      </table>
-    </div>
-  </div>
 </div>
-</div>
+
+<script src="/js/suptasks.js"></script>

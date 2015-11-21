@@ -1,68 +1,95 @@
 var Suptasks = {
-  timer: 0,
+  timer: {
+    setDuration: function(duration) { window.localStorage.setItem('suptasksDuration', duration) },
+    getDuration: function() { return Number(window.localStorage.getItem('suptasksDuration')) },
+    clearDuration: function() { return window.localStorage.removeItem('suptasksDuration') },
+    interval_id: null,
 
-  incrementTimer: function() {
-    Suptasks.timer = Suptasks.timer + 1; 
+    incrementValue: function(callback) {
+      Suptasks.timer.setDuration(Number(Suptasks.timer.getDuration()) + 1);
+      callback();
+    },
+
+    start: function(callback) {
+      Suptasks.timer.interval_id = window.setInterval(function() { Suptasks.timer.incrementValue(callback) }, 6000);
+    },
+
+    stop: function() {
+      window.clearInterval(Suptasks.timer.interval_id);
+
+      var value = Suptasks.timer.getDuration();
+      Suptasks.timer.setDuration(0);
+      return value;
+    }
   },
 
-  updateView: function() {
-    var inputs = document.getElementsByClassName('timer-inputs');
-    for (i = 0; i < inputs.length; i++) {
-      inputs[i].value = Suptasks.timer;
+  task: {
+    setId: function(id) { window.localStorage.setItem('suptasksTaskId', id) },
+    getId: function() { return window.localStorage.getItem('suptasksTaskId') },
+    clearId: function() { return window.localStorage.removeItem('suptasksTaskId') },
+
+    submitTime: function(time) {
+      var http = new XMLHttpRequest();
+      var params = "task_id=" + Suptasks.task.getId().split('-')[1] + "&duration=" + time;
+      http.open("POST", "time_records", true);
+
+      http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      http.setRequestHeader("Content-length", params.length);
+      http.setRequestHeader("Connection", "close");
+
+      http.send(params);
+    }
+  },
+
+  toggleTimer: function() {
+    var newTaskId = this.id;
+
+    if (Suptasks.task.getId() == null) {
+      Suptasks.startTimer(newTaskId);
+    } else if(Suptasks.task.getId() == newTaskId) {
+      Suptasks.stopTimer();
+    } else {
+      Suptasks.stopTimer();
+      Suptasks.startTimer(newTaskId);
     };
-
-    var quickTimers = document.getElementsByClassName('quick-timer');
-    for (i = 0; i < quickTimers.length; i++) {
-      quickTimers[i].innerHTML = Suptasks.timer;
-    };
   },
 
-  updateTimerStore: function() {
-    sessionStorage.setItem('suptasks_timer', Suptasks.timer);
+  startTimer: function(taskId) {
+    Suptasks.timer.start(function() {
+      document.getElementById(taskId).children[0].innerHTML = Suptasks.timer.getDuration();
+    });
+    Suptasks.task.setId(taskId);
+    document.getElementById(taskId).classList.add('green');
+    document.getElementById(taskId).children[0].innerHTML = Suptasks.timer.getDuration();
   },
 
-  stopWatchIntervalFunction: function() {
-    Suptasks.incrementTimer();
-    Suptasks.updateTimerStore();
-    Suptasks.updateView();
-  },
-
-  startStopWatch: function() {
-    stopWatch = window.setInterval(function() { Suptasks.stopWatchIntervalFunction() }, 60000);
-  },
-
-  clearTimerStore: function() {
-    sessionStorage.removeItem('suptasks_timer');
-  },
-
-  renewStopWatchFromStore: function() {
-    if (sessionStorage.getItem('suptasks_timer')) {
-      Suptasks.timer = ~~sessionStorage.getItem('suptasks_timer');
-    };
-  },
-
-  resetStopWatch: function() {
-    Suptasks.timer = 0;
-    sessionStorage.removeItem('suptasks_timer');
-    Suptasks.updateView();
+  stopTimer: function() {
+    document.getElementById(Suptasks.task.getId()).classList.remove('green');
+    document.getElementById(Suptasks.task.getId()).children[0].innerHTML = '';
+    Suptasks.task.submitTime(Suptasks.timer.stop());
+    Suptasks.task.clearId();
   }
 };
 
-
 window.onload = function() {
-  Suptasks.renewStopWatchFromStore();
-  Suptasks.updateView();
-  Suptasks.startStopWatch();
-
-  var timerForms = document.getElementsByClassName('time-records-form');
-  if (timerForms.length > 0) {
-    for (i = 0; i < timerForms.length; i++) {
-      timerForms[i].addEventListener('submit', Suptasks.clearTimerStore);
+  var timerStarters = document.getElementsByClassName('timer-starter');
+  if (timerStarters.length > 0) {
+    for (i = 0; i < timerStarters.length; i++) {
+      timerStarters[i].addEventListener('click', Suptasks.toggleTimer);
     };
   };
 
-  var durationReset = document.getElementById('duration-reset');
-  if (durationReset) {
-    durationReset.addEventListener('click', Suptasks.resetStopWatch);
+  var taskClosers = document.getElementsByClassName('task-closer');
+  if (taskClosers.length > 0) {
+    for (i = 0; i < taskClosers.length; i++) {
+      taskClosers[i].addEventListener('click', Suptasks.stopTimer);
+    };
+  };
+
+  if (Suptasks.task.getId() && document.getElementById(Suptasks.task.getId())) {
+    Suptasks.startTimer(Suptasks.task.getId());
+  } else {
+    Suptasks.timer.clearDuration();
+    Suptasks.task.clearId();
   };
 };

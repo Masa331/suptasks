@@ -66,12 +66,28 @@ ul.nav {
   padding-top: 6px;
 }
 
+.timer-starter {
+  cursor: pointer;
+}
+
+.timer-starter b {
+  color: inherit;
+}
+
+.timer-starter i {
+  color: inherit;
+}
+
 /* ######## */
 /* Helpers */
 /* ######## */
 
 .bold {
   font-weight: bold;
+}
+
+.margin-left {
+  margin-left: 2px;
 }
 
 .text-center {
@@ -110,11 +126,6 @@ ul.nav {
   color: green;
 }
 
-/* Bootstrapt's hide has !important for some reason in it */
-.my-hide {
-  display: none;
-}
-
 .unstyled-button {
   border: none;
   background: white
@@ -129,9 +140,4 @@ ul.nav {
 .btn-linklike:hover, .btn-linklike:focus  {
   color: #23527C;
   text-decoration: underline;
-}
-
-/* Bootstrapt's hide has !important for some reason in it */
-.show-hidden-on-hover:hover .my-hide {
-  display: inline;
 }
