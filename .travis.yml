@@ -1,5 +1,6 @@
+sudo: false
 language: ruby
 rvm:
-  - 2.2.3
+  - 2.2
 script:
   - bundle exec ruby test/all_test_runner.rb
