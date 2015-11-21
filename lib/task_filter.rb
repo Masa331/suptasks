@@ -1,7 +1,7 @@
 require 'sequel'
 
 class TaskFilter
-  class DescriptionFilter
+  class FilterByDescription
     def initialize(dataset, description)
       @dataset = dataset
       @description = description
@@ -16,7 +16,7 @@ class TaskFilter
     end
   end
 
-  class StatusFilter
+  class FilterByStatus
     def initialize(dataset, status)
       @dataset = dataset
       @status = status
@@ -33,22 +33,36 @@ class TaskFilter
     end
   end
 
-  class TagsFilter
+  class FilterByTags
     def initialize(dataset, tags)
       @dataset = dataset
       @tags = tags
     end
 
     def call
-      subqueries = @tags.map do |tag|
-        Tag.where(name: tag).select(:task_id)
-      end
+      searched_tags = @tags.select { |tag| !tag.start_with?('-') }
+      unwanted_tags = (@tags - searched_tags).map { |tag| tag[1..-1] }
 
-      subqueries.each do |subquery|
-        @dataset = @dataset.where(id: subquery)
-      end
+      filtered = with_tags(@dataset, searched_tags)
+      without_tags(filtered, unwanted_tags)
+    end
 
-      @dataset
+    private
+
+    def with_tags(dataset, tags)
+      subqueries = subqueries(tags)
+
+      subqueries(tags).reduce(dataset) { |dataset, subquery| dataset.where(id: subquery) }
+    end
+
+    def without_tags(dataset, tags)
+      subqueries = subqueries(tags)
+
+      subqueries.reduce(dataset) { |dataset, subquery| dataset.exclude(id: subquery) }
+    end
+
+    def subqueries(tags)
+      tags.map { |tag| Tag.where(name: tag).select(:task_id) }
     end
   end
 
@@ -62,9 +76,9 @@ class TaskFilter
   end
 
   def call
-    filtered = DescriptionFilter.new(dataset, description).call
-    filtered = StatusFilter.new(filtered, status).call
-    TagsFilter.new(filtered, tags).call
+    filtered = FilterByDescription.new(dataset, description).call
+    filtered = FilterByStatus.new(filtered, status).call
+    FilterByTags.new(filtered, tags).call
   end
 
   private
