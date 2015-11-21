@@ -106,7 +106,7 @@ class Suptasks < Roda
           end
 
           r.get do
-            @time_records = TimeRecords.new(@task.time_records)
+            @time_records = @task.time_records
 
             view('task.html')
           end
