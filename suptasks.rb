@@ -17,7 +17,6 @@ require_relative 'lib/time_record'
 require_relative 'lib/task_params_sanitizer'
 require_relative 'lib/time_record_params_sanitizer'
 require_relative 'lib/tag'
-require_relative 'lib/user'
 require_relative 'lib/time_records'
 require_relative 'lib/time_records_pager'
 require_relative 'lib/time_duration'
@@ -44,13 +43,10 @@ class Suptasks < Roda
   end
 
   route do |r|
-    @current_user =
-      if session[:user_email] && session[:user_name]
-        User.new(email: session[:user_email], name: session[:user_name])
-      end
+    @current_email = session[:user_email]
 
     r.root do
-      if @current_user
+      if @current_email
         r.redirect '/tasks'
       else
         @databases_count = DatabaseManager.all_databases.count
@@ -89,14 +85,14 @@ class Suptasks < Roda
     #
     # Authentication
     #
-    unless @current_user
+    unless @current_email
       r.redirect '/'
     end
     #
     #
     #
 
-    DB.with_server(DatabaseManager.database_name_from_email(@current_user.email).to_sym) do
+    DB.with_server(DatabaseManager.database_name_from_email(@current_email).to_sym) do
       r.on 'tasks' do
         r.get 'new' do
           view('new_task.html')
