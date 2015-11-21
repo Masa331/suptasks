@@ -68,17 +68,20 @@ class TaskFilter
 
   attr_accessor :description, :status, :tags, :dataset
 
+  DEFAULT_STATUS = false
+
   def initialize(dataset, params = {})
     @dataset = dataset
-    @description = params.fetch('description', nil)
-    @status = parse_status(params.fetch('status', '0'))
+    @description = params['description']
+    @status = parse_status(params['status']) || DEFAULT_STATUS
     @tags = parse_tags(params.fetch('tags', ''))
   end
 
   def call
     filtered = FilterByDescription.new(dataset, description).call
     filtered = FilterByStatus.new(filtered, status).call
-    FilterByTags.new(filtered, tags).call
+
+    FilterByTags.new(filtered, searched_tags).call
   end
 
   private
@@ -92,5 +95,13 @@ class TaskFilter
 
   def parse_tags(tags)
     tags.split(',').map(&:strip)
+  end
+
+  def searched_tags
+    if tags.empty? && description.nil? && status == DEFAULT_STATUS
+      ['-hide']
+    else
+      tags
+    end
   end
 end
