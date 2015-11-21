@@ -120,7 +120,7 @@ class Suptasks < Roda
 
         r.is do
           r.get do
-            @filter = TaskFilter.new(r.params, Task.select_all)
+            @filter = TaskFilter.new(Task.select_all, r.params)
             @tasks = @filter.call.order(:time_cost).all
             @time_records = TimeRecords.new(TimeRecord.today.where(task_id: @tasks.map(&:id)).all)
 
@@ -140,7 +140,7 @@ class Suptasks < Roda
 
       r.on 'time_records' do
         r.get do
-          @filter = TaskFilter.new(r.params, Task.select_all)
+          @filter = TaskFilter.new(Task.select_all, r.params)
           tasks = @filter.call.order(:time_cost).all
 
           pager = TimeRecordsPager.new(TimeRecord.where(task_id: tasks.map(&:id))).by_number_of_days(23)

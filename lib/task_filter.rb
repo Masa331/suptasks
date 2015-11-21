@@ -2,9 +2,9 @@ require 'sequel'
 
 class TaskFilter
   class DescriptionFilter
-    def initialize(description, dataset)
-      @description = description
+    def initialize(dataset, description)
       @dataset = dataset
+      @description = description
     end
 
     def call
@@ -17,9 +17,9 @@ class TaskFilter
   end
 
   class StatusFilter
-    def initialize(status, dataset)
-      @status = status
+    def initialize(dataset, status)
       @dataset = dataset
+      @status = status
     end
 
     def call
@@ -34,9 +34,9 @@ class TaskFilter
   end
 
   class TagsFilter
-    def initialize(tags, dataset)
-      @tags = tags
+    def initialize(dataset, tags)
       @dataset = dataset
+      @tags = tags
     end
 
     def call
@@ -54,17 +54,17 @@ class TaskFilter
 
   attr_accessor :description, :status, :tags, :dataset
 
-  def initialize(params = {}, dataset)
+  def initialize(dataset, params = {})
+    @dataset = dataset
     @description = params.fetch('description', nil)
     @status = parse_status(params.fetch('status', '0'))
     @tags = parse_tags(params.fetch('tags', ''))
-    @dataset = dataset
   end
 
   def call
-    filtered = DescriptionFilter.new(description, dataset).call
-    filtered = StatusFilter.new(status, filtered).call
-    TagsFilter.new(tags, filtered).call
+    filtered = DescriptionFilter.new(dataset, description).call
+    filtered = StatusFilter.new(filtered, status).call
+    TagsFilter.new(filtered, tags).call
   end
 
   private
