@@ -22,7 +22,7 @@
 
             <div class="col-sm-3">
               <label for="time_cost">Time Cost</label>
-              <input class="form-control" type="number" name="time_cost" placeholder="10" value="<%= @task.time_cost %>" required/>
+              <input class="form-control" type="number" name="time_cost" placeholder="10" value="<%= @task.time_cost.to_i %>" required/>
             </div>
           </div>
 
