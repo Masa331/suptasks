@@ -27,7 +27,7 @@ class Suptasks < Roda
   use Rack::Session::Cookie, { secret: Configuration.cookie_secret }
 
   use OmniAuth::Builder do
-    provider :google_oauth2, Configuration.google_client_id, Configuration.google_client_secret
+    provider :google_oauth2, Configuration.google_client_id, Configuration.google_client_secret, { skip_jwt: true }
   end
 
   plugin :static, ['/images', '/css', '/js']
