@@ -21,8 +21,4 @@ module OneWhoTalksTooMuch
 
     [base_comment, tags_comment, 'created!', time_est_comment].compact.join(' ')
   end
-
-  def self.comment_time_record_creation_html(time_record)
-    "<b>#{time_record.duration}</b> added to <b>#{time_record.task.description}</b>."
-  end
 end

@@ -7,57 +7,57 @@
 
   <div class="col-sm-12">
     <div class="panel panel-default">
-
       <div class="panel-heading">
         <%= start_date.strftime('%-d.%-m.%Y') %> - <%= end_date.strftime('%-d.%-m.%Y') %>
 
-      <div class="time_records_pagination pull-right">
-        <% 1.upto(@number_of_pages).reverse_each do |page| %>
-          <% if page != @current_page %>
-            <a href="/time_records?page=<%= page %>"><%= page %></a>
-          <% else %>
-            <b><%= page %></b>
+        <div class="time_records_pagination pull-right">
+          <% 1.upto(@number_of_pages).reverse_each do |page| %>
+            <% if page != @current_page %>
+              <a href="/time_records?page=<%= page %>"><%= page %></a>
+            <% else %>
+              <b><%= page %></b>
+            <% end %>
           <% end %>
-        <% end %>
+        </div>
       </div>
-    </div>
 
-    <div class="panel-body">
-      <div class="graph">
-        <% (start_date).upto(end_date).each do |date| %>
-          <% records = records_by_started_at[date] || TimeRecords.new %>
+      <div class="panel-body">
+        <div class="graph">
+          <% (start_date).upto(end_date).each do |date| %>
+            <% records = records_by_started_at[date] || TimeRecords.new %>
 
-          <div class="bar">
-            <div class="tasks">
-              <% blank_chart_hight = 288 - (records.total_duration.duration.to_f / 2.5) %>
-              <div class="task white-background" style="height: <%= blank_chart_hight %>px;">
+            <div class="bar">
+              <div class="tasks">
+                <% blank_chart_hight = 288 - (records.total_duration.duration.to_f / 2.5) %>
+                <div class="task white-background" style="height: <%= blank_chart_hight %>px;">
+                </div>
+
+                <% records.grouped_by_task.each_with_index do |records_by_task, index| %>
+                  <% height = (records_by_task.total_duration.duration.to_f / 2.5) %>
+                  <% background = index.even? ? 'grey-background1' : 'grey-background2' %>
+                  <% title = "#{records_by_task.first.task.description} &#013; #{records_by_task.total_duration}" %>
+
+                  <div class="task <%= background %>" style="height: <%= height %>px;" title="<%= title %>">
+                  </div>
+                <% end %>
               </div>
 
-              <% records.grouped_by_task.each_with_index do |records_by_task, index| %>
-                <% height = (records_by_task.total_duration.duration.to_f / 2.5) %>
-                <% background = index.even? ? 'grey-background1' : 'grey-background2' %>
-                <% title = "#{records_by_task.first.task.description} &#013; #{records_by_task.total_duration}" %>
-
-                <div class="task <%= background %>" style="height: <%= height %>px;" title="<%= title %>"></div>
-              <% end %>
+              <div class="bar-meta">
+                <span>
+                  <%= date.strftime('%-d.%-m') %>
+                </span>
+                <span class="bar-meta-submeta">
+                  <i><%= date.strftime('%a') %></i>
+                </span>
+              </div>
             </div>
+          <% end %>
+        </div>
 
-            <div class="bar-meta">
-              <span>
-                <%= date.strftime('%-d.%-m') %>
-              </span>
-              <span class="bar-meta-submeta">
-                <i><%= date.strftime('%a') %></i>
-              </span>
-            </div>
-          </div>
-        <% end %>
+        <br />
       </div>
-
-      <br />
     </div>
   </div>
-</div>
 </div>
 
 <div class="row">
@@ -65,65 +65,64 @@
     <div class="panel panel-default">
       <div class="panel-heading">
         <%= start_date.strftime('%-d.%-m.%Y') %> - <%= end_date.strftime('%-d.%-m.%Y') %>
-    </div>
+      </div>
 
-    <div class="panel-body">
-      <% records_by_started_at.each_pair do |date, records| %>
-        <h3><%= date.strftime('%-d.%-m.%Y') %> - <%= date.strftime('%A') %>, <%= records.total_duration %></h3>
+      <div class="panel-body">
+        <% records_by_started_at.each_pair do |date, records| %>
+          <h3><%= date.strftime('%-d.%-m.%Y') %> - <%= date.strftime('%A') %>, <%= records.total_duration %></h3>
 
-        <table class="table">
-          <thead>
-            <tr>
-              <th class="col-sm-5">Task</th>
-              <th class="col-sm-2">Duration</th>
-              <th class="col-sm-2"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <% grouped_by_task = records.grouped_by_task %>
-            <% grouped_by_task.each do |group| %>
+          <table class="table">
+            <thead>
               <tr>
-                <td>
-                  <b>
-                    <% if group.first.task %>
-                      <a href="/tasks/<%= group.first.task.id%>" class="undecorated-link"><%= group.first.task.description %></a>
-                    <% else %>
-                      <i class="gray">No task</i>
-                    <% end %>
-                  </b>
-                </td>
-                <td><b><%= group.total_duration %></b></td>
-                <td></td>
+                <th class="col-sm-5">Task</th>
+                <th class="col-sm-2">Duration</th>
+                <th class="col-sm-2"></th>
               </tr>
-
-              <% group.each do |record| %>
+            </thead>
+            <tbody>
+              <% grouped_by_task = records.grouped_by_task %>
+              <% grouped_by_task.each do |group| %>
                 <tr>
                   <td>
-                    <% if record.description %>
-                      <i><%= record.description %></i>
-                    <% else %>
-                      <i class="gray">No description</i>
-                    <% end %>
+                    <b>
+                      <% if group.first.task %>
+                        <a href="/tasks/<%= group.first.task.id%>" class="undecorated-link"><%= group.first.task.description %></a>
+                      <% else %>
+                        <i class="gray">No task</i>
+                      <% end %>
+                    </b>
                   </td>
-                  <td><%= record.duration %>, started at <%= record.started_at.strftime("%H:%M") %></td>
-                  <td>
-                    <form action="/time_records/<%= record.id %>" method="post">
-                      <div class="pull-right">
-                        <button class="btn btn-default btn-xs" name="_delete_button" type="submit" value="true">
-                          <i class="fa fa-trash fa-lg"></i>
-                        </button>
-                      </div>
-                    </form>
-                  </td>
+                  <td><b><%= group.total_duration %></b></td>
+                  <td></td>
                 </tr>
-              <% end %>
-            <% end %>
-          </tbody>
-        </table>
-        <hr />
-      <% end %>
 
+                <% group.each do |record| %>
+                  <tr>
+                    <td>
+                      <% if record.description %>
+                        <i><%= record.description %></i>
+                      <% else %>
+                        <i class="gray">No description</i>
+                      <% end %>
+                    </td>
+                    <td><%= record.duration %>, started at <%= record.started_at.strftime("%H:%M") %></td>
+                    <td>
+                      <form action="/time_records/<%= record.id %>" method="post">
+                        <div class="pull-right">
+                          <button class="btn btn-default btn-xs" name="_delete_button" type="submit" value="true">
+                            <i class="fa fa-trash fa-lg"></i>
+                          </button>
+                        </div>
+                      </form>
+                    </td>
+                  </tr>
+                <% end %>
+              <% end %>
+            </tbody>
+          </table>
+          <hr />
+        <% end %>
+      </div>
     </div>
   </div>
-</div>
 </div>

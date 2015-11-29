@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-sm-8">
+  <div class="col-sm-12">
     <div class="panel panel-default">
       <div class="panel-heading">
         <h3 class="panel-title display-inline">
@@ -34,54 +34,73 @@
       </div>
     </div>
   </div>
+</div>
 
-  <div class="col-sm-4">
+<div class="row">
+  <div class="col-sm-12">
     <div class="panel panel-default">
       <div class="panel-heading">
         <h3 class="panel-title display-inline">
-          Time
+          Time Records
         </h3>
-
-        <% if @time_records.total_duration > 0 %>
-          <span class='pull-right'>
-            total: <%= @time_records.total_duration %>
-          </span>
-        <% end %>
       </div>
+
       <div class="panel-body">
-        <div>
-          <%= view('partials/time_record_form.html', layout: false, locals: { tasks: [@task] }) %>
-        </div>
+        <% records_by_started_at = @time_records.sort_by(&:started_at).reverse.grouped_by_started_at %>
+        <% records_by_started_at.each_pair do |date, records| %>
+          <h3><%= date.strftime('%-d.%-m.%Y') %> - <%= date.strftime('%A') %>, <%= records.total_duration %></h3>
 
-        <hr />
-
-        <table class="table">
-          <thead>
-            <tr>
-              <th class="col-sm-5">Task</th>
-              <th class="col-sm-5">Duration</th>
-              <th class="col-sm-2"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <% @time_records.each do |record| %>
+          <table class="table">
+            <thead>
               <tr>
-                <td><%= record.task_id %></td>
-                <td><%= record.duration %></td>
-
-                <td>
-                  <form action="/time_records/<%= record.id %>" method="post">
-                    <div class="pull-right">
-                    <button class="btn btn-default btn-xs" name="_delete_button" type="submit" value="true">
-                      <i class="fa fa-trash fa-lg"></i>
-                    </button>
-                    </div>
-                  </form>
-                </td>
+                <th class="col-sm-5">Task</th>
+                <th class="col-sm-2">Duration</th>
+                <th class="col-sm-2"></th>
               </tr>
-            <% end %>
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              <% grouped_by_task = records.grouped_by_task %>
+              <% grouped_by_task.each do |group| %>
+                <tr>
+                  <td>
+                    <b>
+                      <% if group.first.task %>
+                        <a href="/tasks/<%= group.first.task.id%>" class="undecorated-link"><%= group.first.task.description %></a>
+                      <% else %>
+                        <i class="gray">No task</i>
+                      <% end %>
+                    </b>
+                  </td>
+                  <td><b><%= group.total_duration %></b></td>
+                  <td></td>
+                </tr>
+
+                <% group.each do |record| %>
+                  <tr>
+                    <td>
+                      <% if record.description %>
+                        <i><%= record.description %></i>
+                      <% else %>
+                        <i class="gray">No description</i>
+                      <% end %>
+                    </td>
+                    <td><%= record.duration %>, started at <%= record.started_at.strftime("%H:%M") %></td>
+                    <td>
+                      <form action="/time_records/<%= record.id %>" method="post">
+                        <div class="pull-right">
+                          <button class="btn btn-default btn-xs" name="_delete_button" type="submit" value="true">
+                            <i class="fa fa-trash fa-lg"></i>
+                          </button>
+                        </div>
+                      </form>
+                    </td>
+                  </tr>
+                <% end %>
+              <% end %>
+            </tbody>
+          </table>
+          <hr />
+        <% end %>
       </div>
     </div>
   </div>

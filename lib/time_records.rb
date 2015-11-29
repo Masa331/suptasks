@@ -26,4 +26,12 @@ class TimeRecords < SimpleDelegator
       super
     end
   end
+
+  def sort_by(&block)
+    TimeRecords.new(__getobj__.sort_by(&block))
+  end
+
+  def reverse
+    TimeRecords.new(__getobj__.reverse)
+  end
 end

@@ -165,9 +165,6 @@ class Suptasks < Roda
 
         r.post do
           time_record = TimeRecord.create(TimeRecordParamsSanitizer.new(r.params).call)
-          msg = OneWhoTalksTooMuch.comment_time_record_creation_html(time_record)
-
-          flash['success'] = msg
 
           r.redirect('/')
         end
