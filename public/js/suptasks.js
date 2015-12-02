@@ -11,7 +11,7 @@ var Suptasks = {
     },
 
     start: function(callback) {
-      Suptasks.timer.interval_id = window.setInterval(function() { Suptasks.timer.incrementValue(callback) }, 6000);
+      Suptasks.timer.interval_id = window.setInterval(function() { Suptasks.timer.incrementValue(callback) }, 60000);
     },
 
     stop: function() {
