@@ -1,6 +1,6 @@
 <% start_date = Date.today - ((23 * @current_page) - 1) %>
 <% end_date = start_date + (23 - 1) %>
-<% records_by_started_at = @time_records.grouped_by_started_at %>
+<% records_by_started_at = @time_records.reverse.grouped_by_started_at %>
 
 <div class="row">
   <div class="col-sm-12">
