@@ -34,6 +34,7 @@ class Suptasks < Roda
   plugin :render, layout: 'layout.html'
   plugin :head
   plugin :flash
+  plugin :param_matchers
 
   plugin :error_handler do |e|
     logger ||= Logger.new(Configuration.log_file)
