@@ -3,7 +3,11 @@
 <% records_by_started_at = @time_records.grouped_by_started_at %>
 
 <div class="row">
-  <%= view('partials/task_filter.html', layout: false, locals: { filter: @filter, form_path: '/time_records' }) %>
+  <div class="col-sm-12">
+    <div id="task-filter" class="well well-sm task-filter">
+      <%= view('partials/task_filter.html', layout: false, locals: { filter: @filter, form_path: '/time_records' }) %>
+    </div>
+  </div>
 
   <div class="col-sm-12">
     <div class="panel panel-default">

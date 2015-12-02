@@ -1,16 +1,9 @@
 <div class="row">
-  <%= view('partials/task_filter.html', layout: false, locals: { filter: @filter, form_path: '/tasks' }) %>
 
   <div class="col-sm-12">
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title display-inline">
-          Tasks
-        </h3>
-
-        <span class='pull-right'>
-          <a href="/tasks/new">New task</a>
-        </span>
+        <%= view('partials/task_filter.html', layout: false, locals: { filter: @filter, form_path: '/tasks' }) %>
       </div>
 
       <div class="panel-body">
