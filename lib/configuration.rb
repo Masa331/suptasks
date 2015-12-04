@@ -1,6 +1,6 @@
 class Configuration
   def self.db_dir
-    "db/"
+    'db/'
   end
 
   def self.log_file
