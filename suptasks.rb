@@ -14,8 +14,7 @@ require_relative 'lib/database_manager'
 
 require_relative 'lib/task'
 require_relative 'lib/time_record'
-require_relative 'lib/task_params_sanitizer'
-require_relative 'lib/time_record_params_sanitizer'
+require_relative 'lib/params_sanitizers'
 require_relative 'lib/tag'
 require_relative 'lib/time_records'
 require_relative 'lib/time_records_pager'
@@ -69,7 +68,7 @@ class Suptasks < Roda
       email = session[:user_email] = auth['info']['email']
       session[:user_name] = auth['info']['name']
 
-      unless DatabaseManager.all_databases.find_by_name(DatabaseManager.database_name_from_email(email))
+      unless DatabaseManager.all_databases.find { |database| database.name == DatabaseManager.database_name_from_email(email) }
         DatabaseManager.create_database_for_email(email)
 
         DB.add_servers(DatabaseManager.servers_hash)
@@ -144,7 +143,7 @@ class Suptasks < Roda
           @filter = TaskFilter.new(Task.select_all, r.params)
           tasks = @filter.call.order(:time_cost).all
 
-          pager = TimeRecordsPager.new(TimeRecord.where(task_id: tasks.map(&:id))).by_number_of_days(23)
+          pager = TimeRecordsPager.by_number_of_days(TimeRecord.where(task_id: tasks.map(&:id)), 23)
 
           @number_of_pages = pager.size
           @current_page    = (r.params['page'] || 1).to_i

@@ -2,7 +2,7 @@ require 'sequel'
 require 'pathname'
 
 class Database
-  attr_accessor :path
+  attr_reader :path
 
   def initialize(path)
     @path = Pathname.new(path)

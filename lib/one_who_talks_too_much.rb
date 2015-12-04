@@ -5,7 +5,6 @@ module OneWhoTalksTooMuch
   # Creates a flash message including html tags for displaying to user
   def self.comment_task_creation_html(task)
     base_comment = "<b>#{task.description}</b>"
-
     tags_comment = time_est_comment = ''
 
     if task.tags.any?

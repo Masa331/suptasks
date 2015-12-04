@@ -1,5 +1,5 @@
-require_relative "test_helper"
-require_relative "../lib/task_params_sanitizer"
+require_relative 'test_helper'
+require_relative '../lib/params_sanitizers'
 
 class TaskParamsSanitizerTest < Minitest::Test
   def test_permittes_only_selected_params

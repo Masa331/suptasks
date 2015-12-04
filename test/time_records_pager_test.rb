@@ -6,8 +6,7 @@ require_relative "../lib/time_records"
 
 class TimeRecordsPagerTest < Minitest::Test
   def test_at_least_one_page_is_returned
-    pager = TimeRecordsPager.new(TimeRecord.select_all)
-    paged = pager.by_number_of_days(1)
+    paged = TimeRecordsPager.by_number_of_days(TimeRecord.select_all, 1)
 
     assert_instance_of Array, paged
     assert_instance_of TimeRecords, paged.first

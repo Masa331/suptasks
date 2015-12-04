@@ -2,7 +2,6 @@ require 'sequel'
 
 require_relative 'configuration'
 require_relative 'database'
-require_relative 'databases'
 
 DB = Sequel.sqlite('db/empty_database.db', servers: {})
 DB.extension :server_block
@@ -10,24 +9,13 @@ Sequel.extension :migration
 
 module DatabaseManager
   def self.all_databases
-    databases = Dir.glob("#{Configuration.db_dir}*").map do |path|
+    Dir.glob("#{Configuration.db_dir}*").map do |path|
       Database.new(path)
     end
-
-    Databases.new(databases)
-  end
-
-  def self.servers_hash
-    servers = {}
-    all_databases.each do |db|
-      servers[db.name.to_sym] = { database: db.path.to_s }
-    end
-    servers
   end
 
   def self.create_database_for_email(email)
-    db_name = database_name_from_email(email)
-    path_to_database = Configuration.db_dir + db_name + ".db"
+    path_to_database = Configuration.db_dir + database_name_from_email(email) + '.db'
 
     db = Sequel.sqlite(path_to_database)
 
@@ -35,7 +23,13 @@ module DatabaseManager
   end
 
   def self.database_name_from_email(email)
-    email.delete('@').delete('.')
+    email.delete('@.')
+  end
+
+  def self.servers_hash
+    all_databases.each_with_object({}) do |db, hash|
+      hash[db.name.to_sym] = { database: db.path.to_s }
+    end
   end
 end
 

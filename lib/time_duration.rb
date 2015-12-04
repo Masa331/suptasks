@@ -1,5 +1,5 @@
 class TimeDuration
-  attr_accessor :duration
+  attr_reader :duration
 
   def initialize(duration = 0)
     @duration = duration
@@ -36,7 +36,7 @@ class TimeDuration
         "#{hours}h"
       end
     else
-      duration.to_s + "m"
+      duration.to_s + 'm'
     end
   end
 end
