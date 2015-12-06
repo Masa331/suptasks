@@ -69,12 +69,13 @@ class TaskFilter
   attr_accessor :description, :status, :tags, :dataset
 
   DEFAULT_STATUS = 'uncomplete'
+  DEFAULT_TAGS = '-hide'
 
   def initialize(dataset, params = {})
     @dataset = dataset
     @description = params['description']
     @status = params['status'] || DEFAULT_STATUS
-    @tags = parse_tags(params.fetch('tags', '-hide'))
+    @tags = parse_tags(params.fetch('tags', DEFAULT_TAGS))
   end
 
   def call
