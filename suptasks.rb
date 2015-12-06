@@ -19,7 +19,7 @@ require_relative 'lib/tag'
 require_relative 'lib/time_records'
 require_relative 'lib/time_records_pager'
 require_relative 'lib/time_duration'
-require_relative 'lib/one_who_talks_too_much'
+require_relative 'lib/created_task_flash_message'
 require_relative 'lib/task_filter'
 
 class Suptasks < Roda
@@ -129,9 +129,7 @@ class Suptasks < Roda
 
           r.post do
             task = Task.create(TaskParamsSanitizer.new(r.params).call)
-            msg = OneWhoTalksTooMuch.comment_task_creation_html(task)
-
-            flash['success'] = msg
+            flash['success'] = CreatedTaskFlashMessage.new(task).to_s
 
             r.redirect('/')
           end
