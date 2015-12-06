@@ -2,18 +2,24 @@
 #   with only params which are permitted. It's similar to Rails permitted params
 
 module BaseParamsSanitizer
+  def self.included(klass)
+    klass.extend ClassMethods
+  end
+
   attr_reader :params
 
   def initialize(params)
     @params = params
   end
 
-  def self.call(params)
-    new(params).call
-  end
-
   def call
     params.keep_if { |key, _| permitted_keys.include? key }
+  end
+
+  module ClassMethods
+    def call(params)
+      new(params).call
+    end
   end
 end
 
