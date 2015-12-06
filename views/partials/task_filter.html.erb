@@ -2,13 +2,13 @@
   <div class="form-group">
     <label for="status">Status</label>
     <label class="radio-inline">
-      <input type="radio" name="status" value="1" <%= "checked" if filter.status %>> Complete
+      <input type="radio" name="status" value="complete" <%= "checked" if filter.status == 'complete' %>> Complete
     </label>
     <label class="radio-inline">
-      <input type="radio" name="status" value="0" <%= "checked" unless filter.status %>> Uncomplete
+      <input type="radio" name="status" value="uncomplete" <%= "checked" if filter.status == 'uncomplete' %>> Uncomplete
     </label>
     <label class="radio-inline">
-      <input type="radio" name="status" <%= "checked" if filter.status.nil? %>> All
+      <input type="radio" name="status" value="all" <%= "checked" if filter.status == 'all' %>> All
     </label>
   </div>
 

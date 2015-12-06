@@ -23,9 +23,9 @@ class TaskFilter
     end
 
     def call
-      if @status.nil?
+      if @status == 'all'
         @dataset
-      elsif @status
+      elsif @status == 'complete'
         @dataset.where(id: Tag.where(name: 'completed').select(:task_id))
       else
         @dataset.exclude(id: Tag.where(name: 'completed').select(:task_id))
@@ -68,40 +68,25 @@ class TaskFilter
 
   attr_accessor :description, :status, :tags, :dataset
 
-  DEFAULT_STATUS = false
+  DEFAULT_STATUS = 'uncomplete'
 
   def initialize(dataset, params = {})
     @dataset = dataset
     @description = params['description']
-    @status = parse_status(params['status']) || DEFAULT_STATUS
-    @tags = parse_tags(params.fetch('tags', ''))
+    @status = params['status'] || DEFAULT_STATUS
+    @tags = parse_tags(params.fetch('tags', '-hide'))
   end
 
   def call
     filtered = FilterByDescription.new(dataset, description).call
     filtered = FilterByStatus.new(filtered, status).call
 
-    FilterByTags.new(filtered, searched_tags).call
+    FilterByTags.new(filtered, tags).call
   end
 
   private
 
-  def parse_status(status)
-    case status
-    when '0' then false
-    when '1' then true
-    end
-  end
-
   def parse_tags(tags)
     tags.split(',').map(&:strip)
-  end
-
-  def searched_tags
-    if tags.empty? && description.nil? && status == DEFAULT_STATUS
-      ['-hide']
-    else
-      tags
-    end
   end
 end
