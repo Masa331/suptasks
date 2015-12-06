@@ -32,6 +32,7 @@ footer {
   height: 330px;
   position: relative;
   width: 1108px;
+  margin-bottom: 30px;
 }
 
 .graph .bar {
