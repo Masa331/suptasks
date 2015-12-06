@@ -8,6 +8,10 @@ module BaseParamsSanitizer
     @params = params
   end
 
+  def self.call(params)
+    new(params).call
+  end
+
   def call
     params.keep_if { |key, _| permitted_keys.include? key }
   end

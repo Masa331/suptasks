@@ -112,7 +112,7 @@ class Suptasks < Roda
           end
 
           r.post do
-            @task.update(TaskParamsSanitizer.new(r.params).call)
+            @task.update(TaskParamsSanitizer.call(r.params))
 
             r.redirect("/tasks/#{@task.id}")
           end
@@ -128,7 +128,7 @@ class Suptasks < Roda
           end
 
           r.post do
-            task = Task.create(TaskParamsSanitizer.new(r.params).call)
+            task = Task.create(TaskParamsSanitizer.call(r.params))
             flash['success'] = CreatedTaskFlashMessage.new(task).to_s
 
             r.redirect('/')
@@ -161,7 +161,7 @@ class Suptasks < Roda
         end
 
         r.post do
-          time_record = TimeRecord.create(TimeRecordParamsSanitizer.new(r.params).call)
+          time_record = TimeRecord.create(TimeRecordParamsSanitizer.call(r.params))
 
           r.redirect('/')
         end
