@@ -1,3 +1,5 @@
+require 'dotenv'
+Dotenv.load
 require_relative 'test_helper'
 
 require_relative 'database_test'

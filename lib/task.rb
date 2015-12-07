@@ -1,4 +1,4 @@
-class Task < Sequel::Model
+class Task < Sequel::Model(TASK_DB[:tasks])
   one_to_many :time_records
   one_to_many :tags
 

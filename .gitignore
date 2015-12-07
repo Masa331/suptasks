@@ -1,4 +1,5 @@
 /databases/*
-/db/*.db
+/db/task_databases/databases/*
+/db/user_database/user_database
 suptasks.log*
 .env

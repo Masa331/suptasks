@@ -1,17 +1,20 @@
 $:.unshift File.dirname(__FILE__)
 
 require 'roda'
-require 'omniauth'
-require 'omniauth/google_oauth2'
+require 'sequel'
+Sequel.extension :migration
 require 'logger'
 require 'dotenv'
 Dotenv.load
 
-require_relative 'lib/configuration'
-# DatabaseManager must come first because it opens up a default
-#   Sequel connection and that is required for subclassing Sequel::Model
-require_relative 'lib/database_manager'
+CUSTOMER_DB = Sequel.sqlite(ENV['USER_DATABASE_PATH'])
 
+first_database = Dir.glob("#{ENV['TASK_DATABASES_DIR']}*").find { |f| File.file? f }
+TASK_DB = Sequel.sqlite(first_database, servers: {})
+TASK_DB.extension :arbitrary_servers
+TASK_DB.extension :server_block
+
+require_relative 'lib/database_manager'
 require_relative 'lib/task'
 require_relative 'lib/time_record'
 require_relative 'lib/params_sanitizers'
@@ -21,13 +24,10 @@ require_relative 'lib/time_records_pager'
 require_relative 'lib/time_duration'
 require_relative 'lib/created_task_flash_message'
 require_relative 'lib/task_filter'
+require_relative 'lib/user'
 
 class Suptasks < Roda
-  use Rack::Session::Cookie, { secret: Configuration.cookie_secret }
-
-  use OmniAuth::Builder do
-    provider :google_oauth2, Configuration.google_client_id, Configuration.google_client_secret, { skip_jwt: true }
-  end
+  use Rack::Session::Cookie, { secret: ENV['COOKIE_SECRET'] }
 
   plugin :static, ['/images', '/css', '/js']
   plugin :render, layout: 'layout.html'
@@ -36,22 +36,18 @@ class Suptasks < Roda
   plugin :param_matchers
 
   plugin :error_handler do |e|
-    logger ||= Logger.new(Configuration.log_file)
+    logger ||= Logger.new(ENV['LOG_FILE_PATH'])
     logger.error(e.inspect)
 
     raise
   end
 
   route do |r|
-    @current_email = session[:user_email]
+    subdomain = r.host.split('.')[-3]
+    @current_user = User.where(id: session[:current_user_id], database: subdomain).first
 
-    r.root do
-      if @current_email
-        r.redirect '/tasks'
-      else
-        @databases_count = DatabaseManager.all_databases.count
-        view('homepage.html')
-      end
+    r.get 'homepage' do
+      view('homepage.html')
     end
 
     r.get 'about' do
@@ -62,108 +58,127 @@ class Suptasks < Roda
       view('changelog.html')
     end
 
-    r.get 'auth/google_oauth2/callback' do
-      auth = request.env['omniauth.auth']
-
-      email = session[:user_email] = auth['info']['email']
-      session[:user_name] = auth['info']['name']
-
-      unless DatabaseManager.all_databases.find { |database| database.name == DatabaseManager.database_name_from_email(email) }
-        DatabaseManager.create_database_for_email(email)
-
-        DB.add_servers(DatabaseManager.servers_hash)
-      end
-
-      r.redirect '/'
-    end
-
     r.post 'logout' do
       session.clear
       r.redirect '/'
     end
 
-    #
-    # Authentication
-    #
-    unless @current_email
-      r.redirect '/'
+    if subdomain.nil?
+      r.redirect('/homepage')
     end
-    #
-    #
-    #
 
-    DB.with_server(DatabaseManager.database_name_from_email(@current_email).to_sym) do
-      r.on 'tasks' do
-        r.get 'new' do
-          view('new_task.html')
-        end
-
-        r.on ':id' do |id|
-          @task = Task[id]
-
-          r.get 'edit' do
-            view('edit_task.html')
-          end
-
-          r.get do
-            @time_records = @task.time_records
-
-            view('task.html')
-          end
-
-          r.post do
-            @task.update(TaskParamsSanitizer.call(r.params))
-
-            r.redirect("/tasks/#{@task.id}")
-          end
-        end
-
-        r.is do
-          r.get do
-            @filter = TaskFilter.new(Task.select_all, r.params)
-            @tasks = @filter.call.order(:time_cost).all
-            @time_records = TimeRecords.new(TimeRecord.today.where(task_id: @tasks.map(&:id)).all)
-
-            view('tasks.html')
-          end
-
-          r.post do
-            task = Task.create(TaskParamsSanitizer.call(r.params))
-            flash['success'] = CreatedTaskFlashMessage.new(task).to_s
-
-            r.redirect('/')
-          end
-        end
+    database =
+      if File.exists?(ENV['TASK_DATABASES_DIR'] + subdomain)
+        ENV['TASK_DATABASES_DIR'] + subdomain
       end
 
-      r.on 'time_records' do
-        r.get do
-          @filter = TaskFilter.new(Task.select_all, r.params)
-          tasks = @filter.call.order(:time_cost).all
+    r.get 'register' do
+      view('register.html')
+    end
 
-          pager = TimeRecordsPager.by_number_of_days(TimeRecord.where(task_id: tasks.map(&:id)), 23)
+    if database.nil?
+      r.redirect('/register')
+    end
 
-          @number_of_pages = pager.size
-          @current_page    = (r.params['page'] || 1).to_i
-          # -1 is for array index from zero :)
-          @time_records    = TimeRecords.new(pager[(@current_page - 1)].order(:started_at).all)
+    r.root do
+      if @current_user
+        r.redirect('/tasks')
+      else
+        r.redirect('/login')
+      end
+    end
 
-          view('time_records.html')
-        end
+    r.get 'login' do
+      view('login.html')
+    end
 
-        r.is ':id' do |id|
-          r.post param: '_delete_button' do
-            time_record = TimeRecord[id]
-            time_record.destroy
+    r.post 'login' do
+      user = User.find_authenticated(r.params['email'], r.params['password'], subdomain)
+      if user
+        session[:current_user_id] = user.id
+      end
 
-            r.redirect('/')
+      r.redirect '/'
+    end
+
+    unless @current_user
+      r.redirect '/'
+    end
+
+    TASK_DB.with_server(database: database) do
+      TASK_DB.synchronize do
+        r.on 'tasks' do
+          r.get 'new' do
+            view('new_task.html')
+          end
+
+          r.on ':id' do |id|
+            @task = Task[id]
+
+            r.get 'edit' do
+              view('edit_task.html')
+            end
+
+            r.get do
+              @time_records = @task.time_records
+
+              view('task.html')
+            end
+
+            r.post do
+              @task.update(TaskParamsSanitizer.call(r.params))
+
+              r.redirect("/tasks/#{@task.id}")
+            end
+          end
+
+          r.is do
+            r.get do
+              @filter = TaskFilter.new(Task.select_all, r.params)
+              @tasks = @filter.call.order(:time_cost).all
+              @time_records = TimeRecords.new(TimeRecord.today.where(task_id: @tasks.map(&:id)).all)
+
+              view('tasks.html')
+            end
+
+            r.post do
+              task = Task.create(TaskParamsSanitizer.call(r.params))
+              flash['success'] = CreatedTaskFlashMessage.new(task).to_s
+
+              r.redirect('/')
+            end
           end
         end
 
-        r.post do
-          time_record = TimeRecord.create(TimeRecordParamsSanitizer.call(r.params))
+        r.on 'time_records' do
+          r.get do
+            @filter = TaskFilter.new(Task.select_all, r.params)
+            tasks = @filter.call.order(:time_cost).all
 
-          r.redirect('/')
+            pager = TimeRecordsPager.by_number_of_days(TimeRecord.where(task_id: tasks.map(&:id)), 23)
+
+            @number_of_pages = pager.size
+            @current_page    = (r.params['page'] || 1).to_i
+            # -1 is for array index from zero :)
+            @time_records    = TimeRecords.new(pager[(@current_page - 1)].order(:started_at).all)
+
+            view('time_records.html')
+          end
+
+          r.is ':id' do |id|
+            r.post param: '_delete_button' do
+              time_record = TimeRecord[id]
+              time_record.destroy
+
+              r.redirect('/')
+            end
+          end
+
+          r.post do
+            time_record = TimeRecord.create(TimeRecordParamsSanitizer.call(r.params))
+
+            r.redirect('/')
+          end
         end
       end
     end

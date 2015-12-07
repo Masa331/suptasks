@@ -1,4 +1,4 @@
-class TimeRecord < Sequel::Model
+class TimeRecord < Sequel::Model(TASK_DB[:time_records])
   many_to_one :task
 
   def self.between_dates(start_date, end_date)

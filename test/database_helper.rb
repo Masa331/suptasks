@@ -1,8 +1,8 @@
 require 'sequel'
 
-DB = Sequel.sqlite
+TASK_DB = Sequel.sqlite
 Sequel.extension :migration
-Sequel::Migrator.run(DB, 'db/migrations')
+Sequel::Migrator.run(TASK_DB, 'db/task_databases/migrations')
 
 require_relative '../lib/task'
 require_relative '../lib/tag'
