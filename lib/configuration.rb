@@ -1,6 +1,10 @@
 class Configuration
   def self.db_dir
-    'db/'
+    ENV['DB_DIR']
+  end
+
+  def self.project_root
+    ENV['PROJECT_ROOT']
   end
 
   def self.log_file

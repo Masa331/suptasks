@@ -9,16 +9,19 @@ Sequel.extension :migration
 
 module DatabaseManager
   def self.all_databases
-    Dir.glob("#{Configuration.db_dir}*").map do |path|
+    Dir.glob("#{Configuration.db_dir}*.db").map do |path|
       Database.new(path)
     end
   end
 
-  def self.create_database_for_email(email)
-    path_to_database = Configuration.db_dir + database_name_from_email(email) + '.db'
+  def self.migrate_all_databases
+    all_databases.each do |database|
+      migrate_database(database.path.to_s)
+    end
+  end
 
+  def self.migrate_database(path_to_database)
     db = Sequel.sqlite(path_to_database)
-
     Sequel::Migrator.run(db, 'db/migrations')
   end
 
