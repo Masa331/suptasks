@@ -14,6 +14,5 @@ gem 'pry-byebug'
 gem 'sqlite3'
 gem 'sequel'
 
-gem 'yard'
 gem 'minitest'
 gem 'dotenv'
