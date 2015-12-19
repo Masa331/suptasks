@@ -3,9 +3,9 @@ language: ruby
 env:
   global:
     - COOKIE_SECRET = "zmjJrPg6JvQKVUgbgtHLXutN"
-    - LOG_FILE_PATH = "$TRAVIS_BUILD_DIR/suptasks_test.log"
-    - TASK_DATABASE_DIR = "$TRAVIS_BUILD_DIR/test/db/task_databases/databases/"
-    - USER_DATABASE_PATH = "$TRAVIS_BUILD_DIR/test/db/user_database/user_database"
+    - LOG_FILE_PATH = $TRAVIS_BUILD_DIR/suptasks_test.log
+    - TASK_DATABASE_DIR = $TRAVIS_BUILD_DIR/test/db/task_databases/databases/
+    - USER_DATABASE_PATH = $TRAVIS_BUILD_DIR/test/db/user_database/user_database
 rvm:
   - 2.2
 script:
