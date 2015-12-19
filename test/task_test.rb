@@ -1,9 +1,8 @@
-require_relative 'database_helper'
-require_relative "test_helper"
-require_relative "../lib/task"
-require_relative "../lib/tag"
+require_relative 'test_helper'
 
 class TaskTest < Minitest::Test
+  include DatabaseSetupAndTeardown
+
   def test_completed_returns_true_or_false_based_on_specific_tag_presence
     completed_task = Task.create(description: 'Some desc')
     Tag.create(name: 'completed', task_id: completed_task.id)

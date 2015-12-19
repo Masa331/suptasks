@@ -1,5 +1,9 @@
-/databases/*
 /db/task_databases/databases/*
 /db/user_database/user_database
+/test/db/*
+
 suptasks.log*
-.env
+suptasks_test.log*
+
+.production
+.test

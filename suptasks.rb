@@ -4,8 +4,6 @@ require 'roda'
 require 'sequel'
 Sequel.extension :migration
 require 'logger'
-require 'dotenv'
-Dotenv.load
 
 CUSTOMER_DB = Sequel.sqlite(ENV['USER_DATABASE_PATH'])
 

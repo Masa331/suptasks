@@ -1,8 +1,4 @@
-require_relative "database_helper"
-require_relative "test_helper"
-require_relative "../lib/time_records_pager"
-require_relative "../lib/time_record"
-require_relative "../lib/time_records"
+require_relative 'test_helper'
 
 class TimeRecordsPagerTest < Minitest::Test
   def test_at_least_one_page_is_returned

@@ -1,9 +1,4 @@
-require_relative "database_helper"
-require_relative "test_helper"
-
-require_relative "../lib/task_filter"
-require_relative "../lib/task"
-require_relative "../lib/tag"
+require_relative 'test_helper'
 
 class TaskFilterTest < Minitest::Test
   def setup

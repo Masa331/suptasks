@@ -1,9 +1,8 @@
-require_relative 'database_helper'
-require_relative "test_helper"
-require_relative "../lib/time_records"
-require_relative "../lib/time_record"
+require_relative 'test_helper'
 
 class TimeRecordsTest < Minitest::Test
+  include DatabaseSetupAndTeardown
+
   def test_time_records_delegate
     record1 = TimeRecord.new(task_id: 1)
     record2 = TimeRecord.new(task_id: 1)

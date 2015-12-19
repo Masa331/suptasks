@@ -1,5 +1,4 @@
-require_relative "test_helper"
-require_relative "../lib/time_duration"
+require_relative 'test_helper'
 
 class TimeDurationTest < Minitest::Test
   def test_addition

@@ -10,19 +10,19 @@
           <div class="form-group">
             <div class="col-sm-12">
               <label for="description">Description</label>
-              <input class="form-control" type="text" name="description" placeholder="buy some groceries" value="<%= @task.description %>" required autofocus/>
+              <input class="form-control" type="text" id="description" name="description" placeholder="buy some groceries" value="<%= @task.description %>" required autofocus/>
             </div>
           </div>
 
           <div class="form-group">
             <div class="col-sm-9">
               <label for="tags">Tags</label>
-              <input class="form-control" type="text" name="tags" placeholder="health, food" value="<%= @task.tag_names.join(', ') %>" />
+              <input class="form-control" type="text" id="tags" name="tags" placeholder="health, food" value="<%= @task.tag_names.join(', ') %>" />
             </div>
 
             <div class="col-sm-3">
               <label for="time_cost">Time Cost</label>
-              <input class="form-control" type="number" name="time_cost" placeholder="10" value="<%= @task.time_cost.to_i %>" required/>
+              <input class="form-control" type="number" id="time_cost" name="time_cost" placeholder="10" value="<%= @task.time_cost.to_i %>" required/>
             </div>
           </div>
 

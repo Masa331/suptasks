@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'bcrypt'
+gem 'capybara'
 gem 'dotenv'
 gem 'erubis'
 gem 'minitest'

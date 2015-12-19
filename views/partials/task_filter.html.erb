@@ -2,7 +2,7 @@
   <div class="form-group">
     <label for="status">Status</label>
     <label class="radio-inline">
-      <input type="radio" name="status" value="complete" <%= "checked" if filter.status == 'complete' %>> Complete
+      <input type="radio" id="status" name="status" value="complete" <%= "checked" if filter.status == 'complete' %>> Complete
     </label>
     <label class="radio-inline">
       <input type="radio" name="status" value="uncomplete" <%= "checked" if filter.status == 'uncomplete' %>> Uncomplete
@@ -14,12 +14,12 @@
 
   <div class="form-group">
     <label for="description">Description</label>
-    <input class="form-control" type="text" name="description" placeholder="Description" value="<%= filter.description %>"/>
+    <input class="form-control" type="text" label="description" name="description" placeholder="Description" value="<%= filter.description %>"/>
   </div>
 
   <div class="form-group">
     <label for="tags">Tags</label>
-    <input class="form-control" type="text" name="tags" placeholder="Tags" value="<%= filter.tags.join(', ') %>"/>
+    <input class="form-control" type="text" id="tags" name="tags" placeholder="Tags" value="<%= filter.tags.join(', ') %>"/>
   </div>
 
   <a href="<%= form_path %>" class="btn btn-default pull-right">Reset filter</a>
