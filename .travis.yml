@@ -1,5 +1,13 @@
 sudo: false
 language: ruby
+env:
+  global:
+    - REPO = "myuser/myrepo"
+    - CI_HOME = `pwd`/$REPO
+    - COOKIE_SECRET = "zmjJrPg6JvQKVUgbgtHLXutN"
+    - LOG_FILE_PATH = $CI_HOME "/suptasks_test.log"
+    - TASK_DATABASE_DIR = $CI_HOME "/test/db/task_databases/databases/"
+    - USER_DATABASE_PATH = $CI_HOME "/test/db/user_database/user_database"
 rvm:
   - 2.2
 script:
