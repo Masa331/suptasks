@@ -1,6 +1,5 @@
 /db/task_databases/databases/*
 /db/user_database/user_database
-/test/db/*
 
 suptasks.log*
 suptasks_test.log*
