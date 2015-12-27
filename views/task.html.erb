@@ -4,6 +4,9 @@
       <div class="panel-heading">
         <h3 class="panel-title display-inline">
           <%= @task.description %>
+          <% @task.tags.each do |tag| %>
+            <span class="label label-primary"><%= tag.name %></span>
+          <% end %>
         </h3>
 
         <span class='pull-right'>
@@ -13,25 +16,8 @@
 
       <div class="panel-body">
         <div>
-          <dl>
-            <dt>Tags</dt>
-            <dd>
-              <% if @task.tags.empty? %>
-                <i class="gray">No tags</i>
-              <% else %>
-                <% @task.tags.each do |tag| %>
-                  <span class="label label-info"><%= tag.name %></span>
-                <% end %>
-              <% end %>
-            </dd>
-            <dt>Created at</dt>
-            <dd><%= @task.created_at %></dd>
-
-            <% if @task.time_cost > 0 %>
-              <dt>Estimated time:</dt>
-              <dd><%= @task.time_cost %></dd>
-            <% end %>
-          </dl>
+          <p>Created at: <b><%= @task.created_at.strftime('%-d.%-m.%Y %H:%M') %></b></p>
+          <p>Estimated time: <b><%= @task.time_cost %></b></p>
         </div>
 
         <h3>Time records</h3>
