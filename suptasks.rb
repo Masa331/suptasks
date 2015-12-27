@@ -18,7 +18,6 @@ require_relative 'lib/time_record'
 require_relative 'lib/params_sanitizers'
 require_relative 'lib/tag'
 require_relative 'lib/time_records'
-require_relative 'lib/time_records_pager'
 require_relative 'lib/time_duration'
 require_relative 'lib/created_task_flash_message'
 require_relative 'lib/task_filter'
@@ -149,20 +148,6 @@ class Suptasks < Roda
         end
 
         r.on 'time_records' do
-          r.get do
-            @filter = TaskFilter.new(Task.select_all, r.params)
-            tasks = @filter.call.order(:time_cost).all
-
-            pager = TimeRecordsPager.by_number_of_days(TimeRecord.where(task_id: tasks.map(&:id)), 23)
-
-            @number_of_pages = pager.size
-            @current_page    = (r.params['page'] || 1).to_i
-            # -1 is for array index from zero :)
-            @time_records    = TimeRecords.new(pager[(@current_page - 1)].order(:started_at).all)
-
-            view('time_records.html')
-          end
-
           r.is ':id' do |id|
             r.post param: '_delete_button' do
               time_record = TimeRecord[id]
