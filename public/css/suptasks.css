@@ -26,34 +26,10 @@ footer {
   border-bottom: 2px solid #E5E5E5;
 }
 
-.graph {
-  background: url('/images/barchart_background_12_cols.png') no-repeat left top;
-  height: 330px;
-  position: relative;
-  width: 1108px;
-  margin-bottom: 30px;
-}
-
-.graph .bar {
-  width: 30px;
-  float: left;
-  margin-top: 21px;
-  margin-left: 15px;
-}
-
-.graph .bar:first-child {
-  margin-left: 45px;
-}
-
 .homepage-centered-text {
   margin-bottom: 20px;
   text-align: center;
   vertical-align: middle;
-}
-
-.google-sign-in-button {
-  background-color: white;
-  border: none;
 }
 
 .my-navbar-form {
@@ -98,24 +74,8 @@ span.label {
   text-align: center;
 }
 
-.white-background {
-  background-color: rgba(255,0,0,0);
-}
-
-.grey-background1 {
-  background-color: #d2d2d2;
-}
-
-.grey-background2 {
-  background-color: #aeaeae;
-}
-
 .gray {
   color: gray;
-}
-
-.red-hover:hover {
-  color: red;
 }
 
 .undecorated-link {
@@ -128,11 +88,6 @@ span.label {
 
 .green {
   color: green;
-}
-
-.unstyled-button {
-  border: none;
-  background: white
 }
 
 .btn-linklike {
