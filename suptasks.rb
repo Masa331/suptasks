@@ -12,6 +12,8 @@ TASK_DB = Sequel.sqlite(first_database, servers: {})
 TASK_DB.extension :arbitrary_servers
 TASK_DB.extension :server_block
 
+Sequel::Model.plugin :timestamps
+
 require_relative 'lib/database_manager'
 require_relative 'lib/task'
 require_relative 'lib/time_record'
@@ -22,6 +24,7 @@ require_relative 'lib/time_duration'
 require_relative 'lib/created_task_flash_message'
 require_relative 'lib/task_filter'
 require_relative 'lib/user'
+require_relative 'lib/etag_generator'
 
 class Suptasks < Roda
   use Rack::Session::Cookie, { secret: ENV['COOKIE_SECRET'] }
@@ -31,6 +34,7 @@ class Suptasks < Roda
   plugin :head
   plugin :flash
   plugin :param_matchers
+  plugin :caching
 
   plugin :error_handler do |e|
     logger ||= Logger.new(ENV['LOG_FILE_PATH'])
@@ -121,6 +125,7 @@ class Suptasks < Roda
             r.get do
               @time_records = @task.time_records
 
+              r.etag ETagGenerator.call(@task)
               view('task.html')
             end
 

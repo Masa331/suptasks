@@ -12,6 +12,11 @@ class TimeRecord < Sequel::Model(TASK_DB[:time_records])
     where('started_at > ?', start_of_the_day)
   end
 
+  def after_create
+    touch_associations
+    super
+  end
+
   def after_validation
     self.started_at = Time.parse(started_at.to_s) rescue Time.now
     super
@@ -21,3 +26,5 @@ class TimeRecord < Sequel::Model(TASK_DB[:time_records])
     TimeDuration.new(super)
   end
 end
+
+TimeRecord.plugin :touch, associations: [:task]
