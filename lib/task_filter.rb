@@ -16,23 +16,6 @@ class TaskFilter
     end
   end
 
-  class FilterByStatus
-    def initialize(dataset, status)
-      @dataset = dataset
-      @status = status
-    end
-
-    def call
-      if @status == 'all'
-        @dataset
-      elsif @status == 'complete'
-        @dataset.where(id: Tag.where(name: 'completed').select(:task_id))
-      else
-        @dataset.exclude(id: Tag.where(name: 'completed').select(:task_id))
-      end
-    end
-  end
-
   class FilterByTags
     def initialize(dataset, tags)
       @dataset = dataset
@@ -66,21 +49,18 @@ class TaskFilter
     end
   end
 
-  attr_accessor :description, :status, :tags, :dataset
+  attr_accessor :description, :tags, :dataset
 
-  DEFAULT_STATUS = 'uncomplete'
-  DEFAULT_TAGS = '-hide'
+  DEFAULT_TAGS = '-hide, -completed'
 
   def initialize(dataset, params = {})
     @dataset = dataset
     @description = params['description']
-    @status = params['status'] || DEFAULT_STATUS
     @tags = parse_tags(params.fetch('tags', DEFAULT_TAGS))
   end
 
   def call
     filtered = FilterByDescription.new(dataset, description).call
-    filtered = FilterByStatus.new(filtered, status).call
 
     FilterByTags.new(filtered, tags).call
   end
