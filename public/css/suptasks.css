@@ -14,7 +14,6 @@ footer {
 
 .filter-form .form-group {
   margin-right: 10px;
-
 }
 
 .footer .text-muted {
@@ -77,6 +76,10 @@ ul.nav {
 
 .timer-starter i {
   color: inherit;
+}
+
+span.label {
+  line-height: 30px;
 }
 
 /* ######## */

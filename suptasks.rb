@@ -106,6 +106,7 @@ class Suptasks < Roda
       TASK_DB.synchronize do
         r.on 'tasks' do
           r.get 'new' do
+            @tags = Tag.distinct.select(:name)
             view('new_task.html')
           end
 
@@ -113,6 +114,7 @@ class Suptasks < Roda
             @task = Task[id]
 
             r.get 'edit' do
+              @tags = Tag.distinct.select(:name)
               view('edit_task.html')
             end
 

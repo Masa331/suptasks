@@ -10,14 +10,23 @@
     <dd>
       Tags are mainly for easy grouping. Type them separated with comma. Some tags also have special functionallity:
       <ul>
-        <li><span class="label label-info">hide</span> prevents task from appearing in task list. However, when you start filtering tasks, it will appear.</li>
+        <li><span class="label label-primary">hide</span> prevents task from appearing in task list. However, when you start filtering tasks, it will appear.</li>
         <li>
-          <span class="label label-info">complete</span> marks task completed. This tag is added when you click on
+          <span class="label label-primary">complete</span> marks task completed. This tag is added when you click on
           <button class="btn btn-default btn-xs">
             <i class="fa fa-check fa-lg"></i>
           </button>.
         </li>
       </ul>
+    </dd>
+
+    <dt>All existing tags</dt>
+    <dd>
+      These are all tags you ever used:
+      <br />
+      <% @tags.each do |tag| %>
+        <span class="label label-primary"><%= tag.name %></span>
+      <% end %>
     </dd>
   </dl>
 </div>
