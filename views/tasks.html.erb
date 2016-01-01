@@ -6,6 +6,10 @@
       </div>
 
       <div class="panel-body">
+        <span>Used tags:</span>
+        <% @tags.each do |tag| %>
+          <a href="/tasks?tags=<%= tag.name %>"><span class="label label-primary"><%= tag.name %></span></a>
+        <% end %>
 
         <table class="table">
           <thead>
