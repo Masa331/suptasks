@@ -133,7 +133,6 @@ class Suptasks < Roda
             r.get do
               @filter = TaskFilter.new(Task.select_all, r.params)
               @tasks = @filter.call.order(:time_cost).all
-              @time_records = TimeRecords.new(TimeRecord.today.where(task_id: @tasks.map(&:id)).all)
 
               view('tasks.html')
             end
