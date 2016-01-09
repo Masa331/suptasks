@@ -125,6 +125,7 @@ class Suptasks < Roda
             r.get do
               @time_records = @task.time_records
 
+              response.cache_control(private: true)
               r.etag ETagGenerator.call(@task)
               view('task.html')
             end
