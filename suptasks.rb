@@ -65,6 +65,7 @@ class Suptasks < Roda
     end
 
     if subdomain.nil?
+      r.etag('hello')
       r.redirect('/homepage')
     end
 
