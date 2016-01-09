@@ -48,6 +48,7 @@ class Suptasks < Roda
     @current_user = User.where(id: session[:current_user_id], database: subdomain).first
 
     r.get 'homepage' do
+      r.etag('hello')
       view('homepage.html')
     end
 
@@ -65,7 +66,6 @@ class Suptasks < Roda
     end
 
     if subdomain.nil?
-      r.etag('hello')
       r.redirect('/homepage')
     end
 
