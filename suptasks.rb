@@ -126,7 +126,8 @@ class Suptasks < Roda
               @time_records = @task.time_records
 
               response.cache_control(private: true)
-              r.etag(ETagGenerator.call(@task), weak: true)
+              response.headers['etag'] = 'c76a548a8f6b391ad58d22f58ae009c6ea10097a'
+              # r.etag(ETagGenerator.call(@task), weak: true)
               view('task.html')
             end
 
