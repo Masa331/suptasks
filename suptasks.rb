@@ -48,7 +48,7 @@ class Suptasks < Roda
     @current_user = User.where(id: session[:current_user_id], database: subdomain).first
 
     r.get 'homepage' do
-      response.headers['Etag'] = '"ahoj"'
+      response.headers['Etag'] = '"W/ahoj"'
       view('homepage.html')
     end
 
