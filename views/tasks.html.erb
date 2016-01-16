@@ -39,11 +39,15 @@
                   </td>
                   <td>
                     <div class="pull-right">
+                      <span>
+                        <a href="/tasks/<%= task.id %>/edit">Edit</a>
+                      </span>
+                      |
                       <% unless task.completed? %>
                         <form class="display-inline" action="/tasks/<%= task.id %>" method="post">
                           <input class="hide" type="text" name="tags" value="<%= task.tag_names.join(', ') + ',completed' %>" />
-                          <button class="btn btn-default btn-xs task-closer" name="submit" type="submit">
-                            <i class="fa fa-check fa-lg"></i>
+                          <button class="btn-linklike" name="submit" type="submit">
+                            Close
                           </button>
                         </form>
                       <% end %>

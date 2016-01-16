@@ -12,6 +12,18 @@ footer {
   height: 60px;
 }
 
+span.label {
+  line-height: 30px;
+}
+
+ul.nav {
+  padding-top: 6px;
+}
+
+/* ######## */
+/* Specific styles */
+/* ######## */
+
 .filter-form .form-group {
   margin-right: 10px;
 }
@@ -38,32 +50,36 @@ footer {
   padding-right: 15px;
 }
 
-ul.nav {
-  padding-top: 6px;
-}
-
-.timer-starter {
-  cursor: pointer;
-}
-
-.timer-starter b {
-  color: inherit;
-}
-
-.timer-starter i {
-  color: inherit;
-}
-
-span.label {
-  line-height: 30px;
-}
-
 /* ######## */
 /* Helpers */
 /* ######## */
 
 .bold {
   font-weight: bold;
+}
+
+.btn-linklike {
+  background: none;
+  border: none;
+  color: #337AB7;
+  padding: 0px;
+}
+
+.btn-linklike:hover, .btn-linklike:focus {
+  color: #23527C;
+  text-decoration: underline;
+}
+
+.display-inline {
+  display: inline;
+}
+
+.gray {
+  color: gray;
+}
+
+.green {
+  color: green;
 }
 
 .margin-left {
@@ -74,29 +90,6 @@ span.label {
   text-align: center;
 }
 
-.gray {
-  color: gray;
-}
-
 .undecorated-link {
   color: #333;
-}
-
-.display-inline {
-  display: inline;
-}
-
-.green {
-  color: green;
-}
-
-.btn-linklike {
-  background: white;
-  border: none;
-  color: #337AB7;
-}
-
-.btn-linklike:hover, .btn-linklike:focus  {
-  color: #23527C;
-  text-decoration: underline;
 }

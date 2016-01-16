@@ -9,9 +9,20 @@
           <% end %>
         </h3>
 
-        <span class='pull-right'>
-          <a href="/tasks/<%= @task.id %>/edit">Edit</a>
-        </span>
+        <div class="pull-right">
+          <span>
+            <a href="/tasks/<%= @task.id %>/edit">Edit</a>
+          </span>
+          |
+          <% unless @task.completed? %>
+            <form class="display-inline" action="/tasks/<%= @task.id %>" method="post">
+              <input class="hide" type="text" name="tags" value="<%= @task.tag_names.join(', ') + ',completed' %>" />
+              <button class="btn-linklike" name="submit" type="submit">
+                Close
+              </button>
+            </form>
+          <% end %>
+        </div>
       </div>
 
       <div class="panel-body">
