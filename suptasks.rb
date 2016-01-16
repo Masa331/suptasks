@@ -130,7 +130,7 @@ class Suptasks < Roda
             r.post do
               @task.update(TaskParamsSanitizer.call(r.params))
 
-              r.redirect("/tasks/#{@task.id}")
+              r.redirect('/')
             end
           end
 
