@@ -1,6 +1,9 @@
 /db/task_databases/databases/*
 /db/user_database/user_database
 
+test/db/task_databases/databases/my-tasks
+test/db/user_database/user_database
+
 /node_modules
 
 suptasks.log*

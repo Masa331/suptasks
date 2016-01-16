@@ -11,16 +11,4 @@ class TaskTest < Minitest::Test
     assert completed_task.completed?
     refute uncomplete_task.completed?
   end
-
-  def test_comparison
-    task1 = Task.new(time_cost: 20)
-    task2 = Task.new(time_cost: 10)
-    task3 = Task.new(time_cost: 25)
-
-    task3.stub :tags, [Tag.new(name: 'important')] do
-      task1.stub :tags, [Tag.new(name: 'neco')] do
-        assert_equal [task3, task2, task1], [task1, task2, task3].sort
-      end
-    end
-  end
 end

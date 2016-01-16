@@ -1,8 +1,12 @@
+require 'it_sorts'
+
 class Task < Sequel::Model(TASK_DB[:tasks])
+  include ItSorts::SortSetup
+
   one_to_many :tags
 
-  def <=>(other)
-    [-1 * importance, time_cost.to_i] <=> [-1 * other.importance, other.time_cost.to_i]
+  def sort_setup
+    [ItSorts.desc(importance), ItSorts.asc(time_cost.to_i)]
   end
 
   def completed?
