@@ -138,7 +138,7 @@ class Suptasks < Roda
           r.is do
             r.get do
               @filter = TaskFilter.new(Task.select_all, r.params)
-              @tasks = @filter.call.order(:time_cost).all
+              @tasks = @filter.call.all.sort
               @tags = Tag.distinct.select(:name)
 
               view('tasks.html')

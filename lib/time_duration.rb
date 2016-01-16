@@ -17,6 +17,10 @@ class TimeDuration
     to_i < other_duration.to_i
   end
 
+  def <=>(other)
+    duration <=> other.duration
+  end
+
   def to_i
     duration
   end

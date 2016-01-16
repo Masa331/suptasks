@@ -45,4 +45,12 @@ class TimeDurationTest < Minitest::Test
     duration = TimeDuration.new(615)
     assert_equal '10h 15m', duration.to_s
   end
+
+  def test_comparison
+    duration1 = TimeDuration.new(20)
+    duration2 = TimeDuration.new(10)
+
+    assert_equal 1, duration1 <=> duration2
+    assert_equal -1, duration2 <=> duration1
+  end
 end
