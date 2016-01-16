@@ -23,6 +23,7 @@ require_relative 'lib/created_task_flash_message'
 require_relative 'lib/task_filter'
 require_relative 'lib/user'
 require_relative 'lib/etag_generator'
+require_relative 'lib/task_updater_service'
 
 class Suptasks < Roda
   use Rack::Session::Cookie, { secret: ENV['COOKIE_SECRET'] }
@@ -128,7 +129,7 @@ class Suptasks < Roda
             end
 
             r.post do
-              @task.update(TaskParamsSanitizer.call(r.params))
+              @task = TaskUpdaterService.new(@task, TaskParamsSanitizer.call(r.params)).call
 
               r.redirect('/')
             end
@@ -144,7 +145,7 @@ class Suptasks < Roda
             end
 
             r.post do
-              task = Task.create(TaskParamsSanitizer.call(r.params))
+              task = TaskUpdaterService.new(Task.new, TaskParamsSanitizer.call(r.params)).call
               flash['success'] = CreatedTaskFlashMessage.new(task).to_s
 
               r.redirect('/')

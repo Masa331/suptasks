@@ -20,36 +20,4 @@ class Task < Sequel::Model(TASK_DB[:tasks])
   def tag_names
     tags.map(&:name)
   end
-
-  def update(params)
-    tags = params.delete 'tags'
-    super(params).tap do |tag|
-      update_tags(tags) if tags
-    end
-  end
-
-  def update_tags(new_tag_names)
-    new_tag_names = new_tag_names.split(',').map(&:strip)
-
-    remove_tags_not_in_list(new_tag_names)
-    add_extra_tags_in_list(new_tag_names)
-  end
-
-  private
-
-  def remove_tags_not_in_list(new_tag_names)
-    tags.select do |tag|
-      !new_tag_names.include? tag.name
-    end.each do |tag|
-      tags.delete(tag).destroy
-    end
-  end
-
-  def add_extra_tags_in_list(new_tag_names)
-    new_tag_names.select do |name|
-      !tags.map(&:name).include? name
-    end.each do |name|
-      add_tag(Tag.new(name: name))
-    end
-  end
 end

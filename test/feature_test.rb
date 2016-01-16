@@ -62,14 +62,11 @@ class FeatureTest < Minitest::Test
     Task.create(description: 'Change car tires')
     log_in
 
-    find(:first, '.task-closer').click
-
     assert has_content? 'Change car tires'
-    assert has_content? 'completed'
 
-    find(:first, '.navbar-brand').click
+    click_on 'Close'
 
-    refute has_content? 'Change car tires'
+    assert has_content? "Seems like you don't have any tasks to do. That's cool!"
   end
 
   def test_task_filtering_by_description
