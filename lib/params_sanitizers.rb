@@ -30,11 +30,3 @@ class TaskParamsSanitizer
     ['description', 'time_cost', 'tags']
   end
 end
-
-class TimeRecordParamsSanitizer
-  include BaseParamsSanitizer
-
-  def permitted_keys
-    ['task_id', 'description', 'duration', 'started_at']
-  end
-end

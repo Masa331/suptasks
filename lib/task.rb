@@ -1,5 +1,4 @@
 class Task < Sequel::Model(TASK_DB[:tasks])
-  one_to_many :time_records
   one_to_many :tags
 
   def self.create(params, &block)
@@ -20,10 +19,6 @@ class Task < Sequel::Model(TASK_DB[:tasks])
 
   def tag_names
     tags.map(&:name)
-  end
-
-  def time_records
-    TimeRecords.new(super)
   end
 
   def update(params)

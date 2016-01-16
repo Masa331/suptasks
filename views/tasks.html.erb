@@ -39,11 +39,6 @@
                   </td>
                   <td>
                     <div class="pull-right">
-                      <button id="task-<%= task.id %>" class="timer-starter timer display-inline btn btn-default btn-xs">
-                        <b></b>
-                        <i class="fa fa-clock-o fa-lg"></i>
-                      </button>
-
                       <% unless task.completed? %>
                         <form class="display-inline" action="/tasks/<%= task.id %>" method="post">
                           <input class="hide" type="text" name="tags" value="<%= task.tag_names.join(', ') + ',completed' %>" />

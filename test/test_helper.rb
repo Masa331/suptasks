@@ -16,7 +16,6 @@ class TestDatabaseHelper
     Tag.select_all.delete
     User.select_all.delete
     Task.select_all.delete
-    TimeRecord.select_all.delete
   end
 end
 TestDatabaseHelper.prepare_databases

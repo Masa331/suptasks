@@ -19,10 +19,6 @@
           <p>Created at: <b><%= @task.created_at.strftime('%-d.%-m.%Y %H:%M') %></b></p>
           <p>Estimated time: <b><%= @task.time_cost %></b></p>
         </div>
-
-        <h3>Time records</h3>
-        <% records_by_started_at = @time_records.sort_by(&:started_at).reverse.grouped_by_started_at %>
-        <%= view('partials/time_records_table.html', layout: false, locals: { time_records: records_by_started_at }) %>
       </div>
     </div>
   </div>

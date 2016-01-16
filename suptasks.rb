@@ -16,10 +16,8 @@ Sequel::Model.plugin :timestamps
 
 require_relative 'lib/database_manager'
 require_relative 'lib/task'
-require_relative 'lib/time_record'
 require_relative 'lib/params_sanitizers'
 require_relative 'lib/tag'
-require_relative 'lib/time_records'
 require_relative 'lib/time_duration'
 require_relative 'lib/created_task_flash_message'
 require_relative 'lib/task_filter'
@@ -124,8 +122,6 @@ class Suptasks < Roda
             end
 
             r.get do
-              @time_records = @task.time_records
-
               response.cache_control(private: true)
               r.etag(ETagGenerator.call(@task), weak: true)
               view('task.html')
@@ -153,23 +149,6 @@ class Suptasks < Roda
 
               r.redirect('/')
             end
-          end
-        end
-
-        r.on 'time_records' do
-          r.is ':id' do |id|
-            r.post param: '_delete_button' do
-              time_record = TimeRecord[id]
-              time_record.destroy
-
-              r.redirect('/')
-            end
-          end
-
-          r.post do
-            time_record = TimeRecord.create(TimeRecordParamsSanitizer.call(r.params))
-
-            r.redirect('/')
           end
         end
       end
