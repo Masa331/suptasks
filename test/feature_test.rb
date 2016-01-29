@@ -1,4 +1,4 @@
-require 'capybara'
+require 'capybara/dsl'
 require_relative 'test_helper'
 
 Capybara.app = Suptasks
