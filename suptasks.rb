@@ -43,20 +43,10 @@ class Suptasks < Roda
   end
 
   route do |r|
-    subdomain = r.host.split('.')[-3]
-    @current_user = User.where(id: session[:current_user_id], database: subdomain).first
-
-    r.get 'homepage' do
-      r.etag('hello')
-      view('homepage.html')
-    end
+    @current_user = User.where(id: session[:current_user_id]).first
 
     r.get 'about' do
       view('about.html')
-    end
-
-    r.get 'changelog' do
-      view('changelog.html')
     end
 
     r.post 'logout' do
@@ -64,37 +54,8 @@ class Suptasks < Roda
       r.redirect '/'
     end
 
-    if subdomain.nil?
-      r.redirect('/homepage')
-    end
-
-    database =
-      if File.exists?(ENV['TASK_DATABASES_DIR'] + subdomain)
-        ENV['TASK_DATABASES_DIR'] + subdomain
-      end
-
-    r.get 'register' do
-      view('register.html')
-    end
-
-    if database.nil?
-      r.redirect('/register')
-    end
-
-    r.root do
-      if @current_user
-        r.redirect('/tasks')
-      else
-        r.redirect('/login')
-      end
-    end
-
-    r.get 'login' do
-      view('login.html')
-    end
-
     r.post 'login' do
-      user = User.find_authenticated(r.params['email'], r.params['password'], subdomain)
+      user = User.find_authenticated(r.params['email'], r.params['password'])
       if user
         session[:current_user_id] = user.id
       end
@@ -102,9 +63,22 @@ class Suptasks < Roda
       r.redirect '/'
     end
 
+    r.root do
+      if @current_user
+        r.redirect('/tasks')
+      else
+        view('homepage.html')
+      end
+    end
+
     unless @current_user
       r.redirect '/'
     end
+
+    database =
+      if File.exists?(ENV['TASK_DATABASES_DIR'] + @current_user.database)
+        ENV['TASK_DATABASES_DIR'] + @current_user.database
+      end
 
     TASK_DB.with_server(database: database) do
       TASK_DB.synchronize do

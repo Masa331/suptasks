@@ -3,8 +3,8 @@ require 'bcrypt'
 class User < Sequel::Model(CUSTOMER_DB[:users])
   include BCrypt
 
-  def self.find_authenticated(email, given_password, subdomain)
-    user = User.where(email: email, database: subdomain).first
+  def self.find_authenticated(email, given_password)
+    user = User.where(email: email).first
 
     if user
       user_password = Password.new(user.password)
