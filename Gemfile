@@ -12,3 +12,8 @@ gem 'roda'
 gem 'sequel'
 gem 'sqlite3'
 gem 'tilt'
+
+gem 'puma'
+gem 'capistrano'
+gem 'capistrano3-puma'
+gem 'capistrano-bundler'
