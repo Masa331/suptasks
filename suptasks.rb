@@ -45,10 +45,6 @@ class Suptasks < Roda
   route do |r|
     @current_user = User.where(id: session[:current_user_id]).first
 
-    r.get 'about' do
-      view('about.html')
-    end
-
     r.post 'logout' do
       session.clear
       r.redirect '/'
